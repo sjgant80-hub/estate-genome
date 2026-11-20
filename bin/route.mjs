@@ -26,6 +26,7 @@ let input;
 try { input = JSON.parse(raw); } catch { console.error('--input must be JSON'); process.exit(2); }
 const local = opt('--local');
 const tried = [];
+let taken = null;   // decided inside the loop, reported after it: process.exit inside try would skip the clean-up below
 for (const c of r.candidates) {
   const cell = index.cells.find((x) => x.name === c.name);
   let dir = local ? join(local, cell.name) : null, tmp = null;
@@ -38,9 +39,11 @@ for (const c of r.candidates) {
     const seed = JSON.parse(readFileSync(join(dir, 'seed.json'), 'utf8'));
     const v = lastJson(hook(seed.boundary.run, dir, input, 60000).out) || {};
     tried.push({ cell: cell.name, inLane: v.inLane === true });
-    if (v.inLane === true) { console.log(JSON.stringify({ ...r, cell: cell.name, confirmed: 'its own lane check took the input', tried }, null, 1)); process.exit(0); }
+    if (v.inLane === true) taken = cell.name;
   } catch (e) { tried.push({ cell: cell.name, inLane: false, error: String(e.message).slice(0, 120) }); }
   finally { if (tmp && resolve(tmp).startsWith(resolve(tmpdir()) + sep + 'genome-route-')) rmSync(tmp, { recursive: true, force: true }); }
+  if (taken) break;
 }
+if (taken) { console.log(JSON.stringify({ ...r, cell: taken, confirmed: 'its own lane check took the input', tried }, null, 1)); process.exit(0); }
 console.log(JSON.stringify({ status: 'refused', cell: null, candidates: r.candidates, escalate: 'kar', why: 'every candidate’s own lane check turned the input away', tried }, null, 1));
 process.exit(1);
