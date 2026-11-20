@@ -1,0 +1,62 @@
+{
+ "witness": "v0.6",
+ "total": 124,
+ "killed": 124,
+ "clean": true,
+ "files": {
+  "src/genome.mjs": {
+   "total": 65,
+   "killed": 65,
+   "clean": true
+  },
+  "src/run.mjs": {
+   "total": 8,
+   "killed": 8,
+   "clean": true
+  },
+  "src/supervise.mjs": {
+   "total": 7,
+   "killed": 7,
+   "clean": true
+  },
+  "src/grow.mjs": {
+   "total": 5,
+   "killed": 5,
+   "clean": true
+  },
+  "template/genome/judge.mjs": {
+   "total": 2,
+   "killed": 2,
+   "clean": true
+  },
+  "template/genome/lane.mjs": {
+   "total": 1,
+   "killed": 1,
+   "clean": true
+  },
+  "template/genome/health.mjs": {
+   "total": 8,
+   "killed": 8,
+   "clean": true
+  },
+  "template/genome/tombstone.mjs": {
+   "total": 2,
+   "killed": 2,
+   "clean": true
+  },
+  "genome/cell.mjs": {
+   "total": 14,
+   "killed": 14,
+   "clean": true
+  },
+  "src/census.mjs": {
+   "total": 12,
+   "killed": 12,
+   "clean": true
+  }
+ },
+ "nothingToMutate": {
+  "template/genome/io.mjs": "reads seed.json and one line of stdin: no comparison or logic for the gate to flip; its behaviour is tested through every hook in test/grow.test.mjs",
+  "template/genome/cell.mjs": "the stub an author replaces: three functions that return constants"
+ }
+}
