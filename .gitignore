@@ -1,0 +1,4 @@
+.witness/
+gate.out
+node_modules/
+*.witnessbak
