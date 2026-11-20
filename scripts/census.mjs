@@ -1,5 +1,7 @@
 // census.mjs — count the genome across a whole estate. READ-ONLY on GitHub.
-//   GH_TOKEN=$(gh auth token) node scripts/census.mjs [--owner sjgant80-hub] [--no-clone] [--public-only]
+//   GH_TOKEN=$(gh auth token) node scripts/census.mjs [--owner sjgant80-hub] [--no-clone] [--public-only] [--out <dir>]
+// --out: where the public view and the genome index go (default data/, this repo's published copy). The estate
+// metabolism's nightly loop passes a folder outside every repository.
 // 1. Lists every repository the owner holds (GraphQL, owner-only) with its seed.json at HEAD.
 // 2. For each live repository that declares a genome, shallow-clones it to a scratch folder and runs the full birth
 //    check on it (its own hooks, under the per-hook bound). --no-clone skips this: verdicts are then left unchecked.
@@ -19,6 +21,7 @@ const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? proces
 const OWNER = arg('--owner', 'sjgant80-hub');
 const CLONE = !process.argv.includes('--no-clone');
 const PUBLIC_ONLY = process.argv.includes('--public-only');
+const OUT = arg('--out', 'data');
 const TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 if (!TOKEN) { console.error('set GH_TOKEN (e.g. GH_TOKEN=$(gh auth token))'); process.exit(2); }
 
@@ -78,8 +81,8 @@ pub.owner = OWNER;
 pub.cloned = CLONE;
 pub.scope = PUBLIC_ONLY ? 'public repositories' : 'every repository the owner holds (private ones counted, never named)';
 pub.checks = checks.filter((c) => !c.private).map(({ private: _p, ...c }) => c);
-mkdirSync('data', { recursive: true });
-writeFileSync('data/census.json', JSON.stringify(pub, null, 1) + '\n');
+mkdirSync(OUT, { recursive: true });
+writeFileSync(join(OUT, 'census.json'), JSON.stringify(pub, null, 1) + '\n');
 // the genome index: what a conductor routes by. Admitted public cells only; a part is not routable.
 const essentials = (r) => {
   const s = JSON.parse(r.seedText);
@@ -90,6 +93,6 @@ const essentials = (r) => {
 };
 const index = { generated, owner: OWNER, about: 'Admitted cells of the estate genome: each passed its birth check on a fresh clone when this was made. Route by lane.',
   cells: rows.filter((r) => !r.private && !r.archived && r.verdict === 'cell').map(essentials) };
-writeFileSync('data/genome-index.json', JSON.stringify(index, null, 1) + '\n');
+writeFileSync(join(OUT, 'genome-index.json'), JSON.stringify(index, null, 1) + '\n');
 const t = tally(rows);
 console.log(`census: ${t.scanned} repositories, ${t.live} live · ${t.declared} declare a genome · ${t.admitted} admitted as cells · ${t.notAdmitted} refused · ${t.genomeLess} genome-less`);
