@@ -1,0 +1,23 @@
+name: gate
+# estate-genome is gated like every cell it admits: tests, a mutation witness that must be CLEAN on every gated file
+# (data/gates.json, nothing exempted), and its own birth check run through the action other repositories use.
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: tests
+        run: node --test test/*.test.mjs
+      - name: mutation gate — every gated file CLEAN, counts as committed
+        run: |
+          git clone --depth 1 --branch v0.6 https://github.com/sjgant80-hub/witness.git .witness
+          node scripts/gates.mjs --witness .witness/witness.mjs --check
+      - name: birth check — estate-genome admits itself, through its own action
+        uses: ./
+      - name: the worked examples — the honest one admitted, the bluffer refused
+        run: |
+          node bin/genome-check.mjs examples/sum-checker
+          if node bin/genome-check.mjs examples/bluffing-judge; then echo "::error::the bluffing judge was admitted"; exit 1; fi

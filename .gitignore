@@ -2,3 +2,4 @@
 gate.out
 node_modules/
 *.witnessbak
+genome-report.json

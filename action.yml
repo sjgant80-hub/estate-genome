@@ -1,0 +1,30 @@
+name: 'estate-genome birth check'
+description: 'Admit a repository as a cell only when its four genome traits hold: describe, verify, prune, boundary.'
+author: 'Kar (sjgant80-hub)'
+branding: { icon: 'check-circle', color: 'green' }
+inputs:
+  path:
+    description: 'The folder that holds seed.json and genome/ (default: the repository root)'
+    required: false
+    default: '.'
+  timeout:
+    description: 'The bound on each hook, in milliseconds'
+    required: false
+    default: '60000'
+outputs:
+  report:
+    description: 'Path of the JSON birth report'
+    value: ${{ steps.check.outputs.report }}
+runs:
+  using: composite
+  steps:
+    - id: check
+      name: birth check
+      shell: bash
+      env:
+        GENOME_PATH: ${{ inputs.path }}
+        GENOME_TIMEOUT: ${{ inputs.timeout }}
+      run: |
+        report="$RUNNER_TEMP/genome-report.json"
+        echo "report=$report" >> "$GITHUB_OUTPUT"
+        node "$GITHUB_ACTION_PATH/bin/genome-check.mjs" "$GENOME_PATH" --timeout "$GENOME_TIMEOUT" --json "$report"
