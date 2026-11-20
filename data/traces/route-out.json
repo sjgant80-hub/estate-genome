@@ -1,4 +1,11 @@
 {
+ "checked": "2026-11-20T16:53:44.851Z",
+ "request": [
+  "--need",
+  "answer a question from our documents",
+  "--input",
+  "{\"question\":\"What is the best pizza topping?\"}"
+ ],
  "status": "refused",
  "cell": null,
  "candidates": [

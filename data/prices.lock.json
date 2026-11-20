@@ -1,0 +1,25 @@
+{
+ "about": "Every figure the page's calculator uses that is not the reader's own input: each with its source and the date it was checked.",
+ "entries": [
+  {
+   "id": "ons-ashe-2025-median-hourly",
+   "kind": "rate",
+   "value": 19.67,
+   "what": "ONS Annual Survey of Hours and Earnings 2025: median hourly earnings (excluding overtime), full-time employees, UK, April 2025. The UK median for all jobs, not an engineer's rate: the calculator's floor default, to be replaced with your own.",
+   "quote": "Median hourly earnings (excluding overtime) for full-time employees were £19.67 an hour in April 2025",
+   "source": "https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2025",
+   "checked": "2026-09-29",
+   "copiedFrom": "sjgant80-hub/bred-minds data/prices.lock.json"
+  },
+  {
+   "id": "estate-metabolism-2026-11-17",
+   "kind": "measurement",
+   "scored": 1696,
+   "noSignal": 560,
+   "dead": 254,
+   "what": "The estate metabolism's first full scan of this estate (1,837 repositories, 1,696 live and scored): 560 had no measured signal saying they were healthy or broken; 254 were measured unused and broken, unverified or superseded.",
+   "source": "https://sjgant80-hub.github.io/estate-metabolism/",
+   "checked": "2026-11-17"
+  }
+ ]
+}

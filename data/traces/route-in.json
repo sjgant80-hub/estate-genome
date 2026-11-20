@@ -1,4 +1,11 @@
 {
+ "checked": "2026-11-20T16:53:40.287Z",
+ "request": [
+  "--need",
+  "answer a question from our documents about the Normans",
+  "--input",
+  "{\"question\":\"Who used the church to unify themselves?\"}"
+ ],
  "status": "routed",
  "cell": "docdecdemo",
  "candidates": [

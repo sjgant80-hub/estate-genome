@@ -1,7 +1,67 @@
 {
- "checked": "2026-11-20T16:50:05.910Z",
- "dir": "bluffing-judge",
- "seedFound": true,
+ "checked": "2026-11-20T16:53:25.619Z",
+ "part": "examples/bluffing-judge",
+ "seed": {
+  "genome": "1",
+  "name": "bluffing-judge",
+  "kind": "tool",
+  "purpose": "A worked example of a part that must NOT be admitted: its judge says verified to everything.",
+  "lane": {
+   "id": "sums",
+   "accepts": "a claim that two whole numbers add up to a total",
+   "refuses": "anything that is not a claimed sum"
+  },
+  "interface": {
+   "in": "{\"sum\":[a,b],\"claim\":n}",
+   "out": "verified, unverified or refused"
+  },
+  "judge": {
+   "what": "a + b equals the claim, exactly",
+   "run": "node genome/judge.mjs",
+   "cases": {
+    "good": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 5
+    },
+    "bad": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 6
+    }
+   }
+  },
+  "boundary": {
+   "run": "node genome/lane.mjs",
+   "inLane": {
+    "sum": [
+     40,
+     2
+    ],
+    "claim": 42
+   },
+   "outOfLane": {
+    "question": "What is the weather in Leeds?"
+   },
+   "escalate": "kar"
+  },
+  "health": {
+   "run": "node genome/health.mjs"
+  },
+  "tombstone": {
+   "apply": "node genome/tombstone.mjs apply",
+   "restore": "node genome/tombstone.mjs restore"
+  },
+  "provenance": {
+   "repo": "sjgant80-hub/estate-genome",
+   "by": "Kar (worked example of a caught bluff)",
+   "born": "2026-11-20"
+  }
+ },
  "line": "NOT ADMITTED: a part (3 of 4: describe yes, verify no, prune yes, boundary yes)",
  "result": {
   "admitted": false,

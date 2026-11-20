@@ -1,7 +1,61 @@
 {
- "checked": "2026-11-20T16:49:56.188Z",
- "dir": "docdecdemo",
- "seedFound": true,
+ "checked": "2026-11-20T16:53:34.790Z",
+ "part": "sjgant80-hub/docdecdemo (fresh clone)",
+ "seed": {
+  "genome": "1",
+  "name": "docdec",
+  "kind": "repo",
+  "purpose": "Answers questions only from your documents: finds the passage, copies the answer word for word with its offsets, and refuses what no passage supports.",
+  "lane": {
+   "id": "grounded-answers",
+   "accepts": "a question about the documents in its index",
+   "refuses": "questions its indexed documents do not cover"
+  },
+  "interface": {
+   "in": "{\"question\":\"<text>\"} to ask; an answer record {source,start,end,text} to audit",
+   "out": "an answer record with its source and character offsets, or a refusal naming the check that stopped it"
+  },
+  "judge": {
+   "what": "an answer record is right when its words are exactly the cited passage's characters at its offsets (claim C6)",
+   "run": "node genome/judge.mjs",
+   "cases": {
+    "good": {
+     "source": "Normans#33",
+     "start": 122,
+     "end": 147,
+     "text": "in the early 11th century"
+    },
+    "bad": {
+     "source": "Normans#33",
+     "start": 122,
+     "end": 147,
+     "text": "in the late 11th century"
+    }
+   }
+  },
+  "boundary": {
+   "run": "node genome/lane.mjs",
+   "inLane": {
+    "question": "Who used the church to unify themselves?"
+   },
+   "outOfLane": {
+    "question": "What is the best pizza topping?"
+   },
+   "escalate": "kar"
+  },
+  "health": {
+   "run": "node genome/health.mjs"
+  },
+  "tombstone": {
+   "apply": "node genome/tombstone.mjs apply",
+   "restore": "node genome/tombstone.mjs restore"
+  },
+  "provenance": {
+   "repo": "sjgant80-hub/docdecdemo",
+   "by": "Kar, for Simon Gant",
+   "born": "2026-11-20"
+  }
+ },
  "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
  "result": {
   "admitted": true,

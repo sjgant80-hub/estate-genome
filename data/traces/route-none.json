@@ -1,4 +1,9 @@
 {
+ "checked": "2026-11-20T16:53:44.943Z",
+ "request": [
+  "--need",
+  "book me a flight to Lisbon"
+ ],
  "status": "refused",
  "cell": null,
  "candidates": [],
