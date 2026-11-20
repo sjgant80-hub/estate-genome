@@ -1,7 +1,7 @@
 {
  "witness": "v0.6",
- "total": 124,
- "killed": 124,
+ "total": 140,
+ "killed": 140,
  "clean": true,
  "files": {
   "src/genome.mjs": {
@@ -52,6 +52,11 @@
   "src/census.mjs": {
    "total": 12,
    "killed": 12,
+   "clean": true
+  },
+  "src/route.mjs": {
+   "total": 16,
+   "killed": 16,
    "clean": true
   }
  },
