@@ -152,7 +152,7 @@ is its real output. At the end, this tab re-judges the recorded outputs with the
 <div class="card" id="traceOut" aria-live="polite">loading the recorded run…</div>
 
 <h3 id="conductor">The conductor: route work by the genome</h3>
-<p>Kar's conductor reads the genome index, the manifests of every admitted cell, and picks the cell whose lane fits. A part
+<p>The conductor (Kar's <code>genome</code> tool, and <code>bin/route.mjs</code>) reads the genome index, the manifests of every admitted cell, and picks the cell whose lane fits. A part
 that has not passed its birth check is invisible to it. A cell must fit at least half of the request's words to receive it; a
 weaker fit is refused and escalated, not guessed. Type what you need:</p>
 <div class="card">
@@ -258,9 +258,9 @@ own answers, and makes CI refuse the ones that cannot back them up.</p>
   <div class="card"><h3>Technology</h3><p>One file and one CI step per repository. The hooks are commands, so any language or tool
   fits: Node, Python, a contract test suite, a model evaluation. It is MIT-licensed, has no dependencies and no service to run,
   and the Action works in private repositories too.</p></div>
-  <div class="card"><h3>Security</h3><p>Composition gets a bounded blast radius. A part must refuse input outside its lane and
-  must have a judge that is not a rubber stamp, so adding one cannot quietly poison what calls it. Retiring is tested to be
-  exact before anyone relies on it.</p></div>
+  <div class="card"><h3>Security</h3><p>A part must show it refuses input outside its lane, and that its judge is not a rubber stamp,
+  before anything is allowed to call it. A judge that verifies everything, or a lane check that takes everything, is caught at
+  birth, not in production. Retiring is tested to be exact before anyone relies on it.</p></div>
   <div class="card"><h3>The teams</h3><p><code>grow</code> plants everything and names the three answers only the team can write.
   After that, CI keeps the part honest on every push. There is no form to fill in, and no catalogue to keep in step by hand.</p></div>
 </div>
@@ -315,7 +315,7 @@ your own repository.</p>
 <h3>The case for the board</h3>
 <ul>
   <li><b>Trust you can check.</b> Nothing is admitted on its word. The judge, the retirement and the lane are each run on the part's own code, on every push.</li>
-  <li><b>Safe to combine.</b> Every admitted part refuses work outside its lane and names who it goes to, so adding a part cannot quietly break the ones around it.</li>
+  <li><b>Safer to combine.</b> Every admitted part has shown, on its own code, that it refuses work outside its lane and names who that work goes to. A part that bluffs past its edge is caught before anything relies on it.</li>
   <li><b>Lean by design.</b> Every part can be retired and restored exactly, so dead weight is shed instead of carried.</li>
   <li><b>Legible to AI agents.</b> The genome index tells any agent what each part does, how it is checked, and where its edge is.</li>
 </ul>
