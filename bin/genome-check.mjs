@@ -2,8 +2,8 @@
 // genome-check — the birth check. Runs a part's own hooks and admits it as a cell only when all four traits hold.
 //   node bin/genome-check.mjs [dir] [--json <file>] [--timeout <ms>]
 // Exit 0: admitted (a cell). Exit 1: not admitted (a part). Exit 2: usage.
-import { writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { writeFileSync, readFileSync } from 'node:fs';
+import { resolve, join } from 'node:path';
 import { check } from '../src/run.mjs';
 
 const args = process.argv.slice(2);
@@ -24,5 +24,8 @@ for (const t of c.result.traits) {
   console.log(`  ${t.trait.padEnd(9)} ${t.pass ? 'yes' : 'NO '}${t.reasons.length ? '  ' + t.reasons.join('; ') : ''}`);
 }
 console.log(c.line);
-if (json) writeFileSync(json, JSON.stringify({ checked: new Date().toISOString(), dir: c.dir, seedFound: c.seedFound, line: c.line, result: c.result, runs: c.runs }, null, 1) + '\n');
+// the report holds the manifest too, so every hook's input (its cases and samples) sits beside its output
+let seed = null;
+try { seed = JSON.parse(readFileSync(join(c.dir, 'seed.json'), 'utf8')); } catch { seed = null; }
+if (json) writeFileSync(json, JSON.stringify({ checked: new Date().toISOString(), dir: c.dir, seedFound: c.seedFound, seed, line: c.line, result: c.result, runs: c.runs }, null, 1) + '\n');
 process.exit(c.result.admitted ? 0 : 1);

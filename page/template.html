@@ -66,6 +66,8 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
 .diagram .arrow{stroke:var(--muted);stroke-width:1.5;fill:none;marker-end:url(#ah)}
 .diagram .lbl{fill:var(--muted);font-size:12px}
 .diagram .okt{fill:var(--ok);font-weight:600}.diagram .not{fill:var(--no);font-weight:600}
+dl.words{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}dl.words dt{font-weight:600}dl.words dd{margin:0}
+@media (max-width:560px){dl.words{grid-template-columns:1fr}dl.words dd{margin:0 0 6px}}
 .callout{border-left:4px solid var(--warn);padding:8px 12px;background:var(--panel);border-radius:0 8px 8px 0}
 footer{margin-top:56px;border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:14px}
 @media (max-width:560px){body{font-size:15px}.lead{font-size:16px}nav a{font-size:13px;padding:3px 6px}}
@@ -99,6 +101,25 @@ admitted, and the check says exactly why.</p>
   <div class="card trait"><h3><span class="n">2</span>Verify</h3><p class="small">It names its judge, the check that makes its output right. The birth check gives the judge a known-good case and a known-bad case. A judge that calls the bad case "verified" fails.</p></div>
   <div class="card trait"><h3><span class="n">3</span>Prune</h3><p class="small">It reports its health, and it can be retired reversibly. The birth check retires a copy of it, then restores it, and the result must match the original byte for byte.</p></div>
   <div class="card trait"><h3><span class="n">4</span>Boundary</h3><p class="small">It declares its lane. The birth check hands it one input inside the lane, which it must accept, and one outside, which it must refuse, naming who to escalate to.</p></div>
+</div>
+
+<div class="card" aria-labelledby="wordsT">
+  <h3 id="wordsT" style="margin-top:0">Words used on this page</h3>
+  <dl class="small words">
+    <dt>Estate</dt><dd>All the software an organisation owns: its code repositories, services, AI agents, contracts and models. This estate has about 1,800 repositories.</dd>
+    <dt>Part</dt><dd>One piece of that estate: one repository, one agent, one service.</dd>
+    <dt>Cell</dt><dd>A part that has passed the birth check. Only cells are trusted with work.</dd>
+    <dt>Genome</dt><dd>The four instructions every part carries: describe, verify, prune, boundary. In practice, a <code>seed.json</code> file and a small <code>genome/</code> folder in the part's repository.</dd>
+    <dt>Manifest (<code>seed.json</code>)</dt><dd>The part's own description of itself: what it does, what it takes, what it refuses, how to check it.</dd>
+    <dt>Judge</dt><dd>The part's own check of whether an output is right. It answers verified, unverified or refused.</dd>
+    <dt>Lane</dt><dd>The kind of work a part says it does. Work outside the lane must be turned away and handed to a named owner.</dd>
+    <dt>Hook</dt><dd>A small command in the part that the birth check runs: the judge, the lane check, the health report, retire and restore.</dd>
+    <dt>Retire (tombstone)</dt><dd>Switching a part off in a way that can be undone exactly. Nothing is deleted.</dd>
+    <dt>CI</dt><dd>The automatic checks a code host such as GitHub runs on every change. The birth check runs there.</dd>
+    <dt>Mutation gate</dt><dd>A test of the tests: a tool makes small deliberate mistakes in the code, one at a time, and the tests must catch every one.</dd>
+    <dt>Metabolism</dt><dd>This estate's nightly housekeeping. It measures every repository, flags the ones nobody can vouch for, and proposes reversible retirements for a person to sign.</dd>
+    <dt>Conductor</dt><dd>The router that hands work only to cells whose lane fits, and escalates the rest.</dd>
+  </dl>
 </div>
 
 <h2 id="start">Start here</h2>
@@ -265,6 +286,12 @@ own answers, and makes CI refuse the ones that cannot back them up.</p>
   After that, CI keeps the part honest on every push. There is no form to fill in, and no catalogue to keep in step by hand.</p></div>
 </div>
 
+<h3>What it replaces, and what your people still do</h3>
+<div class="grid two">
+  <div class="card"><p><b>It replaces</b> the hunt: asking around to learn what a service does, who owns it and whether it is safe to switch off. It replaces catalogue spreadsheets kept in step by hand, trusting an AI agent because it sounds sure, and keeping old code because nobody dares delete it. It sits beside your CI and your service catalogue. It does not replace them.</p></div>
+  <div class="card"><p><b>Your people still</b> write each part's judge, lane check and good and bad cases, once, and improve them as they learn. They answer the work that is escalated to them, and they sign off any retirement. The genome removes the hunt and the guesswork, not the judgement.</p></div>
+</div>
+
 <h3>The cost of parts nobody can describe</h3>
 <div class="card">
   <div class="grid two">
@@ -275,6 +302,7 @@ own answers, and makes CI refuse the ones that cannot back them up.</p>
     <label>Hourly cost of that time (£)<br><input type="number" id="cRate" min="0" step="0.01"></label>
   </div>
   <div id="costOut" aria-live="polite"></div>
+  <p class="small">This is what the hunt costs now, from your numbers. How much of it the genome removes in your organisation has not been measured: that is what the first repositories of a roll-out show.</p>
   <p class="small muted" id="costNote"></p>
 </div>
 
@@ -286,6 +314,10 @@ own answers, and makes CI refuse the ones that cannot back them up.</p>
 <tr><td>Does retiring touch the real part?</td><td>No. Retire and restore are tried on a scratch copy in the system's temporary folder, and the check only ever deletes folders it made itself.</td></tr>
 <tr><td>What leaves our machines?</td><td>Nothing, for the birth check and <code>grow</code>. The census and the conductor read GitHub (the public interface in the daily census). There is no telemetry.</td></tr>
 <tr><td>Can a part fake a pass?</td><td>It can write anything in its manifest, but the check runs its judge on its own bad case. A judge that says "verified" to everything fails, as the bluffing example shows. A weak judge that separates its one bad case from its one good case can still pass. The check proves the judge is not a rubber stamp, not that it is complete.</td></tr>
+<tr><td>Is there an audit trail?</td><td>Yes. <code>genome-check --json</code> writes a report of every hook's input, output and exit code, and the verdict for each trait. In CI the run log keeps the per-trait lines for every push. The daily census commits its results, so the repository's history records every day's verdicts.</td></tr>
+<tr><td>What do we install?</td><td>Node.js, and this repository. It has no dependencies, and nothing is installed on the part. The Action is tagged <code>v1</code>; pin a commit instead if your policy requires.</td></tr>
+<tr><td>What happens when a hook fails?</td><td>A hook that crashes, times out or prints nothing fails its trait, and the report says which and why. Nothing else is touched, and the part is simply not admitted.</td></tr>
+<tr><td>Does it make us compliant?</td><td>No tool does that on its own. For each part it gives you a written purpose, a stated lane, a named judge with a test, a named escalation and a reversible removal. AI governance and change control ask for those records. It certifies nothing.</td></tr>
 <tr><td>Personal data?</td><td>The genome holds descriptions of software, not personal data. The census publishes repository names and lanes for public repositories only.</td></tr>
 </tbody></table></div>
 
@@ -352,6 +384,7 @@ reversibly. The census counts the result every day.</p>
   <li>The browser check on this page covers the manifest (trait 1). The other three need the part's code, and run on the command line and in CI.</li>
   <li>The conductor ranks by the words in each manifest. The command-line conductor then confirms with the cell's own lane check before handing over work. It does not understand requests.</li>
   <li>The public census covers public repositories only. Today <span data-bind="census.admitted">…</span> are cells. The rest have no genome yet.</li>
+  <li>No outside organisation has deployed it yet. The three cells are this estate's own, and the census figures are this estate's.</li>
   <li>Three repositories are fitted so far: estate-genome itself, DocDec, and one private service. All three use Node.js hooks; the runner takes any command.</li>
 </ul>
 
