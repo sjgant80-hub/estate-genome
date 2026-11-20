@@ -5,6 +5,8 @@
 
 const STOP = new Set(('a an and are as at be by can do does for from has have how i in is it its me my of on or our please ' +
   'that the their this to was what when where which who why will with you your').split(' '));
+// a cell must fit at least half of a request's words to receive it: a weaker fit is refused and escalated, not guessed
+export const MIN_SHARE = 0.5;
 export const words = (t) => (typeof t === 'string' ? t.toLowerCase().match(/[a-z0-9]+/g) || [] : []);
 export const terms = (t) => [...new Set(words(t).filter((w) => w.length >= 3 && !STOP.has(w)))];
 
@@ -33,13 +35,13 @@ export function route(index, request, fallback = 'kar') {
   if (lane !== '') candidates = cells.filter((c) => c.lane === lane).map((c) => ({ name: c.name, score: 1 }));
   else if (need.length) {
     candidates = cells.map((c) => ({ name: c.name, score: need.filter((w) => c.about.includes(w)).length / need.length }))
-      .filter((c) => c.score > 0).sort((a, b) => b.score - a.score || a.name.localeCompare(b.name, 'en'));
+      .filter((c) => c.score >= MIN_SHARE).sort((a, b) => b.score - a.score || a.name.localeCompare(b.name, 'en'));
   }
   if (candidates.length === 0) {
-    const why = lane !== '' ? `no admitted cell declares the lane "${lane}"` : need.length ? 'no admitted cell declares a lane that fits these words' : 'the request names no lane and no need';
+    const why = lane !== '' ? `no admitted cell declares the lane "${lane}"` : need.length ? 'no admitted cell declares a lane that fits at least half of these words' : 'the request names no lane and no need';
     return { status: 'refused', cell: null, candidates, escalate: to, why };
   }
   return { status: 'routed', cell: candidates[0].name, candidates, escalate: null, why: lane !== '' ? `declares the lane "${lane}"` : `its lane and purpose share ${Math.round(candidates[0].score * 100)}% of the request's words` };
 }
 
-export default { words, terms, cellsOf, route };
+export default { MIN_SHARE, words, terms, cellsOf, route };

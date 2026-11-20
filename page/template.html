@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estate Genome — the birth check</title>
+<meta name="description" content="A birth check for software parts: a repository, agent, contract, model or service is admitted only when it describes itself, its judge tells right from wrong, it can be shed and restored exactly, and it refuses work outside its lane.">
+<style>
+:root{--bg:#f7f6f2;--panel:#ffffff;--ink:#1d1f23;--muted:#5d636d;--line:#dcd9d0;--accent:#1f6f5c;--accent-ink:#ffffff;--ok:#1d7a46;--ok-bg:#e3f3e9;--no:#a33a2c;--no-bg:#f8e5e1;--warn:#8a5a00;--code:#f0eee8;--chip:#ecebe5;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131518;--panel:#1b1e22;--ink:#e8e6e1;--muted:#a3a8b0;--line:#2e3238;--accent:#5cc3a6;--accent-ink:#0e1a16;--ok:#6fd39b;--ok-bg:#16301f;--no:#f08a7a;--no-bg:#3a1c18;--warn:#e0b45c;--code:#23272c;--chip:#262a30;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#131518;--panel:#1b1e22;--ink:#e8e6e1;--muted:#a3a8b0;--line:#2e3238;--accent:#5cc3a6;--accent-ink:#0e1a16;--ok:#6fd39b;--ok-bg:#16301f;--no:#f08a7a;--no-bg:#3a1c18;--warn:#e0b45c;--code:#23272c;--chip:#262a30;color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0) 16px env(safe-area-inset-bottom,0)}
+main{max-width:980px;margin:0 auto;padding-block:8px 64px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:0 -16px;padding:8px 16px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav a{color:var(--ink);text-decoration:none;font-size:14px;padding:4px 8px;border-radius:6px}
+nav a:hover{background:var(--chip)}
+nav .brand{font-weight:700;margin-right:6px}
+nav button{margin-left:auto}
+h1{font-size:clamp(26px,5vw,40px);line-height:1.15;margin:28px 0 12px}
+h2{font-size:clamp(21px,3.4vw,27px);margin:48px 0 10px;scroll-margin-top:64px}
+h3{font-size:18px;margin:22px 0 8px}
+p{margin:0 0 12px}
+a{color:var(--accent)}
+.lead{font-size:18px;max-width:780px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chip{background:var(--chip);border-radius:999px;padding:4px 12px;font-size:14px}
+.chip b{font-variant-numeric:tabular-nums}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.grid{display:grid;gap:12px}
+.two{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.four{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.trait h3{margin-top:0}
+.trait .n{display:inline-block;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);text-align:center;font-weight:700;line-height:26px;margin-right:6px}
+ol.steps{padding-left:22px}
+ol.steps li{margin:0 0 10px}
+code,pre,textarea{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+code{background:var(--code);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+pre{background:var(--code);padding:12px;border-radius:8px;overflow-x:auto;margin:8px 0;white-space:pre}
+textarea{width:100%;min-height:220px;background:var(--code);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px}
+input[type=number],input[type=text],select{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font:inherit;max-width:100%}
+input[type=text]{width:100%}
+button{font:inherit;font-size:14px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:7px 12px;cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+button[aria-pressed="true"]{outline:2px solid var(--accent);outline-offset:1px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.verdict{border-radius:8px;padding:10px 12px;margin:10px 0;font-weight:600}
+.verdict.ok{background:var(--ok-bg);color:var(--ok)}
+.verdict.no{background:var(--no-bg);color:var(--no)}
+ul.reasons{margin:6px 0 0;padding-left:20px;font-weight:400}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.yes{color:var(--ok);font-weight:600}.noo{color:var(--no);font-weight:600}
+.hook{border-left:3px solid var(--line);padding:4px 0 4px 12px;margin:10px 0}
+.hook.ok{border-color:var(--ok)}.hook.no{border-color:var(--no)}
+.diagram{max-width:560px;margin:8px auto}
+.diagram svg{width:100%;height:auto;display:block}
+.diagram text{fill:var(--ink);font:13px system-ui,sans-serif}
+.diagram .box{fill:var(--panel);stroke:var(--line);stroke-width:1.5}
+.diagram .hot{stroke:var(--accent);stroke-width:2}
+.diagram .arrow{stroke:var(--muted);stroke-width:1.5;fill:none;marker-end:url(#ah)}
+.diagram .lbl{fill:var(--muted);font-size:12px}
+.diagram .okt{fill:var(--ok);font-weight:600}.diagram .not{fill:var(--no);font-weight:600}
+.callout{border-left:4px solid var(--warn);padding:8px 12px;background:var(--panel);border-radius:0 8px 8px 0}
+footer{margin-top:56px;border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:14px}
+@media (max-width:560px){body{font-size:15px}.lead{font-size:16px}nav a{font-size:13px;padding:3px 6px}}
+</style>
+</head>
+<body>
+<nav aria-label="Sections">
+  <a class="brand" href="#top">Estate Genome</a>
+  <a href="#start">Start here</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#census">Census</a>
+  <a href="#blueprint">Blueprint</a><a href="#business">For your business</a><a href="#paper">White paper</a><a href="#limits">Limits</a>
+  <button class="ghost" id="theme" type="button" aria-label="Switch light or dark">Theme</button>
+</nav>
+<main id="top">
+
+<p class="muted small" style="margin-top:18px">Estate Genome · the birth check</p>
+<h1>Every part is born knowing what it is, how to prove it, how to be removed, and where to stop.</h1>
+<p class="lead">Estate Genome is a check that every piece of software must pass before it is trusted: a code repository, an AI agent,
+a contract, a model or a service. It is admitted as a <b>cell</b> only when four things hold, and the check proves them by running
+the part's own code: it <b>describes itself</b>; its <b>judge tells right from wrong</b>; it <b>reports its health and can be removed
+and put back exactly</b>; and it <b>refuses work outside its lane</b>, naming who that work goes to. A part that fails any one is not
+admitted, and the check says exactly why.</p>
+<div class="chips" aria-live="polite">
+  <span class="chip"><b data-bind="census.admitted">…</b> admitted cells in <b data-bind="census.live">…</b> live public repositories</span>
+  <span class="chip">mutation gate <b data-bind="gates.killed">…</b>/<b data-bind="gates.total">…</b> clean</span>
+  <span class="chip">census checked <b data-bind="census.day">…</b>, every day on GitHub's servers</span>
+  <span class="chip">MIT licence · runs on your own machines</span>
+</div>
+
+<div class="grid four" aria-label="The four instructions">
+  <div class="card trait"><h3><span class="n">1</span>Describe</h3><p class="small">It ships a <code>seed.json</code>: what it is, what it takes, what it refuses, how to check it, where it came from. Any person or AI agent can find it and know how to use it without asking anyone.</p></div>
+  <div class="card trait"><h3><span class="n">2</span>Verify</h3><p class="small">It names its judge, the check that makes its output right. The birth check gives the judge a known-good case and a known-bad case. A judge that calls the bad case "verified" fails.</p></div>
+  <div class="card trait"><h3><span class="n">3</span>Prune</h3><p class="small">It reports its health, and it can be retired reversibly. The birth check retires a copy of it, then restores it, and the result must match the original byte for byte.</p></div>
+  <div class="card trait"><h3><span class="n">4</span>Boundary</h3><p class="small">It declares its lane. The birth check hands it one input inside the lane, which it must accept, and one outside, which it must refuse, naming who to escalate to.</p></div>
+</div>
+
+<h2 id="start">Start here</h2>
+<ol class="steps">
+  <li><b>Check a manifest in this tab.</b> In <a href="#try">Try it</a>, pick an example or paste your own <code>seed.json</code>. The
+  page runs the same check code the command line runs, and lists what is missing.</li>
+  <li><b>See the four traits proved on real runs.</b> Further down, open DocDec, the honest example or the bluffing example. You will
+  see each hook's actual output from a real run, judged again in this tab.</li>
+  <li><b>Run the full birth check on any folder.</b> You need <a href="https://nodejs.org/">Node.js</a> 20 or newer.
+<pre>git clone https://github.com/sjgant80-hub/estate-genome
+node estate-genome/bin/genome-check.mjs path/to/your/part</pre>
+  It prints one line per trait and exits 0 only for a cell.</li>
+  <li><b>Give your own repository the genome.</b> <code>grow</code> plants <code>seed.json</code>, the <code>genome/</code> hooks
+  and the CI workflow, and never overwrites anything:
+<pre>node estate-genome/bin/grow.mjs path/to/your/repo --name my-part --purpose "What it does, in a sentence." \
+  --lane my-lane --accepts "what it takes" --refuses "what it turns away" --in "input" --out "output" \
+  --judge-what "what makes an output right" --escalate my-team --repo my-org/my-repo --by "My team"</pre>
+  A freshly grown part is honestly <i>not</i> admitted. It names the three things only you can write: the judge, the lane check,
+  and a good and a bad case. Write them in <code>genome/cell.mjs</code> and <code>seed.json</code>, and it becomes a cell.</li>
+  <li><b>Make the check run in CI.</b> The planted workflow runs it on every push:
+<pre>- uses: sjgant80-hub/estate-genome@v1</pre></li>
+  <li><b>Route work by the genome.</b> In <a href="#conductor">the conductor</a> box, type what you need. Only admitted cells can
+  receive work, and a request no cell's lane fits is refused and escalated.</li>
+</ol>
+
+<h2 id="try">Try it: check a manifest</h2>
+<p>This checks trait 1, the manifest, entirely in your browser. Traits 2 to 4 need the part's own code to run. That happens in
+the command-line check and in CI, and the recorded runs are just below.</p>
+<div class="card">
+  <div class="row" role="group" aria-label="Examples">
+    <button type="button" class="ghost" data-preset="honest">An honest cell</button>
+    <button type="button" class="ghost" data-preset="bluff">A bluffing judge</button>
+    <button type="button" class="ghost" data-preset="fresh">Freshly grown</button>
+    <button type="button" class="ghost" data-preset="broken">Broken JSON</button>
+  </div>
+  <label for="seedIn" class="small muted">seed.json</label>
+  <textarea id="seedIn" spellcheck="false" aria-describedby="seedOut"></textarea>
+  <div class="row"><button type="button" id="checkSeed">Check this manifest</button></div>
+  <div id="seedOut" aria-live="polite"></div>
+  <p class="small muted" id="seedNote"></p>
+</div>
+
+<h3>The four traits, proved on real runs</h3>
+<p>Each of these is the full birth check run on the part's own hooks. DocDec's was run on a fresh copy from GitHub. Below each hook
+is its real output. At the end, this tab re-judges the recorded outputs with the same kernel and checks it reaches the same verdict.</p>
+<div class="row" role="group" aria-label="Recorded birth checks">
+  <button type="button" class="ghost" data-trace="birth-docdec.json" aria-pressed="true">DocDec</button>
+  <button type="button" class="ghost" data-trace="birth-sum-checker.json" aria-pressed="false">The honest example</button>
+  <button type="button" class="ghost" data-trace="birth-bluffing-judge.json" aria-pressed="false">The bluffing example</button>
+</div>
+<div class="card" id="traceOut" aria-live="polite">loading the recorded run…</div>
+
+<h3 id="conductor">The conductor: route work by the genome</h3>
+<p>Kar's conductor reads the genome index, the manifests of every admitted cell, and picks the cell whose lane fits. A part
+that has not passed its birth check is invisible to it. A cell must fit at least half of the request's words to receive it; a
+weaker fit is refused and escalated, not guessed. Type what you need:</p>
+<div class="card">
+  <label for="need" class="small muted">What do you need?</label>
+  <input type="text" id="need" value="answer a question from our documents">
+  <div class="row"><button type="button" id="routeBtn">Route it</button>
+    <button type="button" class="ghost" data-need="check a part's genome before we trust it">a part to check</button>
+    <button type="button" class="ghost" data-need="book me a flight to Lisbon">something no cell does</button></div>
+  <div id="routeOut" aria-live="polite"></div>
+  <p class="small muted">This tab ranks cells by what their manifests say. Before handing anything over, the command-line
+  conductor (<code>bin/route.mjs</code>) also asks the chosen cell's own lane check, on a fresh copy of that cell. Two real runs:</p>
+  <div id="routeTraces"></div>
+</div>
+
+<h2 id="how">How it works</h2>
+<p>The birth check reads the part's <code>seed.json</code>, then runs the part's own hooks, each as a command with a time limit:
+the judge twice, the lane check twice, the health report once, and the retire-and-restore on a scratch copy. It hands what the
+hooks printed to a small kernel that judges each trait. This diagram is DocDec's real run, from the trace above.</p>
+<div class="diagram" role="img" aria-labelledby="dgT">
+<svg viewBox="0 0 360 640" xmlns="http://www.w3.org/2000/svg">
+<title id="dgT">The birth check: seed.json, then four hook runs, then the kernel, then a verdict</title>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" style="fill:var(--muted)"/></marker></defs>
+<rect class="box hot" x="70" y="8" width="220" height="52" rx="8"/><text x="180" y="30" text-anchor="middle">seed.json</text><text class="lbl" x="180" y="48" text-anchor="middle" id="dgName">…</text>
+<path class="arrow" d="M180 60 V84"/>
+<rect class="box" x="40" y="86" width="280" height="44" rx="8"/><text x="180" y="105" text-anchor="middle">the runner: each hook a command,</text><text x="180" y="122" text-anchor="middle">bounded, its process tree killed on time-out</text>
+<path class="arrow" d="M180 130 V152"/>
+<rect class="box" x="8" y="154" width="168" height="96" rx="8"/><text x="92" y="174" text-anchor="middle">2 · the judge</text><text class="lbl" x="92" y="196" text-anchor="middle">good case →</text><text x="92" y="214" text-anchor="middle" id="dgGood">…</text><text class="lbl" x="92" y="232" text-anchor="middle">bad case → <tspan id="dgBad">…</tspan></text>
+<rect class="box" x="184" y="154" width="168" height="96" rx="8"/><text x="268" y="174" text-anchor="middle">4 · the lane check</text><text class="lbl" x="268" y="196" text-anchor="middle">in lane → <tspan id="dgIn">…</tspan></text><text class="lbl" x="268" y="214" text-anchor="middle">out of lane →</text><text x="268" y="232" text-anchor="middle" id="dgOut">…</text>
+<rect class="box" x="8" y="258" width="168" height="96" rx="8"/><text x="92" y="278" text-anchor="middle">3 · health</text><text class="lbl" x="92" y="300" text-anchor="middle">passing →</text><text x="92" y="318" text-anchor="middle" id="dgPass">…</text><text class="lbl" x="92" y="336" text-anchor="middle">unmeasured → null</text>
+<rect class="box" x="184" y="258" width="168" height="96" rx="8"/><text x="268" y="278" text-anchor="middle">3 · retire, on a copy</text><text class="lbl" x="268" y="300" text-anchor="middle">applied: <tspan id="dgApplied">…</tspan></text><text class="lbl" x="268" y="318" text-anchor="middle">restored: <tspan id="dgRestored">…</tspan></text><text class="lbl" x="268" y="336" text-anchor="middle">the real part never touched</text>
+<path class="arrow" d="M180 356 V380"/>
+<rect class="box hot" x="40" y="382" width="280" height="62" rx="8"/><text x="180" y="404" text-anchor="middle">the kernel judges each trait</text><text class="lbl" x="180" y="424" text-anchor="middle">1 describe · 2 verify · 3 prune · 4 boundary</text><text class="lbl" x="180" y="438" text-anchor="middle">every failure named, in words</text>
+<path class="arrow" d="M120 444 L80 476"/><path class="arrow" d="M240 444 L280 476"/>
+<rect class="box" x="8" y="478" width="168" height="74" rx="8"/><text class="okt" x="92" y="500" text-anchor="middle">all four: a cell</text><text class="lbl" x="92" y="520" text-anchor="middle">CI green · in the genome</text><text class="lbl" x="92" y="536" text-anchor="middle">index · can receive work</text>
+<rect class="box" x="184" y="478" width="168" height="74" rx="8"/><text class="not" x="268" y="500" text-anchor="middle">any red: a part</text><text class="lbl" x="268" y="520" text-anchor="middle">CI red · the reasons say</text><text class="lbl" x="268" y="536" text-anchor="middle">what to write · no work</text>
+<text x="180" y="582" text-anchor="middle" id="dgVerdict">…</text>
+<text class="lbl" x="180" y="604" text-anchor="middle">the census runs this on a fresh copy</text><text class="lbl" x="180" y="620" text-anchor="middle">of every public repository that declares a genome, daily</text>
+</svg>
+</div>
+<ol class="steps">
+  <li><b>Describe.</b> The kernel reads the manifest and makes <span data-bind="describe.count">…</span> checks that it is
+  complete and well-formed: the genome version, a name, a kind, a purpose, the lane and what it takes and refuses, the input and
+  output, the judge, a good and a bad case that differ, two lane samples that differ, who to escalate to, the hook commands, and
+  the repository, maker and date it came from.</li>
+  <li><b>Verify.</b> The judge runs on the good case and must answer <code>verified</code>, exiting cleanly. It runs on the bad
+  case and must not answer <code>verified</code>. Every answer is one of three words: verified, unverified or refused. A judge
+  that cannot tell the two apart is a rubber stamp, and the bluffing example shows one being caught.</li>
+  <li><b>Prune.</b> The health hook must report whether the part's own judge still passes (measured, true or false), and what
+  it knows about its use (true, false, or <code>null</code> for not measured, said honestly). Then the part is copied to a scratch
+  folder. Its retire command runs there and must change it; its restore command must bring back a byte-identical copy.</li>
+  <li><b>Boundary.</b> The lane check runs on the in-lane sample, which it must accept. It then runs on the out-of-lane sample,
+  which it must refuse, escalating to exactly the party the manifest names.</li>
+  <li><b>Verdict.</b> All four hold: a cell. In CI that is a green check; the daily census lists it; the conductor can route to
+  it. Anything else is a part, with the failures named in words a person can act on.</li>
+</ol>
+
+<h2 id="census">The census: how much of this estate is cells</h2>
+<p>Every day, on GitHub's own servers, the census reads every public repository in this estate. For each one that declares a
+genome it takes a fresh copy and runs the full birth check. It reads only GitHub's public interface, so anyone can run it and
+get the same figures.</p>
+<div class="card tbl"><table aria-label="Census">
+  <tbody>
+    <tr><td>Public repositories read</td><td class="num" data-bind="census.scanned">…</td></tr>
+    <tr><td>Archived (not counted)</td><td class="num" data-bind="census.archived">…</td></tr>
+    <tr><td>Live</td><td class="num" data-bind="census.live">…</td></tr>
+    <tr><td>Declare a genome (ship a seed.json)</td><td class="num" data-bind="census.declared">…</td></tr>
+    <tr><td><b>Admitted as cells</b> (all four traits, on a fresh copy)</td><td class="num"><b data-bind="census.admitted">…</b></td></tr>
+    <tr><td>Declared but refused</td><td class="num" data-bind="census.notAdmitted">…</td></tr>
+    <tr><td>No genome yet</td><td class="num" data-bind="census.genomeLess">…</td></tr>
+  </tbody>
+</table></div>
+<div class="card tbl"><table aria-label="Cells"><thead><tr><th>Cell</th><th>Lane</th><th>Birth check</th></tr></thead><tbody id="cellRows"></tbody></table></div>
+<p class="small muted">Read <span data-bind="census.when">…</span>. Machine-readable: <a href="data/census.json">census.json</a> and
+the <a href="data/genome-index.json">genome index</a>, the file any agent or conductor routes by. One more cell lives in a private
+repository and does not appear here: private repositories are not part of the public census.</p>
+<p class="callout">Day one is honest: almost nothing here has a genome yet. Upgrading old repositories in one rewrite would bake in
+mistakes, so it is a job for the estate's metabolism. It flags every repository with no genome. Ones that are in use get upgraded.
+Ones measured dead get retired, reversibly, after a person signs off. New parts are grown with the genome from the start.</p>
+
+<h2 id="blueprint">Blueprint: how it is built, part by part</h2>
+<p>Each part is a small module. Every one with logic in it is mutation-tested: a tool rewrites the code one operator at a time
+(<code>&lt;</code> to <code>&lt;=</code>, <code>&amp;&amp;</code> to <code>||</code>, and so on), and the tests must catch every
+change. Nothing here is exempted.</p>
+<div class="card tbl"><table id="bpTbl"><thead><tr><th>Part</th><th>File</th><th>What it does</th><th class="num">Mutation gate</th></tr></thead><tbody></tbody></table></div>
+<p class="small muted">Also: <code>action.yml</code> (the birth check as a GitHub Action, used by any repository), <code>bin/genome-check.mjs</code>
+and <code>bin/grow.mjs</code> (the commands), <code>scripts/census.mjs</code> and <code>scripts/traces.mjs</code> (the census and
+the recorded runs), and CI: <code>gate.yml</code> runs every test, the mutation gate on every file above, estate-genome's own birth
+check through its own Action, and both worked examples. The honest one must be admitted and the bluffer refused. Source:
+<a href="https://github.com/sjgant80-hub/estate-genome">github.com/sjgant80-hub/estate-genome</a>.</p>
+
+<h2 id="business">For your business</h2>
+<p class="lead">Software estates and AI agents now grow faster than anyone can track. The usual result: services nobody can
+explain, agents trusted because they sound confident, and old code nobody dares delete. The genome makes every part carry its
+own answers, and makes CI refuse the ones that cannot back them up.</p>
+<div class="grid two">
+  <div class="card"><h3>Chief executive</h3><p>You know what you own. Every part says what it does and what it will not do, and
+  only parts that prove it can receive work. An AI agent with no judge, or one that will not stay in its lane, never gets the job.</p></div>
+  <div class="card"><h3>Finance</h3><p>Parts nobody can describe cost people's time every year: working out what they are,
+  whether anything uses them, whether they are safe to remove. The genome turns that hunt into reading a file. Retiring is reversible,
+  so dead parts are shed instead of carried. The calculator below uses your numbers.</p></div>
+  <div class="card"><h3>Operations</h3><p>Every part names who its out-of-lane work escalates to, so a request no part should take
+  goes to a named owner instead of being half-done. Every red birth check names exactly what is missing.</p></div>
+  <div class="card"><h3>Technology</h3><p>One file and one CI step per repository. The hooks are commands, so any language or tool
+  fits: Node, Python, a contract test suite, a model evaluation. It is MIT-licensed, has no dependencies and no service to run,
+  and the Action works in private repositories too.</p></div>
+  <div class="card"><h3>Security</h3><p>Composition gets a bounded blast radius. A part must refuse input outside its lane and
+  must have a judge that is not a rubber stamp, so adding one cannot quietly poison what calls it. Retiring is tested to be
+  exact before anyone relies on it.</p></div>
+  <div class="card"><h3>The teams</h3><p><code>grow</code> plants everything and names the three answers only the team can write.
+  After that, CI keeps the part honest on every push. There is no form to fill in, and no catalogue to keep in step by hand.</p></div>
+</div>
+
+<h3>The cost of parts nobody can describe</h3>
+<div class="card">
+  <div class="grid two">
+    <label>Repositories and services you run<br><input type="number" id="cParts" min="0" step="1"></label>
+    <label>Share with no measured health signal (%)<br><input type="number" id="cNo" min="0" max="100" step="0.1"></label>
+    <label>Share measurably dead (%)<br><input type="number" id="cDead" min="0" max="100" step="0.1"></label>
+    <label>Hours a year spent working out what each undescribed part is<br><input type="number" id="cHours" min="0" step="0.5"></label>
+    <label>Hourly cost of that time (£)<br><input type="number" id="cRate" min="0" step="0.01"></label>
+  </div>
+  <div id="costOut" aria-live="polite"></div>
+  <p class="small muted" id="costNote"></p>
+</div>
+
+<h3>Security, data protection and compliance, answered straight</h3>
+<div class="card tbl"><table>
+<thead><tr><th>Question</th><th>Answer</th></tr></thead><tbody>
+<tr><td>Does the birth check run our code?</td><td>Yes. It runs the part's own hooks, the way CI runs its tests. Run it where you would run that part's tests.</td></tr>
+<tr><td>Can a hook hang, or leave processes behind?</td><td>Each hook has a time limit (60 seconds by default). It runs under a supervisor that kills the hook's whole process tree when the limit is hit. A test proves the tree is gone, on Linux and Windows.</td></tr>
+<tr><td>Does retiring touch the real part?</td><td>No. Retire and restore are tried on a scratch copy in the system's temporary folder, and the check only ever deletes folders it made itself.</td></tr>
+<tr><td>What leaves our machines?</td><td>Nothing, for the birth check and <code>grow</code>. The census and the conductor read GitHub (the public interface in the daily census). There is no telemetry.</td></tr>
+<tr><td>Can a part fake a pass?</td><td>It can write anything in its manifest, but the check runs its judge on its own bad case. A judge that says "verified" to everything fails, as the bluffing example shows. A weak judge that separates its one bad case from its one good case can still pass. The check proves the judge is not a rubber stamp, not that it is complete.</td></tr>
+<tr><td>Personal data?</td><td>The genome holds descriptions of software, not personal data. The census publishes repository names and lanes for public repositories only.</td></tr>
+</tbody></table></div>
+
+<h3>Rolling it out</h3>
+<ol class="steps">
+  <li><b>One repository first.</b> Run <code>grow</code> on a part you know well, write its judge, lane check and cases, and turn on the Action.</li>
+  <li><b>New parts are born with it.</b> Put the workflow in your repository template, so every new part starts as an honest "part" that names what it still needs.</li>
+  <li><b>Count.</b> Run the census over your organisation to see how many parts are cells, declared, or genome-less.</li>
+  <li><b>Let the metabolism work.</b> Upgrade the genome-less parts that are in use, and retire the measured-dead ones, reversibly, with a person's sign-off.</li>
+  <li><b>Route by lane.</b> Send work, including your AI agents' work, only to admitted cells whose lane takes it. Escalate the rest to a named owner.</li>
+</ol>
+
+<h3>Support, ownership, exit</h3>
+<p>Supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>; start a conversation through that site.
+Support, service levels, warranty and liability are agreed per deployment, in each deployment's agreement. The software is
+MIT-licensed: no licence fee, and it keeps running without us. There is no lock-in: a genome is a JSON file and a few scripts in
+your own repository.</p>
+
+<h3>Risks, answered straight</h3>
+<div class="card tbl"><table><thead><tr><th>Risk</th><th>Answer</th></tr></thead><tbody>
+<tr><td>A judge can be weak.</td><td>True. The check proves a judge tells its own good case from its own bad case. Choose bad cases that look like the mistakes you fear, and add more checks inside the judge as you learn.</td></tr>
+<tr><td>A lane check can be loose.</td><td>True, and it is measured, not promised. DocDec's lane is a word-overlap check. On held-out questions it takes <span data-bind="lane.in">…</span> of on-topic questions and turns away <span data-bind="lane.out">…</span> of off-topic ones. The rest is caught later, by DocDec's own refusal.</td></tr>
+<tr><td>Hooks run code.</td><td>Yes, the part's own code, bounded and supervised. That is the point: a manifest alone cannot prove anything.</td></tr>
+<tr><td>Coverage is small today.</td><td>Yes: <span data-bind="census.admitted">…</span> cells of <span data-bind="census.live">…</span> live public repositories. The census shows the real number every day, and the metabolism raises it a part at a time.</td></tr>
+</tbody></table></div>
+
+<h3>The case for the board</h3>
+<ul>
+  <li><b>Trust you can check.</b> Nothing is admitted on its word. The judge, the retirement and the lane are each run on the part's own code, on every push.</li>
+  <li><b>Safe to combine.</b> Every admitted part refuses work outside its lane and names who it goes to, so adding a part cannot quietly break the ones around it.</li>
+  <li><b>Lean by design.</b> Every part can be retired and restored exactly, so dead weight is shed instead of carried.</li>
+  <li><b>Legible to AI agents.</b> The genome index tells any agent what each part does, how it is checked, and where its edge is.</li>
+</ul>
+
+<h2 id="paper">White paper: four instructions, and why only four</h2>
+<p><b>The problem.</b> This estate's own first full scan found <span data-bind="lock.scored">…</span> live repositories:
+<span data-bind="lock.noSignal">…</span> had no measured signal saying they were healthy or broken, and
+<span data-bind="lock.dead">…</span> were measured unused and broken, unverified or superseded
+(<a href="https://sjgant80-hub.github.io/estate-metabolism/">the estate metabolism</a>). Nobody built them to be unknowable. They
+were built with no way to say what they are, prove it, be removed, or stay in their lane, so finding out cost a person a hunt every time.</p>
+<p><b>The idea.</b> Give every part the same four instructions at birth, and refuse the part until it obeys them. Each instruction is
+load-bearing, and dropping one has a named failure:</p>
+<ul>
+  <li>Without <b>describe</b>, a part is invisible. Nothing can find it, route to it or combine it with anything without a person explaining it.</li>
+  <li>Without <b>verify</b>, a part can hand out wrong output as right, and everything that uses it inherits the error.</li>
+  <li>Without <b>prune</b>, the estate only grows. Nothing can be removed safely, so it all stays.</li>
+  <li>Without <b>boundary</b>, a part bluffs past its competence, and combining parts stops being safe.</li>
+</ul>
+<p><b>What is not new, and what is.</b> Describing software is old: package manifests, service catalogues such as Backstage's
+<code>catalog-info.yaml</code>, and API descriptions all do it. Health checks are old too (Kubernetes probes, for example). What the
+genome adds is that the birth check <i>runs</i> the claims. It feeds the judge a known-bad case, retires and restores a copy byte for
+byte, and probes the lane from both sides. A manifest on its own cannot pass.</p>
+<p><b>Why only four.</b> Every instruction in the genome is inherited by every part, for good. So the bar for a fifth is high: it
+would have to name a failure these four cannot catch. A small genome is what lets it fit everywhere.</p>
+<p><b>How it spreads.</b> New parts are grown from the template, so they carry all four from the first commit. Old parts are not
+rewritten in one go. The metabolism flags the genome-less ones; the ones in use are upgraded, and the dead ones are retired
+reversibly. The census counts the result every day.</p>
+
+<h2 id="limits">Limits, stated plainly</h2>
+<ul>
+  <li>It makes parts self-checking. It does not make them intelligent or aware, and it does not claim to.</li>
+  <li>A passing judge separates its own good and bad cases. It is not proof that the judge catches every wrong output.</li>
+  <li>Health values can be <code>null</code>. A part that cannot measure its own use says so, rather than guessing.</li>
+  <li>The browser check on this page covers the manifest (trait 1). The other three need the part's code, and run on the command line and in CI.</li>
+  <li>The conductor ranks by the words in each manifest. The command-line conductor then confirms with the cell's own lane check before handing over work. It does not understand requests.</li>
+  <li>The public census covers public repositories only. Today <span data-bind="census.admitted">…</span> are cells. The rest have no genome yet.</li>
+  <li>Three repositories are fitted so far: estate-genome itself, DocDec, and one private service. All three use Node.js hooks; the runner takes any command.</li>
+</ul>
+
+<footer>
+  <p>Estate Genome · built by Kar · MIT licence (holder Simon Gant) · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a> ·
+  <a href="https://github.com/sjgant80-hub/estate-genome">source</a> · <a href="data/genome-index.json">genome index</a></p>
+</footer>
+</main>
+<script type="module">
+/*KERNELS*/
+/*APP*/
+</script>
+</body>
+</html>
