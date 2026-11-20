@@ -1,0 +1,67 @@
+{
+ "checked": "2026-11-20T16:50:05.910Z",
+ "dir": "bluffing-judge",
+ "seedFound": true,
+ "line": "NOT ADMITTED: a part (3 of 4: describe yes, verify no, prune yes, boundary yes)",
+ "result": {
+  "admitted": false,
+  "cell": "part",
+  "traits": [
+   {
+    "trait": "describe",
+    "pass": true,
+    "reasons": []
+   },
+   {
+    "trait": "verify",
+    "pass": false,
+    "reasons": [
+     "the judge called the known-bad case verified"
+    ]
+   },
+   {
+    "trait": "prune",
+    "pass": true,
+    "reasons": []
+   },
+   {
+    "trait": "boundary",
+    "pass": true,
+    "reasons": []
+   }
+  ]
+ },
+ "runs": {
+  "judge": {
+   "good": {
+    "code": 0,
+    "out": "{\"status\":\"verified\"}\n"
+   },
+   "bad": {
+    "code": 0,
+    "out": "{\"status\":\"verified\"}\n"
+   }
+  },
+  "boundary": {
+   "inLane": {
+    "code": 0,
+    "out": "{\"inLane\":true}\n"
+   },
+   "outOfLane": {
+    "code": 0,
+    "out": "{\"inLane\":false,\"status\":\"refused\",\"escalate\":\"kar\"}\n"
+   }
+  },
+  "health": {
+   "code": 0,
+   "out": "{\"used\":null,\"passing\":false,\"dependedOn\":null,\"lastEarned\":null}\n"
+  },
+  "tombstone": {
+   "before": "fd608d4527e4b5ceaad1bc017fc5841d1d5b5ab348606ba0184a131ce4096d0a",
+   "applied": "f271e32018b9a4fc58a735a5dce7afeb054c09c2d0c85d70e542f17577399fb8",
+   "restored": "fd608d4527e4b5ceaad1bc017fc5841d1d5b5ab348606ba0184a131ce4096d0a",
+   "applyCode": 0,
+   "restoreCode": 0
+  }
+ }
+}

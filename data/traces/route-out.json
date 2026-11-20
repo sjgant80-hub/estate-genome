@@ -1,0 +1,18 @@
+{
+ "status": "refused",
+ "cell": null,
+ "candidates": [
+  {
+   "name": "docdecdemo",
+   "score": 1
+  }
+ ],
+ "escalate": "kar",
+ "why": "every candidate’s own lane check turned the input away",
+ "tried": [
+  {
+   "cell": "docdecdemo",
+   "inLane": false
+  }
+ ]
+}

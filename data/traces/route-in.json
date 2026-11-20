@@ -1,0 +1,19 @@
+{
+ "status": "routed",
+ "cell": "docdecdemo",
+ "candidates": [
+  {
+   "name": "docdecdemo",
+   "score": 0.8
+  }
+ ],
+ "escalate": null,
+ "why": "its lane and purpose share 80% of the request's words",
+ "confirmed": "its own lane check took the input",
+ "tried": [
+  {
+   "cell": "docdecdemo",
+   "inLane": true
+  }
+ ]
+}

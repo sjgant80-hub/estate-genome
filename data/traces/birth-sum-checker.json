@@ -1,0 +1,65 @@
+{
+ "checked": "2026-11-20T16:50:14.228Z",
+ "dir": "sum-checker",
+ "seedFound": true,
+ "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+ "result": {
+  "admitted": true,
+  "cell": "cell",
+  "traits": [
+   {
+    "trait": "describe",
+    "pass": true,
+    "reasons": []
+   },
+   {
+    "trait": "verify",
+    "pass": true,
+    "reasons": []
+   },
+   {
+    "trait": "prune",
+    "pass": true,
+    "reasons": []
+   },
+   {
+    "trait": "boundary",
+    "pass": true,
+    "reasons": []
+   }
+  ]
+ },
+ "runs": {
+  "judge": {
+   "good": {
+    "code": 0,
+    "out": "{\"status\":\"verified\"}\n"
+   },
+   "bad": {
+    "code": 1,
+    "out": "{\"status\":\"unverified\"}\n"
+   }
+  },
+  "boundary": {
+   "inLane": {
+    "code": 0,
+    "out": "{\"inLane\":true}\n"
+   },
+   "outOfLane": {
+    "code": 0,
+    "out": "{\"inLane\":false,\"status\":\"refused\",\"escalate\":\"kar\"}\n"
+   }
+  },
+  "health": {
+   "code": 0,
+   "out": "{\"used\":null,\"passing\":true,\"dependedOn\":null,\"lastEarned\":null}\n"
+  },
+  "tombstone": {
+   "before": "e29c68d278ede5f53814383f3ec8ba59a7eb8c4964837f750235a1ed53632ad7",
+   "applied": "4ffdf925c260a00df7266b4dbe2ca5cd68a21345a7b9a10b0319f7c01086ab83",
+   "restored": "e29c68d278ede5f53814383f3ec8ba59a7eb8c4964837f750235a1ed53632ad7",
+   "applyCode": 0,
+   "restoreCode": 0
+  }
+ }
+}

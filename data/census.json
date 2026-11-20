@@ -1,0 +1,42 @@
+{
+ "generated": "2026-11-20T16:48:49.805Z",
+ "scanned": 1782,
+ "archived": 135,
+ "live": 1647,
+ "declared": 2,
+ "describes": 2,
+ "admitted": 2,
+ "notAdmitted": 0,
+ "unchecked": 0,
+ "genomeLess": 1645,
+ "cells": [
+  {
+   "name": "docdecdemo",
+   "lane": "grounded-answers",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "estate-genome",
+   "lane": "birth-check",
+   "describes": true,
+   "verdict": "cell"
+  }
+ ],
+ "privateDeclared": 0,
+ "owner": "sjgant80-hub",
+ "cloned": true,
+ "scope": "public repositories",
+ "checks": [
+  {
+   "name": "docdecdemo",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": []
+  },
+  {
+   "name": "estate-genome",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": []
+  }
+ ]
+}

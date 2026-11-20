@@ -1,0 +1,47 @@
+{
+ "generated": "2026-11-20T16:48:49.805Z",
+ "owner": "sjgant80-hub",
+ "about": "Admitted cells of the estate genome: each passed its birth check on a fresh clone when this was made. Route by lane.",
+ "cells": [
+  {
+   "name": "docdecdemo",
+   "repo": "sjgant80-hub/docdecdemo",
+   "kind": "repo",
+   "purpose": "Answers questions only from your documents: finds the passage, copies the answer word for word with its offsets, and refuses what no passage supports.",
+   "lane": {
+    "id": "grounded-answers",
+    "accepts": "a question about the documents in its index",
+    "refuses": "questions its indexed documents do not cover"
+   },
+   "interface": {
+    "in": "{\"question\":\"<text>\"} to ask; an answer record {source,start,end,text} to audit",
+    "out": "an answer record with its source and character offsets, or a refusal naming the check that stopped it"
+   },
+   "judge": {
+    "what": "an answer record is right when its words are exactly the cited passage's characters at its offsets (claim C6)"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "estate-genome",
+   "repo": "sjgant80-hub/estate-genome",
+   "kind": "tool",
+   "purpose": "The birth check: admits a part as a cell only when it describes itself, proves or refuses its output, can be shed reversibly, and refuses past its lane.",
+   "lane": {
+    "id": "birth-check",
+    "accepts": "a folder holding a part (seed.json and its genome hooks) to check",
+    "refuses": "anything that is not a part to check"
+   },
+   "interface": {
+    "in": "{\"part\":\"<folder>\",\"verdict\":\"cell|part\"}",
+    "out": "a verdict per trait with reasons, and admitted or not"
+   },
+   "judge": {
+    "what": "a claimed verdict on a part is right when re-running the birth check on that part gives the same verdict"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  }
+ ]
+}
