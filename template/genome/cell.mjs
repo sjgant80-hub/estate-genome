@@ -19,3 +19,10 @@ export async function inLane(input) {
 export async function health() {
   return { used: null, dependedOn: null, lastEarned: null };
 }
+
+// act(input) → the part's real work on an in-lane input: the output its judge will check. Return nothing to refuse.
+// The guard (bin/genome-run.mjs) runs it only after inLane() took the input, and hands its output on only when judge()
+// verifies it. Optional: a part that only checks work can leave it refusing. Until you write it, this part does no work.
+export async function act(input) {
+  return undefined;
+}

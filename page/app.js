@@ -53,6 +53,12 @@ const BP = [
   ['Census', 'src/census.mjs', 'counts cells, declared and genome-less; the public view names public repositories only'],
   ['Conductor', 'src/route.mjs', 'routes by the genome index: admitted cells only; otherwise refuses and escalates'],
   ['Cost', 'src/cost.mjs', 'the calculator on this page, from sourced floors and your own numbers'],
+  ['Guard', 'src/guard.mjs', 'plans each call (lane, then act, then judge) and decides what is released; withholds the rest, with the reason'],
+  ['Guard runner', 'src/guardrun.mjs', 'runs one call through a cell’s own hooks under the supervisor; the call log; genome-run’s options'],
+  ['Act hook', 'template/genome/act.mjs', 'runs a part’s act on one request; an act that returns nothing refuses'],
+  ['Guard arithmetic', 'src/guardstats.mjs', 'counts the guard measurement against its pre-registered rules'],
+  ['Honest example', 'examples/sum-checker/genome/cell.mjs', 'adds two whole numbers and checks a claimed total'],
+  ['Drifted example', 'examples/drifted-act/genome/cell.mjs', 'the same judge and lane, with an act that is wrong above 100: the guard’s test case'],
 ];
 $('bpTbl').querySelector('tbody').innerHTML = BP.map(([part, file, what]) => {
   const g = gates && gates.files ? gates.files[file] : null;
@@ -151,6 +157,68 @@ $('routeTraces').innerHTML = [rin, rout].filter(Boolean).map((t) => {
   return `<div class="hook ${t.status === 'routed' ? 'ok' : 'no'}">need “${esc(need)}”, input <code>${esc(input)}</code><br>`
     + (t.status === 'routed' ? `→ routed to <code>${esc(t.cell)}</code>: ${esc(t.confirmed)}.` : `→ refused: ${esc(t.why)}; escalated to <code>${esc(t.escalate)}</code>.`) + '</div>';
 }).join('');
+
+// ── the guard: four real calls, decided again in this tab ──
+const [gRules, gMeasure] = await Promise.all([maybe(get('data/guard-rules.json')), maybe(get('data/guard-measure.json'))]);
+const guardTraces = {};
+const said = (run) => { if (!run) return 'did not run'; const v = GENOME.lastJson(run.out); return v ? JSON.stringify(v) : '(no JSON)'; };
+const secs = (ms) => (typeof ms === 'number' && Number.isFinite(ms) ? `${(ms / 1000).toFixed(1)} s` : '…');
+const took = (t, k) => (t.ms && typeof t.ms[k] === 'number' ? ` · ${secs(t.ms[k])}` : '');
+const handed = (d) => (d.released ? `Released: <code>${esc(JSON.stringify(d.output))}</code>`
+  : `Withheld (${esc(d.status)}): ${esc(d.reason)}. Escalated to <code>${esc(d.escalate)}</code>.`);
+function renderGuard(t) {
+  if (!t) { $('guardOut').textContent = 'This recorded call could not be loaded.'; return; }
+  const r = t.runs, d = t.decision, again = GUARD.decide(t.seed, r, t.input);
+  const same = again.status === d.status && again.released === d.released && again.reason === d.reason;
+  const step = (ok, title, body) => `<div class="hook ${ok ? 'ok' : 'no'}"><b>${title}</b><br>${body}</div>`;
+  const laneOk = !!r.lane && (GENOME.lastJson(r.lane.out) || {}).inLane === true;
+  const actOut = r.act ? (GENOME.lastJson(r.act.out) || {}) : null;
+  $('guardOut').innerHTML = `<p><b>${esc(t.cell)}</b> · ${esc(t.where)} · called ${esc(String(t.checked).slice(0, 10))}<br><span class="small muted">${esc(t.seed.purpose)}</span></p>`
+    + `<p>Request: <code>${esc(JSON.stringify(t.input))}</code></p>`
+    + step(laneOk, '1 · Lane check' + took(t, 'lane'), `<code>${esc(t.seed.boundary.run)}</code> → <code>${esc(said(r.lane))}</code>`)
+    + step(!!actOut && 'output' in actOut, '2 · Act' + took(t, 'act'), r.act ? `<code>${esc(t.seed.act.run)}</code> → <code>${esc(said(r.act))}</code>` : 'never ran: the lane check refused the request')
+    + step(d.released, '3 · Judge on the output' + took(t, 'judge'), r.judge ? `<code>${esc(t.seed.judge.run)}</code> → <code>${esc(said(r.judge))}</code>` : 'never ran')
+    + `<div class="verdict ${d.released ? 'ok' : 'no'}">${handed(d)}</div>`
+    + `<p class="small">Decided again in this tab from the recorded hook outputs, by the same guard code: <b>${same ? 'the same decision' : 'a DIFFERENT decision: ' + esc(again.reason)}</b>. The whole call took ${secs(t.ms.total)}.</p>`;
+}
+const guardButtons = document.querySelectorAll('[data-guard]');
+let guardShown = null;   // the tab last clicked: a slower fetch for an earlier click must not overwrite it
+async function showGuard(file) {
+  guardShown = file;
+  guardButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.getAttribute('data-guard') === file)));
+  if (!(file in guardTraces)) guardTraces[file] = await maybe(get(`data/traces/${file}`));
+  if (guardShown === file) renderGuard(guardTraces[file]);
+}
+guardButtons.forEach((b) => b.addEventListener('click', () => showGuard(b.getAttribute('data-guard'))));
+await showGuard('guard-withheld.json');
+const gw = guardTraces['guard-withheld.json'];
+if (gw) {
+  const v = (run) => (run ? GENOME.lastJson(run.out) || {} : {});
+  $('gdIn').textContent = JSON.stringify(gw.input);
+  const ln = v(gw.runs.lane);
+  $('gdLane').textContent = ln.inLane === true ? 'took it' : `refused → ${ln.escalate}`;
+  $('gdAct').textContent = gw.runs.act ? `made ${JSON.stringify(v(gw.runs.act).output)}` : 'never ran';
+  $('gdJudge').textContent = gw.runs.judge ? `said ${v(gw.runs.judge).status}` : 'never ran';
+  $('gdOut').textContent = gw.decision.released ? 'released' : `withheld (${gw.decision.status}) → escalated to ${gw.decision.escalate}`;
+}
+const RESULT = {
+  withhold: (x) => `${fmt(x.withheld)} of ${fmt(x.wrong)} wrong totals withheld (${x.share === null ? '—' : x.share + '%'})`,
+  release: (x) => `${fmt(x.released)} of ${fmt(x.right)} right totals released (${x.share === null ? '—' : x.share + '%'})`,
+  'lane-first': (x) => `${fmt(x.refusedAtLaneEscalatedNoAct)} of ${fmt(x.calls)} refused at the lane and escalated, with the act never run`,
+  overhead: (x) => `median guarded call ${secs(x.medianGuardedMs)} against ${secs(x.medianBareActMs)} for the act alone: ${fmt(x.ratio)} times. The guard added ${secs(x.medianOverheadMs)} a call (median of ${fmt(x.calls)} calls, each paired with a bare run of the same act).`,
+};
+$('guardRows').innerHTML = (gRules && Array.isArray(gRules.rules) ? gRules.rules : []).map((rule) => {
+  const x = gMeasure && Array.isArray(gMeasure.results) ? gMeasure.results.find((m) => m.id === rule.id) : null;
+  const res = x ? `<span class="${x.pass ? 'yes' : 'noo'}">${x.pass ? 'PASS' : 'FAIL'}</span> · ${esc(RESULT[rule.id] ? RESULT[rule.id](x) : JSON.stringify(x))}` : 'not measured yet';
+  return `<tr><td>${esc(rule.what)}</td><td>${esc(rule.pass)}</td><td>${res}</td></tr>`;
+}).join('') || '<tr><td colspan="3">The rules could not be loaded.</td></tr>';
+const none = gMeasure && gMeasure.observed && Array.isArray(gMeasure.observed.noOutput) ? gMeasure.observed.noOutput : null;
+$('guardObserved').textContent = none === null ? '' : none.length === 0 ? 'Every in-lane call made an output, right or wrong.'
+  : `Seen, and counted by no rule: ${none.length} in-lane call${none.length === 1 ? '' : 's'} made no output at all, right or wrong. ${none.map((x) => `${x.cell} on ${JSON.stringify(x.input)} took ${fmt(Math.round(x.guardedMs / 1000))} seconds in all, more than the 60-second limit any one hook is given, most likely because the laptop was overloaded; the guard refused it at the ${x.stage} step and released nothing`).join('. ')}.`;
+if (gMeasure && gMeasure.machine) {
+  const m = gMeasure.machine;
+  $('guardMachine').textContent = `Measured on ${String(gMeasure.measured).slice(0, 10)}: ${m.platform}, ${m.cpu}, ${m.threads} threads, ${m.memoryGB} GB memory, Node ${m.node}. Load: ${m.load}. Every call's input, totals and timings are in the file.`;
+} else $('guardMachine').textContent = 'The measurement has not been published yet.';
 
 // ── the cost ──
 const d = COST.defaults(lock);

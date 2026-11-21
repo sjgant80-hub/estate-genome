@@ -9,8 +9,14 @@
     "refuses": "anything that is not a part to check"
   },
   "interface": {
-    "in": "{\"part\":\"<folder>\",\"verdict\":\"cell|part\"}",
-    "out": "a verdict per trait with reasons, and admitted or not"
+    "in": "{\"part\":\"<folder>\"} to check, or {\"part\":\"<folder>\",\"verdict\":\"cell|part\"} to confirm a verdict",
+    "out": "the verdict record {\"part\",\"verdict\",\"line\"}: a verdict per trait, and admitted or not"
+  },
+  "act": {
+    "run": "node genome/act.mjs",
+    "carries": [
+      "part"
+    ]
   },
   "judge": {
     "what": "a claimed verdict on a part is right when re-running the birth check on that part gives the same verdict",

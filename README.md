@@ -12,8 +12,14 @@ all four traits hold, and the check *runs* them, on the part's own hooks:
 
 ```bash
 node bin/genome-check.mjs <folder>          # the birth check (exit 0 = a cell)
+node bin/genome-run.mjs <cell> --input '<json>' [--log calls.jsonl]   # the guard: lane, act, judge on every call (exit 0 = released)
 node bin/grow.mjs <folder> --name ... --purpose ... --lane ... --escalate ... --repo owner/name --by ...
 ```
+
+**The guard.** The birth check proves a part once. `genome-run` checks every call: the cell's lane check on the request
+(out of lane: refused and escalated, the work never starts), then its act (an optional fifth hook, `act.run` in
+`seed.json`), then its judge on the act's output. Only verified output is handed back; anything else is withheld with
+the reason. `examples/drifted-act` passes its birth check, and the guard still withholds every wrong total it makes.
 
 In CI: `uses: sjgant80-hub/estate-genome@v1` (see `template/.github/workflows/genome.yml`).
 

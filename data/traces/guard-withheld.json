@@ -1,0 +1,112 @@
+{
+ "checked": "2026-11-21T15:34:20.369Z",
+ "cell": "drifted-act",
+ "where": "examples/drifted-act",
+ "input": {
+  "sum": [
+   70,
+   45
+  ]
+ },
+ "seed": {
+  "genome": "1",
+  "name": "drifted-act",
+  "kind": "tool",
+  "purpose": "Adds two whole numbers for its judge to check. A worked example: admitted at birth, but its act has drifted, so the guard withholds every wrong total.",
+  "lane": {
+   "id": "sums",
+   "accepts": "two whole numbers to add, or a claim that they add up to a total",
+   "refuses": "anything that is not two whole numbers"
+  },
+  "interface": {
+   "in": "{\"sum\":[a,b]} to add, or {\"sum\":[a,b],\"claim\":n} to check",
+   "out": "act: the claim {\"sum\":[a,b],\"claim\":n}; judge: verified, unverified or refused"
+  },
+  "act": {
+   "run": "node genome/act.mjs",
+   "carries": [
+    "sum"
+   ]
+  },
+  "judge": {
+   "what": "a + b equals the claim, exactly",
+   "run": "node genome/judge.mjs",
+   "cases": {
+    "good": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 5
+    },
+    "bad": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 6
+    }
+   }
+  },
+  "boundary": {
+   "run": "node genome/lane.mjs",
+   "inLane": {
+    "sum": [
+     40,
+     2
+    ],
+    "claim": 42
+   },
+   "outOfLane": {
+    "question": "What is the weather in Leeds?"
+   },
+   "escalate": "kar"
+  },
+  "health": {
+   "run": "node genome/health.mjs"
+  },
+  "tombstone": {
+   "apply": "node genome/tombstone.mjs apply",
+   "restore": "node genome/tombstone.mjs restore"
+  },
+  "provenance": {
+   "repo": "sjgant80-hub/estate-genome",
+   "by": "Kar (worked example)",
+   "born": "2026-11-21"
+  }
+ },
+ "runs": {
+  "lane": {
+   "code": 0,
+   "out": "{\"inLane\":true}\n"
+  },
+  "act": {
+   "code": 0,
+   "out": "{\"output\":{\"sum\":[70,45],\"claim\":116}}\n"
+  },
+  "judge": {
+   "code": 1,
+   "out": "{\"status\":\"unverified\"}\n"
+  }
+ },
+ "decision": {
+  "status": "unverified",
+  "released": false,
+  "stage": "judge",
+  "reason": "its judge said unverified, so the output is withheld",
+  "escalate": "kar",
+  "withheld": {
+   "sum": [
+    70,
+    45
+   ],
+   "claim": 116
+  }
+ },
+ "ms": {
+  "lane": 3299,
+  "act": 2122.8,
+  "judge": 1976.3,
+  "total": 7403.6
+ }
+}

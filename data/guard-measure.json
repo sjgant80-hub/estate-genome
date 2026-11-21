@@ -1,0 +1,2115 @@
+{
+ "measured": "2026-11-21T16:00:11.705Z",
+ "rules": "data/guard-rules.json",
+ "registered": "2026-11-21",
+ "machine": {
+  "platform": "Windows_NT 10.0.26200",
+  "cpu": "12th Gen Intel(R) Core(TM) i7-1255U",
+  "threads": 12,
+  "memoryGB": 15.7,
+  "freeGB": 2.6,
+  "node": "v25.7.0",
+  "load": "a shared laptop: eight other build agents were running on it during this measurement, so times are high and noisy"
+ },
+ "pass": true,
+ "results": [
+  {
+   "id": "withhold",
+   "wrong": 36,
+   "withheld": 36,
+   "share": 100,
+   "pass": true
+  },
+  {
+   "id": "release",
+   "right": 83,
+   "released": 83,
+   "share": 100,
+   "pass": true
+  },
+  {
+   "id": "lane-first",
+   "calls": 12,
+   "refusedAtLaneEscalatedNoAct": 12,
+   "pass": true
+  },
+  {
+   "id": "overhead",
+   "calls": 60,
+   "medianGuardedMs": 6207.8,
+   "medianBareActMs": 1948.6,
+   "ratio": 3.2,
+   "medianOverheadMs": 4055.4,
+   "pass": true
+  }
+ ],
+ "cells": {
+  "sum-checker": {
+   "dir": "examples/sum-checker",
+   "calls": [
+    {
+     "input": {
+      "sum": [
+       69,
+       35
+      ]
+     },
+     "truth": 104,
+     "claim": 104,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7365.7,
+     "bareMs": 1619.7
+    },
+    {
+     "input": {
+      "sum": [
+       53,
+       98
+      ]
+     },
+     "truth": 151,
+     "claim": 151,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6135.5,
+     "bareMs": 2361.7
+    },
+    {
+     "input": {
+      "sum": [
+       59,
+       23
+      ]
+     },
+     "truth": 82,
+     "claim": 82,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 15759,
+     "bareMs": 1955.3
+    },
+    {
+     "input": {
+      "sum": [
+       79,
+       36
+      ]
+     },
+     "truth": 115,
+     "claim": 115,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5536.6,
+     "bareMs": 1688.4
+    },
+    {
+     "input": {
+      "sum": [
+       91,
+       49
+      ]
+     },
+     "truth": 140,
+     "claim": 140,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5521.4,
+     "bareMs": 1742.7
+    },
+    {
+     "input": {
+      "sum": [
+       32,
+       17
+      ]
+     },
+     "truth": 49,
+     "claim": 49,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5076.2,
+     "bareMs": 1607.3
+    },
+    {
+     "input": {
+      "sum": [
+       97,
+       66
+      ]
+     },
+     "truth": 163,
+     "claim": 163,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 12808.6,
+     "bareMs": 2325.6
+    },
+    {
+     "input": {
+      "sum": [
+       24,
+       82
+      ]
+     },
+     "truth": 106,
+     "claim": 106,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5328.5,
+     "bareMs": 2049.5
+    },
+    {
+     "input": {
+      "sum": [
+       69,
+       53
+      ]
+     },
+     "truth": 122,
+     "claim": 122,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5336.9,
+     "bareMs": 1536.5
+    },
+    {
+     "input": {
+      "sum": [
+       26,
+       50
+      ]
+     },
+     "truth": 76,
+     "claim": 76,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5542.3,
+     "bareMs": 3852.1
+    },
+    {
+     "input": {
+      "sum": [
+       62,
+       93
+      ]
+     },
+     "truth": 155,
+     "claim": 155,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5228.1,
+     "bareMs": 1642.6
+    },
+    {
+     "input": {
+      "sum": [
+       37,
+       84
+      ]
+     },
+     "truth": 121,
+     "claim": 121,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7036,
+     "bareMs": 1713.8
+    },
+    {
+     "input": {
+      "sum": [
+       80,
+       33
+      ]
+     },
+     "truth": 113,
+     "claim": 113,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7480,
+     "bareMs": 2339.5
+    },
+    {
+     "input": {
+      "sum": [
+       6,
+       42
+      ]
+     },
+     "truth": 48,
+     "claim": 48,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 9163.3,
+     "bareMs": 2769.9
+    },
+    {
+     "input": {
+      "sum": [
+       53,
+       17
+      ]
+     },
+     "truth": 70,
+     "claim": 70,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6808.1,
+     "bareMs": 1873.1
+    },
+    {
+     "input": {
+      "sum": [
+       16,
+       72
+      ]
+     },
+     "truth": 88,
+     "claim": 88,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7813.7,
+     "bareMs": 2585.2
+    },
+    {
+     "input": {
+      "sum": [
+       99,
+       85
+      ]
+     },
+     "truth": 184,
+     "claim": 184,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6825.2,
+     "bareMs": 1941.8
+    },
+    {
+     "input": {
+      "sum": [
+       67,
+       53
+      ]
+     },
+     "truth": 120,
+     "claim": 120,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7257.5,
+     "bareMs": 2274.4
+    },
+    {
+     "input": {
+      "sum": [
+       58,
+       48
+      ]
+     },
+     "truth": 106,
+     "claim": 106,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 9319,
+     "bareMs": 5353.4
+    },
+    {
+     "input": {
+      "sum": [
+       96,
+       18
+      ]
+     },
+     "truth": 114,
+     "claim": 114,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7592.3,
+     "bareMs": 2938.5
+    },
+    {
+     "input": {
+      "sum": [
+       49,
+       20
+      ]
+     },
+     "truth": 69,
+     "claim": 69,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6396.6,
+     "bareMs": 2460.8
+    },
+    {
+     "input": {
+      "sum": [
+       30,
+       66
+      ]
+     },
+     "truth": 96,
+     "claim": 96,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 8112,
+     "bareMs": 2147.7
+    },
+    {
+     "input": {
+      "sum": [
+       37,
+       69
+      ]
+     },
+     "truth": 106,
+     "claim": 106,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6833.2,
+     "bareMs": 2470.9
+    },
+    {
+     "input": {
+      "sum": [
+       21,
+       20
+      ]
+     },
+     "truth": 41,
+     "claim": 41,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5559,
+     "bareMs": 1709
+    },
+    {
+     "input": {
+      "sum": [
+       54,
+       90
+      ]
+     },
+     "truth": 144,
+     "claim": 144,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6475.1,
+     "bareMs": 4703.2
+    },
+    {
+     "input": {
+      "sum": [
+       86,
+       45
+      ]
+     },
+     "truth": 131,
+     "claim": 131,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 30682.3,
+     "bareMs": 2099.5
+    },
+    {
+     "input": {
+      "sum": [
+       6,
+       15
+      ]
+     },
+     "truth": 21,
+     "claim": 21,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7974.8,
+     "bareMs": 3239.1
+    },
+    {
+     "input": {
+      "sum": [
+       56,
+       80
+      ]
+     },
+     "truth": 136,
+     "claim": 136,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5859.8,
+     "bareMs": 1727
+    },
+    {
+     "input": {
+      "sum": [
+       16,
+       24
+      ]
+     },
+     "truth": 40,
+     "claim": 40,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 8675.7,
+     "bareMs": 1681
+    },
+    {
+     "input": {
+      "sum": [
+       54,
+       51
+      ]
+     },
+     "truth": 105,
+     "claim": 105,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 12774.8,
+     "bareMs": 3029
+    },
+    {
+     "input": {
+      "sum": [
+       85,
+       90
+      ]
+     },
+     "truth": 175,
+     "claim": 175,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6143.4,
+     "bareMs": 1534
+    },
+    {
+     "input": {
+      "sum": [
+       62,
+       51
+      ]
+     },
+     "truth": 113,
+     "claim": 113,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6254.3,
+     "bareMs": 2189.3
+    },
+    {
+     "input": {
+      "sum": [
+       86,
+       75
+      ]
+     },
+     "truth": 161,
+     "claim": 161,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7240,
+     "bareMs": 15187.1
+    },
+    {
+     "input": {
+      "sum": [
+       72,
+       9
+      ]
+     },
+     "truth": 81,
+     "claim": 81,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7644.4,
+     "bareMs": 2361.3
+    },
+    {
+     "input": {
+      "sum": [
+       96,
+       81
+      ]
+     },
+     "truth": 177,
+     "claim": 177,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5249,
+     "bareMs": 1536.1
+    },
+    {
+     "input": {
+      "sum": [
+       74,
+       22
+      ]
+     },
+     "truth": 96,
+     "claim": 96,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 19057.1,
+     "bareMs": 1758.9
+    },
+    {
+     "input": {
+      "sum": [
+       46,
+       2
+      ]
+     },
+     "truth": 48,
+     "claim": 48,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6946.6,
+     "bareMs": 3440.8
+    },
+    {
+     "input": {
+      "sum": [
+       69,
+       26
+      ]
+     },
+     "truth": 95,
+     "claim": 95,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5393.2,
+     "bareMs": 1677.6
+    },
+    {
+     "input": {
+      "sum": [
+       40,
+       71
+      ]
+     },
+     "truth": 111,
+     "claim": 111,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 9093.6,
+     "bareMs": 1576.5
+    },
+    {
+     "input": {
+      "sum": [
+       92,
+       84
+      ]
+     },
+     "truth": 176,
+     "claim": 176,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 7962.4,
+     "bareMs": 3058.1
+    },
+    {
+     "input": {
+      "sum": [
+       39,
+       53
+      ]
+     },
+     "truth": 92,
+     "claim": 92,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5062.3,
+     "bareMs": 3080.3
+    },
+    {
+     "input": {
+      "sum": [
+       24,
+       23
+      ]
+     },
+     "truth": 47,
+     "claim": 47,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5040.5,
+     "bareMs": 1505.5
+    },
+    {
+     "input": {
+      "sum": [
+       92,
+       23
+      ]
+     },
+     "truth": 115,
+     "claim": 115,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6024.7,
+     "bareMs": 1723.7
+    },
+    {
+     "input": {
+      "sum": [
+       27,
+       10
+      ]
+     },
+     "truth": 37,
+     "claim": 37,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5925,
+     "bareMs": 1879.3
+    },
+    {
+     "input": {
+      "sum": [
+       76,
+       81
+      ]
+     },
+     "truth": 157,
+     "claim": 157,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6161.2,
+     "bareMs": 2151.8
+    },
+    {
+     "input": {
+      "sum": [
+       75,
+       41
+      ]
+     },
+     "truth": 116,
+     "claim": 116,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 4974.4,
+     "bareMs": 1810.3
+    },
+    {
+     "input": {
+      "sum": [
+       30,
+       51
+      ]
+     },
+     "truth": 81,
+     "claim": 81,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5732,
+     "bareMs": 1760.5
+    },
+    {
+     "input": {
+      "sum": [
+       75,
+       44
+      ]
+     },
+     "truth": 119,
+     "claim": 119,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5578.8,
+     "bareMs": 1692
+    },
+    {
+     "input": {
+      "sum": [
+       50,
+       84
+      ]
+     },
+     "truth": 134,
+     "claim": 134,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6851.4,
+     "bareMs": 1459.8
+    },
+    {
+     "input": {
+      "sum": [
+       5,
+       10
+      ]
+     },
+     "truth": 15,
+     "claim": 15,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 12118.8,
+     "bareMs": 2111.8
+    },
+    {
+     "input": {
+      "sum": [
+       65,
+       55
+      ]
+     },
+     "truth": 120,
+     "claim": 120,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5470,
+     "bareMs": 1912.6
+    },
+    {
+     "input": {
+      "sum": [
+       74,
+       99
+      ]
+     },
+     "truth": 173,
+     "claim": 173,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 4686.4,
+     "bareMs": 1705.9
+    },
+    {
+     "input": {
+      "sum": [
+       3,
+       50
+      ]
+     },
+     "truth": 53,
+     "claim": 53,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5951.1,
+     "bareMs": 2045.5
+    },
+    {
+     "input": {
+      "sum": [
+       29,
+       38
+      ]
+     },
+     "truth": 67,
+     "claim": 67,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 4761.8,
+     "bareMs": 1640.1
+    },
+    {
+     "input": {
+      "sum": [
+       73,
+       18
+      ]
+     },
+     "truth": 91,
+     "claim": 91,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6024.5,
+     "bareMs": 1445.6
+    },
+    {
+     "input": {
+      "sum": [
+       11,
+       96
+      ]
+     },
+     "truth": 107,
+     "claim": 107,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5865.1,
+     "bareMs": 2041
+    },
+    {
+     "input": {
+      "sum": [
+       45,
+       54
+      ]
+     },
+     "truth": 99,
+     "claim": 99,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6145.4,
+     "bareMs": 2265.1
+    },
+    {
+     "input": {
+      "sum": [
+       87,
+       83
+      ]
+     },
+     "truth": 170,
+     "claim": 170,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6297.7,
+     "bareMs": 2448.9
+    },
+    {
+     "input": {
+      "sum": [
+       34,
+       90
+      ]
+     },
+     "truth": 124,
+     "claim": 124,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6126.3,
+     "bareMs": 1936.7
+    },
+    {
+     "input": {
+      "sum": [
+       72,
+       97
+      ]
+     },
+     "truth": 169,
+     "claim": 169,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6068.4,
+     "bareMs": 1837.6
+    }
+   ],
+   "lanes": [
+    {
+     "input": {
+      "question": "What is the weather in Leeds?"
+     },
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": null,
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": "add 2 and 3",
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": {
+      "sum": [
+       7
+      ]
+     },
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": {
+      "sum": [
+       1.5,
+       2
+      ]
+     },
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": {
+      "sum": [
+       "2",
+       "3"
+      ]
+     },
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    }
+   ]
+  },
+  "drifted-act": {
+   "dir": "examples/drifted-act",
+   "calls": [
+    {
+     "input": {
+      "sum": [
+       69,
+       35
+      ]
+     },
+     "truth": 104,
+     "claim": 105,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 7078.1,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       53,
+       98
+      ]
+     },
+     "truth": 151,
+     "claim": 152,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5983.6,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       59,
+       23
+      ]
+     },
+     "truth": 82,
+     "claim": 82,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6181.7,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       79,
+       36
+      ]
+     },
+     "truth": 115,
+     "claim": 116,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 6121.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       91,
+       49
+      ]
+     },
+     "truth": 140,
+     "claim": 141,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 6347.8,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       32,
+       17
+      ]
+     },
+     "truth": 49,
+     "claim": 49,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5846.9,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       97,
+       66
+      ]
+     },
+     "truth": 163,
+     "claim": 164,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 6323.8,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       24,
+       82
+      ]
+     },
+     "truth": 106,
+     "claim": 107,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 6171.9,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       69,
+       53
+      ]
+     },
+     "truth": 122,
+     "claim": 123,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 6309.5,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       26,
+       50
+      ]
+     },
+     "truth": 76,
+     "claim": 76,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6039,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       62,
+       93
+      ]
+     },
+     "truth": 155,
+     "claim": 156,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5486.9,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       37,
+       84
+      ]
+     },
+     "truth": 121,
+     "claim": 122,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5616.8,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       80,
+       33
+      ]
+     },
+     "truth": 113,
+     "claim": 114,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 6910.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       6,
+       42
+      ]
+     },
+     "truth": 48,
+     "claim": 48,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6507.8,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       53,
+       17
+      ]
+     },
+     "truth": 70,
+     "claim": 70,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6216.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       16,
+       72
+      ]
+     },
+     "truth": 88,
+     "claim": 88,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5807.8,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       99,
+       85
+      ]
+     },
+     "truth": 184,
+     "claim": 185,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5371.7,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       67,
+       53
+      ]
+     },
+     "truth": 120,
+     "claim": 121,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 6640.3,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       58,
+       48
+      ]
+     },
+     "truth": 106,
+     "claim": 107,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 6608,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       96,
+       18
+      ]
+     },
+     "truth": 114,
+     "claim": 115,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 6448.9,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       49,
+       20
+      ]
+     },
+     "truth": 69,
+     "right": false,
+     "released": false,
+     "status": "refused",
+     "stage": "act",
+     "guardedMs": 129243.8,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       30,
+       66
+      ]
+     },
+     "truth": 96,
+     "claim": 96,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 32557.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       37,
+       69
+      ]
+     },
+     "truth": 106,
+     "claim": 107,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 17856.6,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       21,
+       20
+      ]
+     },
+     "truth": 41,
+     "claim": 41,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 34449.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       54,
+       90
+      ]
+     },
+     "truth": 144,
+     "claim": 145,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 53576.6,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       86,
+       45
+      ]
+     },
+     "truth": 131,
+     "claim": 132,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 19097.3,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       6,
+       15
+      ]
+     },
+     "truth": 21,
+     "claim": 21,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 14306.9,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       56,
+       80
+      ]
+     },
+     "truth": 136,
+     "claim": 137,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 20490.7,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       16,
+       24
+      ]
+     },
+     "truth": 40,
+     "claim": 40,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 68378.3,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       54,
+       51
+      ]
+     },
+     "truth": 105,
+     "claim": 106,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 13608.9,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       85,
+       90
+      ]
+     },
+     "truth": 175,
+     "claim": 176,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 11226.8,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       62,
+       51
+      ]
+     },
+     "truth": 113,
+     "claim": 114,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 17765.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       86,
+       75
+      ]
+     },
+     "truth": 161,
+     "claim": 162,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 32395.4,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       72,
+       9
+      ]
+     },
+     "truth": 81,
+     "claim": 81,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 32895.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       96,
+       81
+      ]
+     },
+     "truth": 177,
+     "claim": 178,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 14939.7,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       74,
+       22
+      ]
+     },
+     "truth": 96,
+     "claim": 96,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 13598.4,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       46,
+       2
+      ]
+     },
+     "truth": 48,
+     "claim": 48,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 17289.7,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       69,
+       26
+      ]
+     },
+     "truth": 95,
+     "claim": 95,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 36369,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       40,
+       71
+      ]
+     },
+     "truth": 111,
+     "claim": 112,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 31351.4,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       92,
+       84
+      ]
+     },
+     "truth": 176,
+     "claim": 177,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 16695,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       39,
+       53
+      ]
+     },
+     "truth": 92,
+     "claim": 92,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 13371,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       24,
+       23
+      ]
+     },
+     "truth": 47,
+     "claim": 47,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 4380.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       92,
+       23
+      ]
+     },
+     "truth": 115,
+     "claim": 116,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 7311.6,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       27,
+       10
+      ]
+     },
+     "truth": 37,
+     "claim": 37,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 8337.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       76,
+       81
+      ]
+     },
+     "truth": 157,
+     "claim": 158,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 4694.6,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       75,
+       41
+      ]
+     },
+     "truth": 116,
+     "claim": 117,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5155.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       30,
+       51
+      ]
+     },
+     "truth": 81,
+     "claim": 81,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5226.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       75,
+       44
+      ]
+     },
+     "truth": 119,
+     "claim": 120,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5259.4,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       50,
+       84
+      ]
+     },
+     "truth": 134,
+     "claim": 135,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5509.3,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       5,
+       10
+      ]
+     },
+     "truth": 15,
+     "claim": 15,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6805.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       65,
+       55
+      ]
+     },
+     "truth": 120,
+     "claim": 121,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5087.5,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       74,
+       99
+      ]
+     },
+     "truth": 173,
+     "claim": 174,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5751.8,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       3,
+       50
+      ]
+     },
+     "truth": 53,
+     "claim": 53,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 6928.5,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       29,
+       38
+      ]
+     },
+     "truth": 67,
+     "claim": 67,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 5542.1,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       73,
+       18
+      ]
+     },
+     "truth": 91,
+     "claim": 91,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 4970.2,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       11,
+       96
+      ]
+     },
+     "truth": 107,
+     "claim": 108,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 5310.3,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       45,
+       54
+      ]
+     },
+     "truth": 99,
+     "claim": 99,
+     "right": true,
+     "released": true,
+     "status": "verified",
+     "stage": "judge",
+     "guardedMs": 4184.5,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       87,
+       83
+      ]
+     },
+     "truth": 170,
+     "claim": 171,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 4046.4,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       34,
+       90
+      ]
+     },
+     "truth": 124,
+     "claim": 125,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 3685.3,
+     "bareMs": null
+    },
+    {
+     "input": {
+      "sum": [
+       72,
+       97
+      ]
+     },
+     "truth": 169,
+     "claim": 170,
+     "right": false,
+     "released": false,
+     "status": "unverified",
+     "stage": "judge",
+     "guardedMs": 4873.3,
+     "bareMs": null
+    }
+   ],
+   "lanes": [
+    {
+     "input": {
+      "question": "What is the weather in Leeds?"
+     },
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": null,
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": "add 2 and 3",
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": {
+      "sum": [
+       7
+      ]
+     },
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": {
+      "sum": [
+       1.5,
+       2
+      ]
+     },
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    },
+    {
+     "input": {
+      "sum": [
+       "2",
+       "3"
+      ]
+     },
+     "status": "refused",
+     "stage": "lane",
+     "escalate": "kar",
+     "actRan": false
+    }
+   ]
+  }
+ },
+ "observed": {
+  "noOutput": [
+   {
+    "cell": "drifted-act",
+    "input": {
+     "sum": [
+      49,
+      20
+     ]
+    },
+    "released": false,
+    "status": "refused",
+    "stage": "act",
+    "guardedMs": 129243.8
+   }
+  ],
+  "about": "In-lane calls where the act made no output at all, so they are neither right nor wrong and no rule counts them. Each is listed with what the guard did."
+ }
+}

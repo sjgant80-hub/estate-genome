@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { buildSeed, plant } from '../src/grow.mjs';
 import { check, treeHash } from '../src/run.mjs';
+import { call } from '../src/guardrun.mjs';
 
 const OPTS = {
   name: 'sum-checker', purpose: 'Checks that a claimed sum of two numbers is right.', lane: 'sums',
@@ -36,6 +37,7 @@ test('buildSeed fills what is given and leaves the rest empty for the birth chec
   assert.equal(s.name, 'sum-checker'); assert.equal(s.kind, 'repo'); assert.equal(s.lane.id, 'sums');
   assert.equal(s.judge.what, 'a + b equals the claim'); assert.equal(s.boundary.escalate, 'kar');
   assert.deepEqual(s.judge.cases, { good: null, bad: null });
+  assert.deepEqual(s.act, { run: 'node genome/act.mjs' });
   assert.equal(buildSeed({ ...OPTS, kind: ' agent ' }).kind, 'agent');
   const g = buildSeed(null);
   assert.equal(g.name, ''); assert.equal(g.kind, 'repo'); assert.equal(g.provenance.born, '');
@@ -45,7 +47,7 @@ test('buildSeed fills what is given and leaves the rest empty for the birth chec
 test('plant writes the genome and never overwrites', () => {
   const d = dir();
   const r = plant(d, buildSeed(OPTS));
-  assert.deepEqual(r.written, ['genome/cell.mjs', 'genome/health.mjs', 'genome/io.mjs', 'genome/judge.mjs', 'genome/lane.mjs', 'genome/tombstone.mjs', 'seed.json', '.github/workflows/genome.yml']);
+  assert.deepEqual(r.written, ['genome/act.mjs', 'genome/cell.mjs', 'genome/health.mjs', 'genome/io.mjs', 'genome/judge.mjs', 'genome/lane.mjs', 'genome/tombstone.mjs', 'seed.json', '.github/workflows/genome.yml']);
   assert.deepEqual(r.kept, []);
   assert.throws(() => plant(d, buildSeed(OPTS)), /seed.json already exists/);
   rmSync(join(d, 'seed.json'));
@@ -125,4 +127,29 @@ test('the tombstone works from any folder, because it finds its part from its ow
   assert.deepEqual(readdirSync(elsewhere), []);
   assert.equal(spawnSync(process.execPath, [join(d, 'genome', 'tombstone.mjs'), 'restore'], { cwd: elsewhere }).status, 0);
   assert.equal(treeHash(d), before);
+});
+
+test('act hook: the planted stub refuses; no act(), one that throws, and one that works', () => {
+  const d = dir(); plant(d, buildSeed(OPTS));
+  const stub = hookIn(d, 'genome/act.mjs', { sum: [1, 2] });
+  assert.deepEqual(JSON.parse(stub.stdout), { status: 'refused', why: 'act() returned nothing' }); assert.equal(stub.status, 1);
+  writeFileSync(join(d, 'genome', 'cell.mjs'), REAL_CELL);
+  const none = hookIn(d, 'genome/act.mjs', { sum: [1, 2] });
+  assert.deepEqual(JSON.parse(none.stdout), { status: 'refused', why: 'cell.mjs has no act(): this part checks work, it does not do it' }); assert.equal(none.status, 1);
+  writeFileSync(join(d, 'genome', 'cell.mjs'), REAL_CELL + "export async function act(i) { if (i.boom) throw new Error('bang'); if (i.nil) return null; return { sum: i.sum, claim: i.sum[0] + i.sum[1] }; }\n");
+  const boom = hookIn(d, 'genome/act.mjs', { boom: 1 });
+  assert.deepEqual(JSON.parse(boom.stdout), { status: 'refused', why: 'act() threw: bang' }); assert.equal(boom.status, 1);
+  const nil = hookIn(d, 'genome/act.mjs', { nil: 1 });
+  assert.deepEqual(JSON.parse(nil.stdout), { output: null }); assert.equal(nil.status, 0);
+  const ok = hookIn(d, 'genome/act.mjs', { sum: [1, 2] });
+  assert.deepEqual(JSON.parse(ok.stdout), { output: { sum: [1, 2], claim: 3 } }); assert.equal(ok.status, 0);
+});
+
+test('a grown part through the guard: it takes nothing until its lane check is written, and does no work until its act is', () => {
+  const d = dir(); plant(d, buildSeed(OPTS));
+  const fresh = call(d, { sum: [1, 1] });
+  assert.deepEqual([Object.keys(fresh.runs), fresh.decision.stage, fresh.decision.released], [['lane'], 'lane', false]);
+  fill(d);
+  const noAct = call(d, { sum: [1, 1] });
+  assert.deepEqual([Object.keys(noAct.runs), noAct.decision.reason], [['lane', 'act'], 'the act refused: cell.mjs has no act(): this part checks work, it does not do it']);
 });

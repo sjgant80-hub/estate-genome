@@ -1,0 +1,97 @@
+{
+ "checked": "2026-11-21T15:35:20.548Z",
+ "cell": "estate-genome",
+ "where": "this repository",
+ "input": {
+  "part": "examples/sum-checker"
+ },
+ "seed": {
+  "genome": "1",
+  "name": "estate-genome",
+  "kind": "tool",
+  "purpose": "The birth check: admits a part as a cell only when it describes itself, proves or refuses its output, can be shed reversibly, and refuses past its lane.",
+  "lane": {
+   "id": "birth-check",
+   "accepts": "a folder holding a part (seed.json and its genome hooks) to check",
+   "refuses": "anything that is not a part to check"
+  },
+  "interface": {
+   "in": "{\"part\":\"<folder>\"} to check, or {\"part\":\"<folder>\",\"verdict\":\"cell|part\"} to confirm a verdict",
+   "out": "the verdict record {\"part\",\"verdict\",\"line\"}: a verdict per trait, and admitted or not"
+  },
+  "act": {
+   "run": "node genome/act.mjs",
+   "carries": [
+    "part"
+   ]
+  },
+  "judge": {
+   "what": "a claimed verdict on a part is right when re-running the birth check on that part gives the same verdict",
+   "run": "node genome/judge.mjs",
+   "cases": {
+    "good": {
+     "part": "examples/sum-checker",
+     "verdict": "cell"
+    },
+    "bad": {
+     "part": "examples/bluffing-judge",
+     "verdict": "cell"
+    }
+   }
+  },
+  "boundary": {
+   "run": "node genome/lane.mjs",
+   "inLane": {
+    "part": "examples/sum-checker"
+   },
+   "outOfLane": {
+    "request": "deploy the website to production"
+   },
+   "escalate": "kar"
+  },
+  "health": {
+   "run": "node genome/health.mjs"
+  },
+  "tombstone": {
+   "apply": "node genome/tombstone.mjs apply",
+   "restore": "node genome/tombstone.mjs restore"
+  },
+  "provenance": {
+   "repo": "sjgant80-hub/estate-genome",
+   "by": "Kar, for Simon Gant",
+   "born": "2026-11-20"
+  }
+ },
+ "runs": {
+  "lane": {
+   "code": 0,
+   "out": "{\"inLane\":true}\n"
+  },
+  "act": {
+   "code": 0,
+   "out": "{\"output\":{\"part\":\"examples/sum-checker\",\"verdict\":\"cell\",\"line\":\"ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)\"}}\n"
+  },
+  "judge": {
+   "code": 0,
+   "out": "{\"status\":\"verified\"}\n"
+  }
+ },
+ "decision": {
+  "status": "verified",
+  "released": true,
+  "stage": "judge",
+  "reason": "its judge verified the output",
+  "escalate": "",
+  "output": {
+   "part": "examples/sum-checker",
+   "verdict": "cell",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)"
+  }
+ },
+ "ms": {
+  "lane": 2176.3,
+  "act": 32139.8,
+  "judge": 18005.4,
+  "total": 52329.5
+ }
+}

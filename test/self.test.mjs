@@ -1,14 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { judge, inLane, health } from '../genome/cell.mjs';
-import { check } from '../src/run.mjs';
+import { judge, inLane, health, act } from '../genome/cell.mjs';
 
-test('the worked examples: the honest one is a cell, the bluffer is caught', () => {
-  assert.equal(check('examples/sum-checker').result.cell, 'cell');
-  const b = check('examples/bluffing-judge');
-  assert.equal(b.result.cell, 'part');
-  assert.deepEqual(b.result.traits[1].reasons, ['the judge called the known-bad case verified']);
-});
 
 test("estate-genome's judge: a claimed verdict is verified only when a re-run agrees", async () => {
   assert.equal(await judge({ part: 'examples/sum-checker', verdict: 'cell' }), 'verified');
@@ -28,4 +21,15 @@ test("estate-genome's lane: a part folder inside this repository, nothing else",
 
 test("estate-genome's health says what it cannot measure", async () => {
   assert.deepEqual(await health(), { used: null, dependedOn: null, lastEarned: null });
+});
+
+test("estate-genome's act: the birth check on a part folder, handed back as a verdict record its judge confirms", async () => {
+  const LINE = 'ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)';
+  const out = await act({ part: 'examples/sum-checker' });
+  assert.deepEqual(out, { part: 'examples/sum-checker', verdict: 'cell', line: LINE });
+  assert.equal(await act({ part: 'src' }), undefined);
+  assert.equal(await act(null), undefined);
+  assert.equal(await judge(out), 'verified');
+  // the line is checked trait by trait when it is given: a right verdict with a wrong line is not verified
+  assert.equal(await judge({ ...out, line: LINE.replace('boundary yes', 'boundary no') }), 'unverified');
 });

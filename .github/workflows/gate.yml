@@ -17,7 +17,13 @@ jobs:
           node scripts/gates.mjs --witness .witness/witness.mjs --check
       - name: birth check — estate-genome admits itself, through its own action
         uses: ./
-      - name: the worked examples — the honest one admitted, the bluffer refused
+      - name: the worked examples — the honest one admitted, the bluffer refused, the drifted act admitted at birth
         run: |
           node bin/genome-check.mjs examples/sum-checker
           if node bin/genome-check.mjs examples/bluffing-judge; then echo "::error::the bluffing judge was admitted"; exit 1; fi
+          node bin/genome-check.mjs examples/drifted-act
+      - name: the guard — the honest total released, the drifted act's wrong total withheld, out of lane refused
+        run: |
+          node bin/genome-run.mjs examples/sum-checker --input '{"sum":[70,45]}'
+          if node bin/genome-run.mjs examples/drifted-act --input '{"sum":[70,45]}'; then echo "::error::the drifted act's wrong total was released"; exit 1; fi
+          if node bin/genome-run.mjs examples/sum-checker --input '{"question":"weather?"}'; then echo "::error::an out-of-lane request was taken"; exit 1; fi

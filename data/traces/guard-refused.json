@@ -1,0 +1,92 @@
+{
+ "checked": "2026-11-21T15:34:28.212Z",
+ "cell": "drifted-act",
+ "where": "examples/drifted-act",
+ "input": {
+  "question": "What is the weather in Leeds?"
+ },
+ "seed": {
+  "genome": "1",
+  "name": "drifted-act",
+  "kind": "tool",
+  "purpose": "Adds two whole numbers for its judge to check. A worked example: admitted at birth, but its act has drifted, so the guard withholds every wrong total.",
+  "lane": {
+   "id": "sums",
+   "accepts": "two whole numbers to add, or a claim that they add up to a total",
+   "refuses": "anything that is not two whole numbers"
+  },
+  "interface": {
+   "in": "{\"sum\":[a,b]} to add, or {\"sum\":[a,b],\"claim\":n} to check",
+   "out": "act: the claim {\"sum\":[a,b],\"claim\":n}; judge: verified, unverified or refused"
+  },
+  "act": {
+   "run": "node genome/act.mjs",
+   "carries": [
+    "sum"
+   ]
+  },
+  "judge": {
+   "what": "a + b equals the claim, exactly",
+   "run": "node genome/judge.mjs",
+   "cases": {
+    "good": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 5
+    },
+    "bad": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 6
+    }
+   }
+  },
+  "boundary": {
+   "run": "node genome/lane.mjs",
+   "inLane": {
+    "sum": [
+     40,
+     2
+    ],
+    "claim": 42
+   },
+   "outOfLane": {
+    "question": "What is the weather in Leeds?"
+   },
+   "escalate": "kar"
+  },
+  "health": {
+   "run": "node genome/health.mjs"
+  },
+  "tombstone": {
+   "apply": "node genome/tombstone.mjs apply",
+   "restore": "node genome/tombstone.mjs restore"
+  },
+  "provenance": {
+   "repo": "sjgant80-hub/estate-genome",
+   "by": "Kar (worked example)",
+   "born": "2026-11-21"
+  }
+ },
+ "runs": {
+  "lane": {
+   "code": 0,
+   "out": "{\"inLane\":false,\"status\":\"refused\",\"escalate\":\"kar\"}\n"
+  }
+ },
+ "decision": {
+  "status": "refused",
+  "released": false,
+  "stage": "lane",
+  "reason": "out of lane: its lane check refused the input, so the act never ran",
+  "escalate": "kar"
+ },
+ "ms": {
+  "lane": 2199.1,
+  "total": 2199.3
+ }
+}

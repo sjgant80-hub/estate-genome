@@ -1,0 +1,112 @@
+{
+ "checked": "2026-11-21T15:34:25.997Z",
+ "cell": "sum-checker",
+ "where": "examples/sum-checker",
+ "input": {
+  "sum": [
+   70,
+   45
+  ]
+ },
+ "seed": {
+  "genome": "1",
+  "name": "sum-checker",
+  "kind": "tool",
+  "purpose": "Adds two whole numbers, and checks that a claimed sum of two whole numbers is right; refuses anything else.",
+  "lane": {
+   "id": "sums",
+   "accepts": "two whole numbers to add, or a claim that they add up to a total",
+   "refuses": "anything that is not two whole numbers"
+  },
+  "interface": {
+   "in": "{\"sum\":[a,b]} to add, or {\"sum\":[a,b],\"claim\":n} to check",
+   "out": "act: the claim {\"sum\":[a,b],\"claim\":n}; judge: verified, unverified or refused"
+  },
+  "act": {
+   "run": "node genome/act.mjs",
+   "carries": [
+    "sum"
+   ]
+  },
+  "judge": {
+   "what": "a + b equals the claim, exactly",
+   "run": "node genome/judge.mjs",
+   "cases": {
+    "good": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 5
+    },
+    "bad": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 6
+    }
+   }
+  },
+  "boundary": {
+   "run": "node genome/lane.mjs",
+   "inLane": {
+    "sum": [
+     40,
+     2
+    ],
+    "claim": 42
+   },
+   "outOfLane": {
+    "question": "What is the weather in Leeds?"
+   },
+   "escalate": "kar"
+  },
+  "health": {
+   "run": "node genome/health.mjs"
+  },
+  "tombstone": {
+   "apply": "node genome/tombstone.mjs apply",
+   "restore": "node genome/tombstone.mjs restore"
+  },
+  "provenance": {
+   "repo": "sjgant80-hub/estate-genome",
+   "by": "Kar (worked example)",
+   "born": "2026-11-20"
+  }
+ },
+ "runs": {
+  "lane": {
+   "code": 0,
+   "out": "{\"inLane\":true}\n"
+  },
+  "act": {
+   "code": 0,
+   "out": "{\"output\":{\"sum\":[70,45],\"claim\":115}}\n"
+  },
+  "judge": {
+   "code": 0,
+   "out": "{\"status\":\"verified\"}\n"
+  }
+ },
+ "decision": {
+  "status": "verified",
+  "released": true,
+  "stage": "judge",
+  "reason": "its judge verified the output",
+  "escalate": "",
+  "output": {
+   "sum": [
+    70,
+    45
+   ],
+   "claim": 115
+  }
+ },
+ "ms": {
+  "lane": 2190.5,
+  "act": 1761.4,
+  "judge": 1666.7,
+  "total": 5619.2
+ }
+}

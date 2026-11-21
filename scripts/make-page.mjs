@@ -1,4 +1,4 @@
-// make-page.mjs — build index.html from page/template.html: the three page kernels inlined byte for byte (each in its
+// make-page.mjs — build index.html from page/template.html: the page kernels inlined byte for byte (each in its
 // own scope, with "export " removed), then the page script. test/page.test.mjs checks index.html is this build exactly.
 //   node scripts/make-page.mjs
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -8,6 +8,7 @@ export const KERNELS = [
   ['GENOME', 'src/genome.mjs', ['TRAITS', 'describe', 'describeText', 'birth', 'verdictLine', 'lastJson', 'parseSeed']],
   ['ROUTE', 'src/route.mjs', ['route', 'cellsOf']],
   ['COST', 'src/cost.mjs', ['defaults', 'costCase']],
+  ['GUARD', 'src/guard.mjs', ['decide', 'plan']],
 ];
 const LF = (s) => s.split('\r\n').join('\n');
 // body(src) → the module as page code: the default-export line dropped, "export " removed from declarations

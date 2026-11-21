@@ -1,19 +1,25 @@
 {
- "checked": "2026-11-20T16:53:20.992Z",
+ "checked": "2026-11-21T15:33:17.479Z",
  "part": "examples/sum-checker",
  "seed": {
   "genome": "1",
   "name": "sum-checker",
   "kind": "tool",
-  "purpose": "Checks that a claimed sum of two whole numbers is right, and refuses anything else.",
+  "purpose": "Adds two whole numbers, and checks that a claimed sum of two whole numbers is right; refuses anything else.",
   "lane": {
    "id": "sums",
-   "accepts": "a claim that two whole numbers add up to a total",
-   "refuses": "anything that is not a claimed sum"
+   "accepts": "two whole numbers to add, or a claim that they add up to a total",
+   "refuses": "anything that is not two whole numbers"
   },
   "interface": {
-   "in": "{\"sum\":[a,b],\"claim\":n}",
-   "out": "verified, unverified or refused"
+   "in": "{\"sum\":[a,b]} to add, or {\"sum\":[a,b],\"claim\":n} to check",
+   "out": "act: the claim {\"sum\":[a,b],\"claim\":n}; judge: verified, unverified or refused"
+  },
+  "act": {
+   "run": "node genome/act.mjs",
+   "carries": [
+    "sum"
+   ]
   },
   "judge": {
    "what": "a + b equals the claim, exactly",
@@ -115,9 +121,9 @@
    "out": "{\"used\":null,\"passing\":true,\"dependedOn\":null,\"lastEarned\":null}\n"
   },
   "tombstone": {
-   "before": "e29c68d278ede5f53814383f3ec8ba59a7eb8c4964837f750235a1ed53632ad7",
-   "applied": "4ffdf925c260a00df7266b4dbe2ca5cd68a21345a7b9a10b0319f7c01086ab83",
-   "restored": "e29c68d278ede5f53814383f3ec8ba59a7eb8c4964837f750235a1ed53632ad7",
+   "before": "dbeee1eb457d8626d598debdc7b0bc632cfa3740fbe6771af15e289897f201bf",
+   "applied": "c27321820b9618a8ed4fddba90d37c4d2d0a3b2d152f91a3063a3599f1ec840c",
+   "restored": "dbeee1eb457d8626d598debdc7b0bc632cfa3740fbe6771af15e289897f201bf",
    "applyCode": 0,
    "restoreCode": 0
   }

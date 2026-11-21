@@ -1,0 +1,131 @@
+{
+ "checked": "2026-11-21T15:34:12.960Z",
+ "part": "examples/drifted-act",
+ "seed": {
+  "genome": "1",
+  "name": "drifted-act",
+  "kind": "tool",
+  "purpose": "Adds two whole numbers for its judge to check. A worked example: admitted at birth, but its act has drifted, so the guard withholds every wrong total.",
+  "lane": {
+   "id": "sums",
+   "accepts": "two whole numbers to add, or a claim that they add up to a total",
+   "refuses": "anything that is not two whole numbers"
+  },
+  "interface": {
+   "in": "{\"sum\":[a,b]} to add, or {\"sum\":[a,b],\"claim\":n} to check",
+   "out": "act: the claim {\"sum\":[a,b],\"claim\":n}; judge: verified, unverified or refused"
+  },
+  "act": {
+   "run": "node genome/act.mjs",
+   "carries": [
+    "sum"
+   ]
+  },
+  "judge": {
+   "what": "a + b equals the claim, exactly",
+   "run": "node genome/judge.mjs",
+   "cases": {
+    "good": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 5
+    },
+    "bad": {
+     "sum": [
+      2,
+      3
+     ],
+     "claim": 6
+    }
+   }
+  },
+  "boundary": {
+   "run": "node genome/lane.mjs",
+   "inLane": {
+    "sum": [
+     40,
+     2
+    ],
+    "claim": 42
+   },
+   "outOfLane": {
+    "question": "What is the weather in Leeds?"
+   },
+   "escalate": "kar"
+  },
+  "health": {
+   "run": "node genome/health.mjs"
+  },
+  "tombstone": {
+   "apply": "node genome/tombstone.mjs apply",
+   "restore": "node genome/tombstone.mjs restore"
+  },
+  "provenance": {
+   "repo": "sjgant80-hub/estate-genome",
+   "by": "Kar (worked example)",
+   "born": "2026-11-21"
+  }
+ },
+ "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+ "result": {
+  "admitted": true,
+  "cell": "cell",
+  "traits": [
+   {
+    "trait": "describe",
+    "pass": true,
+    "reasons": []
+   },
+   {
+    "trait": "verify",
+    "pass": true,
+    "reasons": []
+   },
+   {
+    "trait": "prune",
+    "pass": true,
+    "reasons": []
+   },
+   {
+    "trait": "boundary",
+    "pass": true,
+    "reasons": []
+   }
+  ]
+ },
+ "runs": {
+  "judge": {
+   "good": {
+    "code": 0,
+    "out": "{\"status\":\"verified\"}\n"
+   },
+   "bad": {
+    "code": 1,
+    "out": "{\"status\":\"unverified\"}\n"
+   }
+  },
+  "boundary": {
+   "inLane": {
+    "code": 0,
+    "out": "{\"inLane\":true}\n"
+   },
+   "outOfLane": {
+    "code": 0,
+    "out": "{\"inLane\":false,\"status\":\"refused\",\"escalate\":\"kar\"}\n"
+   }
+  },
+  "health": {
+   "code": 0,
+   "out": "{\"used\":null,\"passing\":true,\"dependedOn\":null,\"lastEarned\":null}\n"
+  },
+  "tombstone": {
+   "before": "a77f7d10d8c8b57ebc0b53ca0b9015444a5dcd1ff63f8b143cc3112529a111b7",
+   "applied": "0f360a1049076b7790db142bb63c66ba23ccc5ca738d0393966028ae7f4f21cf",
+   "restored": "a77f7d10d8c8b57ebc0b53ca0b9015444a5dcd1ff63f8b143cc3112529a111b7",
+   "applyCode": 0,
+   "restoreCode": 0
+  }
+ }
+}

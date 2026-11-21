@@ -1,7 +1,7 @@
 {
  "witness": "v0.6",
- "total": 159,
- "killed": 159,
+ "total": 285,
+ "killed": 285,
  "clean": true,
  "files": {
   "src/genome.mjs": {
@@ -45,8 +45,8 @@
    "clean": true
   },
   "genome/cell.mjs": {
-   "total": 14,
-   "killed": 14,
+   "total": 18,
+   "killed": 18,
    "clean": true
   },
   "src/census.mjs": {
@@ -63,10 +63,40 @@
    "total": 19,
    "killed": 19,
    "clean": true
+  },
+  "src/guard.mjs": {
+   "total": 34,
+   "killed": 34,
+   "clean": true
+  },
+  "src/guardrun.mjs": {
+   "total": 14,
+   "killed": 14,
+   "clean": true
+  },
+  "template/genome/act.mjs": {
+   "total": 4,
+   "killed": 4,
+   "clean": true
+  },
+  "examples/sum-checker/genome/cell.mjs": {
+   "total": 11,
+   "killed": 11,
+   "clean": true
+  },
+  "examples/drifted-act/genome/cell.mjs": {
+   "total": 13,
+   "killed": 13,
+   "clean": true
+  },
+  "src/guardstats.mjs": {
+   "total": 46,
+   "killed": 46,
+   "clean": true
   }
  },
  "nothingToMutate": {
   "template/genome/io.mjs": "reads seed.json and one line of stdin: no comparison or logic for the gate to flip; its behaviour is tested through every hook in test/grow.test.mjs",
-  "template/genome/cell.mjs": "the stub an author replaces: three functions that return constants"
+  "template/genome/cell.mjs": "the stub an author replaces: four functions that return constants"
  }
 }

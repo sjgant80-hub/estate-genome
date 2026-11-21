@@ -2,15 +2,21 @@
   "genome": "1",
   "name": "sum-checker",
   "kind": "tool",
-  "purpose": "Checks that a claimed sum of two whole numbers is right, and refuses anything else.",
+  "purpose": "Adds two whole numbers, and checks that a claimed sum of two whole numbers is right; refuses anything else.",
   "lane": {
     "id": "sums",
-    "accepts": "a claim that two whole numbers add up to a total",
-    "refuses": "anything that is not a claimed sum"
+    "accepts": "two whole numbers to add, or a claim that they add up to a total",
+    "refuses": "anything that is not two whole numbers"
   },
   "interface": {
-    "in": "{\"sum\":[a,b],\"claim\":n}",
-    "out": "verified, unverified or refused"
+    "in": "{\"sum\":[a,b]} to add, or {\"sum\":[a,b],\"claim\":n} to check",
+    "out": "act: the claim {\"sum\":[a,b],\"claim\":n}; judge: verified, unverified or refused"
+  },
+  "act": {
+    "run": "node genome/act.mjs",
+    "carries": [
+      "sum"
+    ]
   },
   "judge": {
     "what": "a + b equals the claim, exactly",

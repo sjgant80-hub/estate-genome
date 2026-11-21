@@ -76,7 +76,7 @@ footer{margin-top:56px;border-top:1px solid var(--line);padding-top:16px;color:v
 <body>
 <nav aria-label="Sections">
   <a class="brand" href="#top">Estate Genome</a>
-  <a href="#start">Start here</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#census">Census</a>
+  <a href="#start">Start here</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#guard">Guard</a><a href="#census">Census</a>
   <a href="#blueprint">Blueprint</a><a href="#business">For your business</a><a href="#paper">White paper</a><a href="#limits">Limits</a>
   <button class="ghost" id="theme" type="button" aria-label="Switch light or dark">Theme</button>
 </nav>
@@ -139,6 +139,9 @@ node estate-genome/bin/genome-check.mjs path/to/your/part</pre>
   --judge-what "what makes an output right" --escalate my-team --repo my-org/my-repo --by "My team"</pre>
   A freshly grown part is honestly <i>not</i> admitted. It names the three things only you can write: the judge, the lane check,
   and a good and a bad case. Write them in <code>genome/cell.mjs</code> and <code>seed.json</code>, and it becomes a cell.</li>
+  <li><b>Call a cell through the guard.</b> The birth check is once; the guard is every call. It runs the cell's lane check on
+  your request, then its act, then its judge on the result, and hands back only what the judge verifies (see <a href="#guard">the guard</a>):
+<pre>node estate-genome/bin/genome-run.mjs path/to/cell --input '{"your":"request"}'</pre></li>
   <li><b>Make the check run in CI.</b> The planted workflow runs it on every push:
 <pre>- uses: sjgant80-hub/estate-genome@v1</pre></li>
   <li><b>Route work by the genome.</b> In <a href="#conductor">the conductor</a> box, type what you need. Only admitted cells can
@@ -169,6 +172,7 @@ is its real output. At the end, this tab re-judges the recorded outputs with the
   <button type="button" class="ghost" data-trace="birth-docdec.json" aria-pressed="true">DocDec</button>
   <button type="button" class="ghost" data-trace="birth-sum-checker.json" aria-pressed="false">The honest example</button>
   <button type="button" class="ghost" data-trace="birth-bluffing-judge.json" aria-pressed="false">The bluffing example</button>
+  <button type="button" class="ghost" data-trace="birth-drifted-act.json" aria-pressed="false">The drifted act</button>
 </div>
 <div class="card" id="traceOut" aria-live="polite">loading the recorded run…</div>
 
@@ -230,6 +234,67 @@ hooks printed to a small kernel that judges each trait. This diagram is DocDec's
   it. Anything else is a part, with the failures named in words a person can act on.</li>
 </ol>
 
+<h2 id="guard">The guard: every call checked, not just the first</h2>
+<p class="lead">The birth check proves a part once, on its own known cases. Work can still go wrong later: a change slips in, and
+the part starts giving wrong answers to questions its tests never asked. So the four traits do not stop at birth. Every time
+something asks a cell to do work, the guard checks it again, on that very request.</p>
+<p>A cell's real work is its <b>act</b>, a fifth, optional hook (<code>act.run</code> in <code>seed.json</code>). The guard runs three
+of the cell's own hooks in order, and stops at the first that says no:</p>
+<ol class="steps">
+  <li><b>The lane check, on the request.</b> Out of lane: refused and handed to the cell's named owner. The work never starts.</li>
+  <li><b>The act.</b> The cell does the work and hands back its output.</li>
+  <li><b>The judge, on that output.</b> Only an output the cell's own judge calls <code>verified</code> is handed back. Anything else
+  is withheld, with the reason, and escalated. A cell can also declare which parts of the request its answer must repeat unchanged
+  (<code>act.carries</code>), so an answer to a different question is stopped before the judge even sees it.</li>
+</ol>
+<p>Verify or dissolve: what the cell cannot stand behind never leaves the guard. Run it yourself:</p>
+<pre>node estate-genome/bin/genome-run.mjs estate-genome/examples/drifted-act --input '{"sum":[70,45]}' --log calls.jsonl</pre>
+<p class="small">It prints what the caller is handed, as one line of JSON, and exits 0 only when the output was released. With
+<code>--log</code>, every call adds one line to that file: the request, the decision, any output held back, and how long each hook took.</p>
+<div class="diagram" role="img" aria-labelledby="gdT">
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg">
+<title id="gdT">The guard: a request, then the lane check, then the act, then the judge on its output, then released or withheld</title>
+<rect class="box hot" x="70" y="8" width="220" height="50" rx="8"/><text x="180" y="29" text-anchor="middle">a request</text><text class="lbl" x="180" y="47" text-anchor="middle" id="gdIn">…</text>
+<path class="arrow" d="M180 58 V80"/>
+<rect class="box" x="40" y="82" width="280" height="50" rx="8"/><text x="180" y="103" text-anchor="middle">1 · its lane check, on the request</text><text class="lbl" x="180" y="121" text-anchor="middle" id="gdLane">…</text>
+<path class="arrow" d="M180 132 V154"/>
+<rect class="box" x="40" y="156" width="280" height="50" rx="8"/><text x="180" y="177" text-anchor="middle">2 · its act: the work</text><text class="lbl" x="180" y="195" text-anchor="middle" id="gdAct">…</text>
+<path class="arrow" d="M180 206 V228"/>
+<rect class="box" x="40" y="230" width="280" height="50" rx="8"/><text x="180" y="251" text-anchor="middle">3 · its judge, on that output</text><text class="lbl" x="180" y="269" text-anchor="middle" id="gdJudge">…</text>
+<path class="arrow" d="M140 280 L90 312"/><path class="arrow" d="M220 280 L270 312"/>
+<rect class="box" x="8" y="314" width="168" height="80" rx="8"/><text class="okt" x="92" y="336" text-anchor="middle">verified: released</text><text class="lbl" x="92" y="356" text-anchor="middle">the caller gets</text><text class="lbl" x="92" y="372" text-anchor="middle">the output</text>
+<rect class="box" x="184" y="314" width="168" height="80" rx="8"/><text class="not" x="268" y="336" text-anchor="middle">anything else: withheld</text><text class="lbl" x="268" y="356" text-anchor="middle">the reason, and who</text><text class="lbl" x="268" y="372" text-anchor="middle">it is escalated to</text>
+<text x="180" y="424" text-anchor="middle" id="gdOut">…</text>
+<text class="lbl" x="180" y="448" text-anchor="middle">out of lane at step 1: refused and escalated,</text><text class="lbl" x="180" y="464" text-anchor="middle">and steps 2 and 3 never run</text>
+<text class="lbl" x="180" y="496" text-anchor="middle">this is a real call, from the trace below:</text><text class="lbl" x="180" y="512" text-anchor="middle">the drifted example adding 70 and 45</text>
+</svg>
+</div>
+
+<h3>Four real calls, decided again in this tab</h3>
+<p>Each is a real call through the guard, with every hook's actual output. This tab decides each one again from those outputs,
+with the same guard code, and checks it reaches the same decision.</p>
+<div class="row" role="group" aria-label="Recorded guard calls">
+  <button type="button" class="ghost" data-guard="guard-withheld.json" aria-pressed="true">The drifted act adds 70 and 45</button>
+  <button type="button" class="ghost" data-guard="guard-released.json" aria-pressed="false">The honest one adds 70 and 45</button>
+  <button type="button" class="ghost" data-guard="guard-refused.json" aria-pressed="false">A question about the weather</button>
+  <button type="button" class="ghost" data-guard="guard-own.json" aria-pressed="false">estate-genome checks a part</button>
+</div>
+<div class="card" id="guardOut" aria-live="polite">loading the recorded call…</div>
+<p class="callout">Why the drifted example is a cell at all: its judge, lane check, health and retirement are all honest, so it passes
+its birth check. The birth check never runs the act. Its act adds one too many whenever the true total is over 100. That is the
+kind of fault the guard exists for: it is caught on the first call that hits it, because the judge runs on every output.</p>
+
+<h3>Measured: does the guard hold, and what does it cost?</h3>
+<p>The pass rules were written and committed (<a href="data/guard-rules.json">guard-rules.json</a>) before the measurement first ran.
+The result is published as it came out (<a href="data/guard-measure.json">guard-measure.json</a>). Right and wrong are decided by the
+measuring script adding the two numbers itself, never by asking the cell.</p>
+<div class="card tbl"><table aria-label="Guard measurement"><thead><tr><th>What was measured</th><th>Pass rule</th><th>Result</th></tr></thead><tbody id="guardRows"></tbody></table></div>
+<p class="small" id="guardObserved"></p>
+<p class="small">The time is mostly spent starting each hook as its own process under the time-limit supervisor, so it depends on the
+machine and how busy it is. That is why the rule is a ratio to the bare act run on the same machine at the same time, not a fixed
+number of seconds. A guarded call runs three hooks where the bare act runs one.</p>
+<p class="small muted" id="guardMachine"></p>
+
 <h2 id="census">The census: how much of this estate is cells</h2>
 <p>Every day, on GitHub's own servers, the census reads every public repository in this estate. For each one that declares a
 genome it takes a fresh copy and runs the full birth check. It reads only GitHub's public interface, so anyone can run it and
@@ -259,8 +324,8 @@ Ones measured dead get retired, reversibly, after a person signs off. New parts 
 change. Nothing here is exempted.</p>
 <div class="card tbl"><table id="bpTbl"><thead><tr><th>Part</th><th>File</th><th>What it does</th><th class="num">Mutation gate</th></tr></thead><tbody></tbody></table></div>
 <p class="small muted">Also: <code>action.yml</code> (the birth check as a GitHub Action, used by any repository), <code>bin/genome-check.mjs</code>
-and <code>bin/grow.mjs</code> (the commands), <code>scripts/census.mjs</code> and <code>scripts/traces.mjs</code> (the census and
-the recorded runs), and CI: <code>gate.yml</code> runs every test, the mutation gate on every file above, estate-genome's own birth
+, <code>bin/grow.mjs</code> and <code>bin/genome-run.mjs</code> (the commands), <code>scripts/census.mjs</code>,
+<code>scripts/traces.mjs</code> and <code>scripts/guard-measure.mjs</code> (the census, the recorded runs and the guard measurement), and CI: <code>gate.yml</code> runs every test, the mutation gate on every file above, estate-genome's own birth
 check through its own Action, and both worked examples. The honest one must be admitted and the bluffer refused. Source:
 <a href="https://github.com/sjgant80-hub/estate-genome">github.com/sjgant80-hub/estate-genome</a>.</p>
 
@@ -313,6 +378,7 @@ own answers, and makes CI refuse the ones that cannot back them up.</p>
 <tr><td>Can a hook hang, or leave processes behind?</td><td>Each hook has a time limit (60 seconds by default). It runs under a supervisor that kills the hook's whole process tree when the limit is hit. A test proves the tree is gone, on Linux and Windows.</td></tr>
 <tr><td>Does retiring touch the real part?</td><td>No. Retire and restore are tried on a scratch copy in the system's temporary folder, and the check only ever deletes folders it made itself.</td></tr>
 <tr><td>What leaves our machines?</td><td>Nothing, for the birth check and <code>grow</code>. The census and the conductor read GitHub (the public interface in the daily census). There is no telemetry.</td></tr>
+<tr><td>Can a cell go wrong after it is admitted?</td><td>Yes: code changes, and a fault can hide where its tests never looked. That is what the guard is for. Called through <code>genome-run</code>, every request is checked against the cell's lane, and every output by its judge, before anything is handed back. The drifted example on this page is admitted at birth and still has every wrong total withheld.</td></tr>
 <tr><td>Can a part fake a pass?</td><td>It can write anything in its manifest, but the check runs its judge on its own bad case. A judge that says "verified" to everything fails, as the bluffing example shows. A weak judge that separates its one bad case from its one good case can still pass. The check proves the judge is not a rubber stamp, not that it is complete.</td></tr>
 <tr><td>Is there an audit trail?</td><td>Yes. <code>genome-check --json</code> writes a report of every hook's input, output and exit code, and the verdict for each trait. In CI the run log keeps the per-trait lines for every push. The daily census commits its results, so the repository's history records every day's verdicts.</td></tr>
 <tr><td>What do we install?</td><td>Node.js, and this repository. It has no dependencies, and nothing is installed on the part. The Action is tagged <code>v1</code>; pin a commit instead if your policy requires.</td></tr>
@@ -371,7 +437,11 @@ load-bearing, and dropping one has a named failure:</p>
 genome adds is that the birth check <i>runs</i> the claims. It feeds the judge a known-bad case, retires and restores a copy byte for
 byte, and probes the lane from both sides. A manifest on its own cannot pass.</p>
 <p><b>Why only four.</b> Every instruction in the genome is inherited by every part, for good. So the bar for a fifth is high: it
-would have to name a failure these four cannot catch. A small genome is what lets it fit everywhere.</p>
+would have to name a failure these four cannot catch. A small genome is what lets it fit everywhere. The act hook is not a fifth
+instruction. It is the work itself, and the guard holds it to two of the four on every call: the lane on the way in, the judge on
+the way out.</p>
+<p><b>Once is not enough.</b> A check at birth proves a part on the cases it was born with. The guard repeats the proof on every
+real request, so a part that drifts is caught by the first request that shows it, not at the next review.</p>
 <p><b>How it spreads.</b> New parts are grown from the template, so they carry all four from the first commit. Old parts are not
 rewritten in one go. The metabolism flags the genome-less ones; the ones in use are upgraded, and the dead ones are retired
 reversibly. The census counts the result every day.</p>
@@ -381,6 +451,9 @@ reversibly. The census counts the result every day.</p>
   <li>It makes parts self-checking. It does not make them intelligent or aware, and it does not claim to.</li>
   <li>A passing judge separates its own good and bad cases. It is not proof that the judge catches every wrong output.</li>
   <li>Health values can be <code>null</code>. A part that cannot measure its own use says so, rather than guessing.</li>
+  <li>The guard is only as strong as each cell's judge. A judge that checks loosely lets loose answers through, on every call.</li>
+  <li>Each guarded call runs three of the cell's hooks instead of one, so it costs more time; the measured cost is in <a href="#guard">the guard</a> section. Only calls made through <code>genome-run</code> are guarded.</li>
+  <li>Three cells have an act today: estate-genome itself and the two worked examples. Cells without an act are still admitted; the guard refuses to do work for them.</li>
   <li>The browser check on this page covers the manifest (trait 1). The other three need the part's code, and run on the command line and in CI.</li>
   <li>The conductor ranks by the words in each manifest. The command-line conductor then confirms with the cell's own lane check before handing over work. It does not understand requests.</li>
   <li>The public census covers public repositories only. Today <span data-bind="census.admitted">…</span> are cells. The rest have no genome yet.</li>
@@ -663,6 +736,125 @@ function costCase(lock, inputs) {
 }
 return { defaults, costCase };
 })();
+
+// src/guard.mjs, inlined byte for byte (export removed)
+const GUARD = (() => {
+// guard.mjs — the guard: boundary on every call, verify every output. Pure and total: garbage in gives a decision with
+// a reason, never a throw.
+//
+// A call to a cell goes through three of the cell's own hooks, in this order, and stops at the first that says no:
+//   lane   · its lane check (seed.json boundary.run) runs on the input first. Out of lane: refused and escalated,
+//            and the act never runs.
+//   act    · its real work (seed.json act.run) runs on the input and prints its output.
+//   judge  · its judge (seed.json judge.run) runs on that output. Only "verified" releases it.
+// Verify or dissolve: an output the cell's own judge will not stand behind never leaves the guard. It is withheld,
+// with the reason, and escalated to the party the cell names.
+// The runner (src/guardrun.mjs) executes the hooks and hands their output here. This module only plans and decides.
+// It carries its own small readers (the page inlines it on its own), with the same rules as genome.mjs.
+
+// at(o, k) → o[k] if o is a plain object and reading it does not throw, else undefined
+function at(o, k) {
+  if (o === null || typeof o !== 'object' || Array.isArray(o)) return undefined;
+  try { return o[k]; } catch { return undefined; }
+}
+const text = (v) => (typeof v === 'string' ? v.trim() : '');
+
+// lastJson(out) → the last line of a hook's output that parses as a JSON object, else null (hooks may log before it)
+function lastJson(out) {
+  if (typeof out !== 'string') return null;
+  const lines = out.split(/\r?\n/);
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const line = lines[i].trim();
+    if (!line.startsWith('{')) continue;
+    try { return JSON.parse(line); } catch { /* not this line: a line that starts with { and parses is always an object */ }
+  }
+  return null;
+}
+
+// a hook's run as the runner records it: { code, out }
+const ran = (run) => Number.isInteger(at(run, 'code'));
+
+// command(seed, step) → the command seed.json names for a step ('lane', 'act' or 'judge'), or '' when it names none
+function command(seed, step) {
+  if (step === 'lane') return text(at(at(seed, 'boundary'), 'run'));
+  if (step === 'act') return text(at(at(seed, 'act'), 'run'));
+  if (step === 'judge') return text(at(at(seed, 'judge'), 'run'));
+  return '';
+}
+
+// laneTook(run) → the lane check took the input: it printed inLane true and did not refuse
+function laneTook(run) {
+  const v = lastJson(at(run, 'out'));
+  return at(v, 'inLane') === true && at(v, 'status') !== 'refused';
+}
+
+// made(run) → { ok, value } when the act exited cleanly with an output, else { ok:false, why } (why may be '')
+function made(run) {
+  const v = lastJson(at(run, 'out'));
+  if (at(run, 'code') === 0 && Object.hasOwn(v || {}, 'output')) return { ok: true, value: v.output };
+  return { ok: false, why: text(at(v, 'why')) };
+}
+
+// same(a, b) → a and b are the same JSON value
+function same(a, b) {
+  try { return JSON.stringify(a) === JSON.stringify(b); } catch { return false; }
+}
+
+// uncarried(seed, input, output) → the first field named in seed.json act.carries that the output did not carry back
+// unchanged from the input, or '' when it carried them all. It stops an act answering a different question than it was
+// asked, which a judge that sees only the output cannot catch.
+function uncarried(seed, input, output) {
+  const keys = at(at(seed, 'act'), 'carries');
+  for (const k of (Array.isArray(keys) ? keys : []).filter((x) => typeof x === 'string')) {
+    if (!same(at(input, k), at(output, k))) return k;
+  }
+  return '';
+}
+
+// plan(seed, runs, input) → the next hook to run, { step, run, input }, or null when the call is decided
+function plan(seed, runs, input) {
+  const ask = (step, stdin) => (command(seed, step) === '' ? null : { step, run: command(seed, step), input: stdin });
+  if (!ran(at(runs, 'lane'))) return ask('lane', input);
+  if (!laneTook(runs.lane)) return null;
+  if (!ran(at(runs, 'act'))) return ask('act', input);
+  const o = made(runs.act);
+  if (!o.ok || uncarried(seed, input, o.value) !== '') return null;
+  if (!ran(at(runs, 'judge'))) return ask('judge', o.value);
+  return null;
+}
+
+// decide(seed, runs, input) → { status, released, stage, reason, escalate, output | withheld }
+//   released only when the lane took the input, the act made an output that carries its input back, and the judge
+//   said verified and exited cleanly. Everything else is withheld with the reason, escalated to the cell's named party.
+function decide(seed, runs, input) {
+  const who = text(at(at(seed, 'boundary'), 'escalate'));
+  const no = (stage, status, reason, more) => ({ status, released: false, stage, reason, escalate: who, ...more });
+  const lane = at(runs, 'lane'), act = at(runs, 'act'), judge = at(runs, 'judge');
+  if (command(seed, 'lane') === '') return no('lane', 'refused', 'this cell declares no lane check (seed.json boundary.run), so it can take no input');
+  if (!ran(lane)) return no('lane', 'refused', 'the lane check did not run');
+  if (!laneTook(lane)) {
+    const named = text(at(lastJson(at(lane, 'out')), 'escalate'));
+    return { ...no('lane', 'refused', 'out of lane: its lane check refused the input, so the act never ran'), escalate: named === '' ? who : named };
+  }
+  if (command(seed, 'act') === '') return no('act', 'refused', 'this cell declares no act (seed.json act.run): it checks work, it does not do it');
+  if (!ran(act)) return no('act', 'refused', 'the act did not run');
+  const o = made(act);
+  if (!o.ok) return no('act', 'refused', o.why === '' ? 'the act made no output' : `the act refused: ${o.why}`);
+  const held = { withheld: o.value };
+  const k = uncarried(seed, input, o.value);
+  if (k !== '') return no('act', 'unverified', `the output does not answer the input it was given: "${k}" came back changed`, held);
+  if (command(seed, 'judge') === '') return no('judge', 'refused', 'this cell declares no judge (seed.json judge.run), so nothing can verify the output', held);
+  if (!ran(judge)) return no('judge', 'refused', 'the judge did not run on the output', held);
+  const s = at(lastJson(at(judge, 'out')), 'status');
+  if (s === 'verified') {
+    if (at(judge, 'code') === 0) return { status: 'verified', released: true, stage: 'judge', reason: 'its judge verified the output', escalate: '', output: o.value };
+    return no('judge', 'refused', `its judge said verified but exited ${at(judge, 'code')}`, held);
+  }
+  if (s === 'unverified' || s === 'refused') return no('judge', s, `its judge said ${s}, so the output is withheld`, held);
+  return no('judge', 'refused', 'its judge gave no status on the output', held);
+}
+return { decide, plan };
+})();
 // The page. Every figure comes from a data file or from the inlined kernels (GENOME, ROUTE, COST: the gated modules,
 // byte for byte). Nothing on the page that is a number is typed here.
 (async () => {
@@ -718,6 +910,12 @@ const BP = [
   ['Census', 'src/census.mjs', 'counts cells, declared and genome-less; the public view names public repositories only'],
   ['Conductor', 'src/route.mjs', 'routes by the genome index: admitted cells only; otherwise refuses and escalates'],
   ['Cost', 'src/cost.mjs', 'the calculator on this page, from sourced floors and your own numbers'],
+  ['Guard', 'src/guard.mjs', 'plans each call (lane, then act, then judge) and decides what is released; withholds the rest, with the reason'],
+  ['Guard runner', 'src/guardrun.mjs', 'runs one call through a cell’s own hooks under the supervisor; the call log; genome-run’s options'],
+  ['Act hook', 'template/genome/act.mjs', 'runs a part’s act on one request; an act that returns nothing refuses'],
+  ['Guard arithmetic', 'src/guardstats.mjs', 'counts the guard measurement against its pre-registered rules'],
+  ['Honest example', 'examples/sum-checker/genome/cell.mjs', 'adds two whole numbers and checks a claimed total'],
+  ['Drifted example', 'examples/drifted-act/genome/cell.mjs', 'the same judge and lane, with an act that is wrong above 100: the guard’s test case'],
 ];
 $('bpTbl').querySelector('tbody').innerHTML = BP.map(([part, file, what]) => {
   const g = gates && gates.files ? gates.files[file] : null;
@@ -816,6 +1014,68 @@ $('routeTraces').innerHTML = [rin, rout].filter(Boolean).map((t) => {
   return `<div class="hook ${t.status === 'routed' ? 'ok' : 'no'}">need “${esc(need)}”, input <code>${esc(input)}</code><br>`
     + (t.status === 'routed' ? `→ routed to <code>${esc(t.cell)}</code>: ${esc(t.confirmed)}.` : `→ refused: ${esc(t.why)}; escalated to <code>${esc(t.escalate)}</code>.`) + '</div>';
 }).join('');
+
+// ── the guard: four real calls, decided again in this tab ──
+const [gRules, gMeasure] = await Promise.all([maybe(get('data/guard-rules.json')), maybe(get('data/guard-measure.json'))]);
+const guardTraces = {};
+const said = (run) => { if (!run) return 'did not run'; const v = GENOME.lastJson(run.out); return v ? JSON.stringify(v) : '(no JSON)'; };
+const secs = (ms) => (typeof ms === 'number' && Number.isFinite(ms) ? `${(ms / 1000).toFixed(1)} s` : '…');
+const took = (t, k) => (t.ms && typeof t.ms[k] === 'number' ? ` · ${secs(t.ms[k])}` : '');
+const handed = (d) => (d.released ? `Released: <code>${esc(JSON.stringify(d.output))}</code>`
+  : `Withheld (${esc(d.status)}): ${esc(d.reason)}. Escalated to <code>${esc(d.escalate)}</code>.`);
+function renderGuard(t) {
+  if (!t) { $('guardOut').textContent = 'This recorded call could not be loaded.'; return; }
+  const r = t.runs, d = t.decision, again = GUARD.decide(t.seed, r, t.input);
+  const same = again.status === d.status && again.released === d.released && again.reason === d.reason;
+  const step = (ok, title, body) => `<div class="hook ${ok ? 'ok' : 'no'}"><b>${title}</b><br>${body}</div>`;
+  const laneOk = !!r.lane && (GENOME.lastJson(r.lane.out) || {}).inLane === true;
+  const actOut = r.act ? (GENOME.lastJson(r.act.out) || {}) : null;
+  $('guardOut').innerHTML = `<p><b>${esc(t.cell)}</b> · ${esc(t.where)} · called ${esc(String(t.checked).slice(0, 10))}<br><span class="small muted">${esc(t.seed.purpose)}</span></p>`
+    + `<p>Request: <code>${esc(JSON.stringify(t.input))}</code></p>`
+    + step(laneOk, '1 · Lane check' + took(t, 'lane'), `<code>${esc(t.seed.boundary.run)}</code> → <code>${esc(said(r.lane))}</code>`)
+    + step(!!actOut && 'output' in actOut, '2 · Act' + took(t, 'act'), r.act ? `<code>${esc(t.seed.act.run)}</code> → <code>${esc(said(r.act))}</code>` : 'never ran: the lane check refused the request')
+    + step(d.released, '3 · Judge on the output' + took(t, 'judge'), r.judge ? `<code>${esc(t.seed.judge.run)}</code> → <code>${esc(said(r.judge))}</code>` : 'never ran')
+    + `<div class="verdict ${d.released ? 'ok' : 'no'}">${handed(d)}</div>`
+    + `<p class="small">Decided again in this tab from the recorded hook outputs, by the same guard code: <b>${same ? 'the same decision' : 'a DIFFERENT decision: ' + esc(again.reason)}</b>. The whole call took ${secs(t.ms.total)}.</p>`;
+}
+const guardButtons = document.querySelectorAll('[data-guard]');
+let guardShown = null;   // the tab last clicked: a slower fetch for an earlier click must not overwrite it
+async function showGuard(file) {
+  guardShown = file;
+  guardButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.getAttribute('data-guard') === file)));
+  if (!(file in guardTraces)) guardTraces[file] = await maybe(get(`data/traces/${file}`));
+  if (guardShown === file) renderGuard(guardTraces[file]);
+}
+guardButtons.forEach((b) => b.addEventListener('click', () => showGuard(b.getAttribute('data-guard'))));
+await showGuard('guard-withheld.json');
+const gw = guardTraces['guard-withheld.json'];
+if (gw) {
+  const v = (run) => (run ? GENOME.lastJson(run.out) || {} : {});
+  $('gdIn').textContent = JSON.stringify(gw.input);
+  const ln = v(gw.runs.lane);
+  $('gdLane').textContent = ln.inLane === true ? 'took it' : `refused → ${ln.escalate}`;
+  $('gdAct').textContent = gw.runs.act ? `made ${JSON.stringify(v(gw.runs.act).output)}` : 'never ran';
+  $('gdJudge').textContent = gw.runs.judge ? `said ${v(gw.runs.judge).status}` : 'never ran';
+  $('gdOut').textContent = gw.decision.released ? 'released' : `withheld (${gw.decision.status}) → escalated to ${gw.decision.escalate}`;
+}
+const RESULT = {
+  withhold: (x) => `${fmt(x.withheld)} of ${fmt(x.wrong)} wrong totals withheld (${x.share === null ? '—' : x.share + '%'})`,
+  release: (x) => `${fmt(x.released)} of ${fmt(x.right)} right totals released (${x.share === null ? '—' : x.share + '%'})`,
+  'lane-first': (x) => `${fmt(x.refusedAtLaneEscalatedNoAct)} of ${fmt(x.calls)} refused at the lane and escalated, with the act never run`,
+  overhead: (x) => `median guarded call ${secs(x.medianGuardedMs)} against ${secs(x.medianBareActMs)} for the act alone: ${fmt(x.ratio)} times. The guard added ${secs(x.medianOverheadMs)} a call (median of ${fmt(x.calls)} calls, each paired with a bare run of the same act).`,
+};
+$('guardRows').innerHTML = (gRules && Array.isArray(gRules.rules) ? gRules.rules : []).map((rule) => {
+  const x = gMeasure && Array.isArray(gMeasure.results) ? gMeasure.results.find((m) => m.id === rule.id) : null;
+  const res = x ? `<span class="${x.pass ? 'yes' : 'noo'}">${x.pass ? 'PASS' : 'FAIL'}</span> · ${esc(RESULT[rule.id] ? RESULT[rule.id](x) : JSON.stringify(x))}` : 'not measured yet';
+  return `<tr><td>${esc(rule.what)}</td><td>${esc(rule.pass)}</td><td>${res}</td></tr>`;
+}).join('') || '<tr><td colspan="3">The rules could not be loaded.</td></tr>';
+const none = gMeasure && gMeasure.observed && Array.isArray(gMeasure.observed.noOutput) ? gMeasure.observed.noOutput : null;
+$('guardObserved').textContent = none === null ? '' : none.length === 0 ? 'Every in-lane call made an output, right or wrong.'
+  : `Seen, and counted by no rule: ${none.length} in-lane call${none.length === 1 ? '' : 's'} made no output at all, right or wrong. ${none.map((x) => `${x.cell} on ${JSON.stringify(x.input)} took ${fmt(Math.round(x.guardedMs / 1000))} seconds in all, more than the 60-second limit any one hook is given, most likely because the laptop was overloaded; the guard refused it at the ${x.stage} step and released nothing`).join('. ')}.`;
+if (gMeasure && gMeasure.machine) {
+  const m = gMeasure.machine;
+  $('guardMachine').textContent = `Measured on ${String(gMeasure.measured).slice(0, 10)}: ${m.platform}, ${m.cpu}, ${m.threads} threads, ${m.memoryGB} GB memory, Node ${m.node}. Load: ${m.load}. Every call's input, totals and timings are in the file.`;
+} else $('guardMachine').textContent = 'The measurement has not been published yet.';
 
 // ── the cost ──
 const d = COST.defaults(lock);

@@ -40,7 +40,7 @@ for (const e of [...els].sort((a, b) => b.at - a.at)) {
   html = html.slice(0, start) + filled + html.slice(next < 0 ? start : next);
 }
 const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<head>[\s\S]*?<\/head>/, '').replace(/<nav[\s\S]*?<\/nav>/, '')
-  .replace(/<svg[\s\S]*?<\/svg>/g, '[diagram: seed.json, then the runner, then four hook runs (the judge twice, the lane check twice, health, retire on a copy), then the kernel, then a cell or a part; filled from DocDec’s real run]')
+  .replace(/<svg[\s\S]*?<title[^>]*>([^<]*)<\/title>[\s\S]*?<\/svg>/g, '[diagram: $1; its labels are filled from a real run]')
   .replace(/<textarea[\s\S]*?<\/textarea>/g, '').replace(/<(h[1-2])[^>]*>/g, '\n\n## ').replace(/<h3[^>]*>/g, '\n\n### ').replace(/<li>/g, '\n- ')
   .replace(/<\/(p|div|tr|li|h[1-3]|pre)>/g, '\n').replace(/<t[dh][^>]*>/g, ' | ').replace(/<\/?[a-zA-Z][^>]*>/g, ' ')
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/[ \t]+/g, ' ').replace(/\n\s+/g, '\n');

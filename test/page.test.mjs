@@ -79,7 +79,7 @@ test('run the page: every figure and panel fills from the shipped data, and the 
   assert.equal(bound('describe.count')[0], '22');
   for (const c of census.cells) assert.ok($('cellRows').innerHTML.includes(c.name));
   const rows = $('bpTbl').child.innerHTML.split('<tr>').length - 1;
-  assert.equal(rows, 12);
+  assert.equal(rows, 18);
   for (const f of Object.keys(gates.files)) assert.ok($('bpTbl').child.innerHTML.includes(`${gates.files[f].killed}/${gates.files[f].total} clean`), f);
   assert.match($('seedOut').innerHTML, /Trait 1 holds/);
   assert.match($('traceOut').innerHTML, /the same verdict/);
@@ -88,6 +88,22 @@ test('run the page: every figure and panel fills from the shipped data, and the 
   assert.match($('routeOut').innerHTML, /Routed to <code>docdecdemo<\/code>/);
   assert.match($('routeTraces').innerHTML, /its own lane check took the input/);
   assert.match($('costOut').innerHTML, /£3,245\.55/);
+  // the guard: the drifted call shown first, decided again here; the diagram from it; the measurement against its rules
+  assert.match($('guardOut').innerHTML, /the same decision/);
+  assert.match($('guardOut').innerHTML, /Withheld \(unverified\): its judge said unverified, so the output is withheld\. Escalated to <code>kar<\/code>/);
+  assert.equal($('gdIn').textContent, '{"sum":[70,45]}');
+  assert.equal($('gdLane').textContent, 'took it');
+  assert.equal($('gdAct').textContent, 'made {"sum":[70,45],"claim":116}');
+  assert.equal($('gdJudge').textContent, 'said unverified');
+  assert.equal($('gdOut').textContent, 'withheld (unverified) → escalated to kar');
+  const gm = JSON.parse(read('data/guard-measure.json')), gr = JSON.parse(read('data/guard-rules.json'));
+  assert.equal($('guardRows').innerHTML.split('<tr>').length - 1, gr.rules.length);
+  for (const r of gm.results) assert.ok($('guardRows').innerHTML.includes(`<span class="${r.pass ? 'yes' : 'noo'}">${r.pass ? 'PASS' : 'FAIL'}</span>`), r.id);
+  assert.match($('guardRows').innerHTML, new RegExp(`${gm.results[0].withheld} of ${gm.results[0].wrong} wrong totals withheld`));
+  assert.match($('guardMachine').textContent, /^Measured on \d{4}-\d{2}-\d{2}: /);
+  const none = gm.observed.noOutput;
+  assert.match($('guardObserved').textContent, none.length === 0 ? /^Every in-lane call made an output/ : new RegExp(`^Seen, and counted by no rule: ${none.length} in-lane call`));
+  assert.match($('guardRows').innerHTML, /the act alone: \d+(\.\d)? times/);
   // the controls
   const preset = (p) => { d.document.querySelectorAll(`[data-preset="${p}"]`)[0].click(); return $('seedOut').innerHTML; };
   assert.match(preset('bluff'), /Trait 1 holds/);
@@ -104,4 +120,19 @@ test('run the page: every figure and panel fills from the shipped data, and the 
   assert.match($('routeOut').innerHTML, /Refused: no admitted cell/);
   $('cParts').value = '2000'; $('cParts').fire('input');
   assert.match($('costOut').innerHTML, /<b>660<\/b> parts/);
+  d.document.querySelectorAll('[data-trace="birth-drifted-act.json"]')[0].click();
+  await new Promise((r) => setTimeout(r, 50));
+  assert.match($('traceOut').innerHTML, /ADMITTED: a cell/);
+  const guardCall = async (file) => {
+    d.document.querySelectorAll(`[data-guard="${file}"]`)[0].click();
+    await new Promise((r) => setTimeout(r, 50));
+    assert.match($('guardOut').innerHTML, /the same decision/, file);
+    assert.equal(d.document.querySelectorAll(`[data-guard="${file}"]`)[0].getAttribute('aria-pressed'), 'true');
+    return $('guardOut').innerHTML;
+  };
+  assert.match(await guardCall('guard-released.json'), /Released: <code>\{&quot;sum&quot;:\[70,45\],&quot;claim&quot;:115\}<\/code>/);
+  const refused = await guardCall('guard-refused.json');
+  assert.match(refused, /never ran: the lane check refused the request/);
+  assert.match(refused, /Withheld \(refused\): out of lane/);
+  assert.match(await guardCall('guard-own.json'), /Released: <code>\{&quot;part&quot;:&quot;examples\/sum-checker&quot;,&quot;verdict&quot;:&quot;cell&quot;/);
 });

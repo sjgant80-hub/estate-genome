@@ -18,10 +18,16 @@ export const GATED = [
   ['src/census.mjs', ['test/census.test.mjs']],
   ['src/route.mjs', ['test/route.test.mjs']],
   ['src/cost.mjs', ['test/cost.test.mjs']],
+  ['src/guard.mjs', ['test/guard.test.mjs']],
+  ['src/guardrun.mjs', ['test/guardrun.test.mjs']],
+  ['template/genome/act.mjs', ['test/grow.test.mjs']],
+  ['examples/sum-checker/genome/cell.mjs', ['test/examples.test.mjs']],
+  ['examples/drifted-act/genome/cell.mjs', ['test/examples.test.mjs']],
+  ['src/guardstats.mjs', ['test/guardstats.test.mjs']],
 ];
 export const NOTHING_TO_MUTATE = {
   'template/genome/io.mjs': 'reads seed.json and one line of stdin: no comparison or logic for the gate to flip; its behaviour is tested through every hook in test/grow.test.mjs',
-  'template/genome/cell.mjs': 'the stub an author replaces: three functions that return constants',
+  'template/genome/cell.mjs': 'the stub an author replaces: four functions that return constants',
 };
 
 const args = process.argv.slice(2);

@@ -1,4 +1,5 @@
-// grow.mjs — grow a new part from the seed template, so it is born carrying all four instructions.
+// grow.mjs — grow a new part from the seed template, so it is born carrying all four instructions (and the act hook
+// the guard calls for its real work, refusing until its author writes it).
 // The part is born honest: its judge and lane check refuse everything until its author writes them, so the
 // birth check names exactly what is missing instead of admitting a bluff.
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
@@ -14,6 +15,7 @@ export function buildSeed(o) {
     genome: '1', name: s('name'), kind: s('kind') || 'repo', purpose: s('purpose'),
     lane: { id: s('lane'), accepts: s('accepts'), refuses: s('refuses') },
     interface: { in: s('in'), out: s('out') },
+    act: { run: 'node genome/act.mjs' },
     judge: { what: s('judgeWhat'), run: 'node genome/judge.mjs', cases: { good: null, bad: null } },
     boundary: { run: 'node genome/lane.mjs', inLane: null, outOfLane: null, escalate: s('escalate') },
     health: { run: 'node genome/health.mjs' },
