@@ -330,6 +330,20 @@ can no longer answer:</p>
 history. A repository that is archived or no longer public drops out of the census; that is retirement, not drift. One that
 stops shipping its <code>seed.json</code> while still live is refused on describe, and named.</p>
 
+<h3 id="foldcache">Conserve, do not recompute</h3>
+<p>Running every birth check again every day would prove the same thing again for every repository that has not changed. So
+the census keeps a fold-cache (<a href="https://github.com/sjgant80-hub/estate-genome/blob/main/data/census-cache.json">census-cache.json</a>):
+each repository's last full verdict, with the commit it was made on and the version of the checking code. A verdict is reused
+only when the repository's latest commit is that same commit, the checking code is the same, and the verdict is under seven days
+old. Anything else gets a fresh copy and the full check. The age limit matters: a cache that never expires settles onto stale
+answers, because a check can depend on more than the code (the date, the network, a service it calls).</p>
+<div class="card" id="cacheOut" aria-live="polite">loading the census…</div>
+<p><b>Measured: a cold census against a warm one.</b> The pass rules were committed first
+(<a href="data/foldcache-rules.json">foldcache-rules.json</a>); the result is published as it came out, with
+every check of both runs, in the file named under the table.</p>
+<div class="card tbl"><table aria-label="Fold-cache measurement"><thead><tr><th>What was measured</th><th>Pass rule</th><th>Result</th></tr></thead><tbody id="cacheRows"></tbody></table></div>
+<p class="small muted" id="cacheNote"></p>
+
 <p class="callout">Day one is honest: almost nothing here has a genome yet. Upgrading old repositories in one rewrite would bake in
 mistakes, so it is a job for the estate's metabolism. It flags every repository with no genome. Ones that are in use get upgraded.
 Ones measured dead get retired, reversibly, after a person signs off. New parts are grown with the genome from the start.</p>
@@ -468,6 +482,7 @@ reversibly. The census counts the result every day.</p>
   <li>A passing judge separates its own good and bad cases. It is not proof that the judge catches every wrong output.</li>
   <li>Health values can be <code>null</code>. A part that cannot measure its own use says so, rather than guessing.</li>
   <li>Drift is caught once a day, by the census, on public repositories. Between censuses a regression shows up only on calls made through the guard. The history starts on 20 November 2026, the first published census.</li>
+  <li>A reused census verdict can be up to seven days old. A repository whose behaviour depends on something outside its own code can change inside that window without the census noticing; a new commit, or new checking code, always forces a fresh check.</li>
   <li>The guard is only as strong as each cell's judge. A judge that checks loosely lets loose answers through, on every call.</li>
   <li>Each guarded call runs three of the cell's hooks instead of one, so it costs more time; the measured cost is in <a href="#guard">the guard</a> section. Only calls made through <code>genome-run</code> are guarded.</li>
   <li>Three cells have an act today: estate-genome itself and the two worked examples. Cells without an act are still admitted; the guard refuses to do work for them.</li>
@@ -1031,6 +1046,7 @@ const BP = [
   ['Act hook', 'template/genome/act.mjs', 'runs a part’s act on one request; an act that returns nothing refuses'],
   ['Guard arithmetic', 'src/guardstats.mjs', 'counts the guard measurement against its pre-registered rules'],
   ['Honest example', 'examples/sum-checker/genome/cell.mjs', 'adds two whole numbers and checks a claimed total'],
+  ['Fold-cache', 'src/foldcache.mjs', 'reuses a full verdict only on the same commit, the same checking code and under 7 days old; compares a cold census with a warm one'],
   ['Drift', 'src/drift.mjs', 'the census history: a cell admitted before and refused now is named, with the trait it lost'],
   ['Drifted example', 'examples/drifted-act/genome/cell.mjs', 'the same judge and lane, with an act that is wrong above 100: the guard’s test case'],
 ];
@@ -1142,6 +1158,29 @@ if (history) {
     ? `<div class="verdict ok">No drift: no repository that was admitted on an earlier day is refused on the latest (${esc(span)}).</div>`
     : `<div class="verdict no">${fmt(dr.drifted.length)} drifted (${esc(span)}):</div><ul class="reasons">${dr.drifted.map((x) => `<li><a href="https://github.com/sjgant80-hub/${esc(x.repo)}"><b>${esc(x.repo)}</b></a>: admitted ${esc(x.lastAdmitted)}, refused since ${esc(x.since)}. ${x.regressed.length ? x.regressed.map((r) => `<b>${esc(r.trait)}</b>: ${esc(r.question)} No.`).join(' ') : 'The census did not record which trait failed.'}</li>`).join('')}</ul>`;
 } else $('driftOut').textContent = 'The census history could not be loaded.';
+
+// ── the fold-cache: what the latest census reused, and the cold-against-warm measurement ──
+const dur = (ms) => (typeof ms !== 'number' || !Number.isFinite(ms) ? '…' : ms >= 60000 ? `${Math.floor(ms / 60000)} min ${Math.round((ms % 60000) / 1000)} s` : `${(ms / 1000).toFixed(1)} s`);
+if (census && census.cache && census.cache.on) {
+  const c = census.cache, why = Object.entries(c.why || {}).map(([w, n]) => `${fmt(n)}: ${esc(w)}`).join('; ');
+  $('cacheOut').innerHTML = `<p>The latest census (${esc(String(census.generated).slice(0, 10))}) had ${fmt(c.checked)} declaring repositor${c.checked === 1 ? 'y' : 'ies'} to check:
+    <b>${fmt(c.hits)} reused</b>, ${fmt(c.misses)} checked again on a fresh copy${why ? ` (${why})` : ''}.</p>`
+    + (census.took ? `<p class="small">It took ${dur(census.took.totalMs)}: ${dur(census.took.listingMs)} reading every repository from GitHub, ${dur(census.took.checkingMs)} checking.</p>` : '');
+} else $('cacheOut').textContent = census ? 'The census that made these figures ran before the fold-cache existed, so it checked every declaring repository afresh.' : 'The census could not be loaded.';
+const [cRules, cMeasure] = await Promise.all([maybe(get('data/foldcache-rules.json')), maybe(get('data/foldcache-measure.json'))]);
+const CRESULT = {
+  reuse: (x) => `${fmt(x.reusedUnmoved)} of ${fmt(x.unmoved)} unmoved repositories reused; ${fmt(x.moved)} had a new commit, and ${fmt(x.reusedMoved)} of those were reused`,
+  'same-verdicts': (x) => `${fmt(x.identical)} of ${fmt(x.reused)} reused verdicts identical to the cold run's`,
+  'wall-time': (x) => `cold ${dur(x.coldMs)}, warm ${dur(x.warmMs)}: ${fmt(x.ratio)} of the cold time. Reading every repository took ${dur(x.coldListingMs)} and ${dur(x.warmListingMs)}; checking took ${dur(x.coldCheckingMs)} and ${dur(x.warmCheckingMs)}. The warm run reused ${fmt(x.warmHits)} of ${fmt(x.declaring)} declaring repositories (${x.hitRate === null ? '—' : x.hitRate + '%'}).`,
+};
+$('cacheRows').innerHTML = (cRules && Array.isArray(cRules.rules) ? cRules.rules : []).map((rule) => {
+  const x = cMeasure && Array.isArray(cMeasure.results) ? cMeasure.results.find((m) => m.id === rule.id) : null;
+  const res = x ? `<span class="${x.pass ? 'yes' : 'noo'}">${x.pass ? 'PASS' : 'FAIL'}</span> · ${esc(CRESULT[rule.id] ? CRESULT[rule.id](x) : JSON.stringify(x))}` : 'not measured yet';
+  return `<tr><td>${esc(rule.what)}</td><td>${esc(rule.pass)}</td><td>${res}</td></tr>`;
+}).join('') || '<tr><td colspan="3">The rules could not be loaded.</td></tr>';
+$('cacheNote').innerHTML = cMeasure && cMeasure.cold && cMeasure.warm
+  ? `Measured on GitHub's runner: the cold census is commit <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.cold.commit)}"><code>${esc(cMeasure.cold.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.cold.generated).slice(0, 16).replace('T', ' '))} UTC), the warm one <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.warm.commit)}"><code>${esc(cMeasure.warm.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.warm.generated).slice(0, 16).replace('T', ' '))} UTC). Repositories being converted at the same time get new commits between runs, and are rightly checked again. Every check of both runs: <a href="https://github.com/sjgant80-hub/estate-genome/blob/main/data/foldcache-measure.json">foldcache-measure.json</a>.`
+  : 'The two census runs this judges have not been made yet.';
 
 // ── the guard: four real calls, decided again in this tab ──
 const [gRules, gMeasure] = await Promise.all([maybe(get('data/guard-rules.json')), maybe(get('data/guard-measure.json'))]);

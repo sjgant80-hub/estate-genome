@@ -86,7 +86,19 @@ test('run the page: every figure and panel fills from the shipped data, and the 
   assert.equal(bound('describe.count')[0], '22');
   for (const c of census.cells) assert.ok($('cellRows').innerHTML.includes(c.name));
   const rows = $('bpTbl').child.innerHTML.split('<tr>').length - 1;
-  assert.equal(rows, 19);
+  assert.equal(rows, 20);
+  // the fold-cache: the latest census's reuse, and the measurement against its rules (before it runs: said so)
+  assert.match($('cacheOut').innerHTML || $('cacheOut').textContent, census.cache && census.cache.on ? new RegExp(`had ${census.cache.checked} declaring`) : /ran before the fold-cache existed/);
+  const cr = JSON.parse(read('data/foldcache-rules.json'));
+  assert.equal($('cacheRows').innerHTML.split('<tr>').length - 1, cr.rules.length);
+  if (existsSync(new URL('../data/foldcache-measure.json', import.meta.url))) {
+    const cm = JSON.parse(read('data/foldcache-measure.json'));
+    for (const r of cm.results) assert.ok($('cacheRows').innerHTML.includes(`<span class="${r.pass ? 'yes' : 'noo'}">${r.pass ? 'PASS' : 'FAIL'}</span>`), r.id);
+    assert.match($('cacheNote').innerHTML, /Measured on GitHub's runner: the cold census is commit/);
+  } else {
+    assert.match($('cacheRows').innerHTML, /not measured yet/);
+    assert.equal($('cacheNote').innerHTML, 'The two census runs this judges have not been made yet.');
+  }
   // drift: the four questions, and the shipped history worked out by the inlined kernel
   for (const e of d.document.querySelectorAll('[data-q]')) assert.match(e.textContent, /\?$/, e.attrs['data-q']);
   const hist = JSON.parse(read('data/census-history.json'));

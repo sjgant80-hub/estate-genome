@@ -58,6 +58,7 @@ const BP = [
   ['Act hook', 'template/genome/act.mjs', 'runs a part’s act on one request; an act that returns nothing refuses'],
   ['Guard arithmetic', 'src/guardstats.mjs', 'counts the guard measurement against its pre-registered rules'],
   ['Honest example', 'examples/sum-checker/genome/cell.mjs', 'adds two whole numbers and checks a claimed total'],
+  ['Fold-cache', 'src/foldcache.mjs', 'reuses a full verdict only on the same commit, the same checking code and under 7 days old; compares a cold census with a warm one'],
   ['Drift', 'src/drift.mjs', 'the census history: a cell admitted before and refused now is named, with the trait it lost'],
   ['Drifted example', 'examples/drifted-act/genome/cell.mjs', 'the same judge and lane, with an act that is wrong above 100: the guard’s test case'],
 ];
@@ -169,6 +170,29 @@ if (history) {
     ? `<div class="verdict ok">No drift: no repository that was admitted on an earlier day is refused on the latest (${esc(span)}).</div>`
     : `<div class="verdict no">${fmt(dr.drifted.length)} drifted (${esc(span)}):</div><ul class="reasons">${dr.drifted.map((x) => `<li><a href="https://github.com/sjgant80-hub/${esc(x.repo)}"><b>${esc(x.repo)}</b></a>: admitted ${esc(x.lastAdmitted)}, refused since ${esc(x.since)}. ${x.regressed.length ? x.regressed.map((r) => `<b>${esc(r.trait)}</b>: ${esc(r.question)} No.`).join(' ') : 'The census did not record which trait failed.'}</li>`).join('')}</ul>`;
 } else $('driftOut').textContent = 'The census history could not be loaded.';
+
+// ── the fold-cache: what the latest census reused, and the cold-against-warm measurement ──
+const dur = (ms) => (typeof ms !== 'number' || !Number.isFinite(ms) ? '…' : ms >= 60000 ? `${Math.floor(ms / 60000)} min ${Math.round((ms % 60000) / 1000)} s` : `${(ms / 1000).toFixed(1)} s`);
+if (census && census.cache && census.cache.on) {
+  const c = census.cache, why = Object.entries(c.why || {}).map(([w, n]) => `${fmt(n)}: ${esc(w)}`).join('; ');
+  $('cacheOut').innerHTML = `<p>The latest census (${esc(String(census.generated).slice(0, 10))}) had ${fmt(c.checked)} declaring repositor${c.checked === 1 ? 'y' : 'ies'} to check:
+    <b>${fmt(c.hits)} reused</b>, ${fmt(c.misses)} checked again on a fresh copy${why ? ` (${why})` : ''}.</p>`
+    + (census.took ? `<p class="small">It took ${dur(census.took.totalMs)}: ${dur(census.took.listingMs)} reading every repository from GitHub, ${dur(census.took.checkingMs)} checking.</p>` : '');
+} else $('cacheOut').textContent = census ? 'The census that made these figures ran before the fold-cache existed, so it checked every declaring repository afresh.' : 'The census could not be loaded.';
+const [cRules, cMeasure] = await Promise.all([maybe(get('data/foldcache-rules.json')), maybe(get('data/foldcache-measure.json'))]);
+const CRESULT = {
+  reuse: (x) => `${fmt(x.reusedUnmoved)} of ${fmt(x.unmoved)} unmoved repositories reused; ${fmt(x.moved)} had a new commit, and ${fmt(x.reusedMoved)} of those were reused`,
+  'same-verdicts': (x) => `${fmt(x.identical)} of ${fmt(x.reused)} reused verdicts identical to the cold run's`,
+  'wall-time': (x) => `cold ${dur(x.coldMs)}, warm ${dur(x.warmMs)}: ${fmt(x.ratio)} of the cold time. Reading every repository took ${dur(x.coldListingMs)} and ${dur(x.warmListingMs)}; checking took ${dur(x.coldCheckingMs)} and ${dur(x.warmCheckingMs)}. The warm run reused ${fmt(x.warmHits)} of ${fmt(x.declaring)} declaring repositories (${x.hitRate === null ? '—' : x.hitRate + '%'}).`,
+};
+$('cacheRows').innerHTML = (cRules && Array.isArray(cRules.rules) ? cRules.rules : []).map((rule) => {
+  const x = cMeasure && Array.isArray(cMeasure.results) ? cMeasure.results.find((m) => m.id === rule.id) : null;
+  const res = x ? `<span class="${x.pass ? 'yes' : 'noo'}">${x.pass ? 'PASS' : 'FAIL'}</span> · ${esc(CRESULT[rule.id] ? CRESULT[rule.id](x) : JSON.stringify(x))}` : 'not measured yet';
+  return `<tr><td>${esc(rule.what)}</td><td>${esc(rule.pass)}</td><td>${res}</td></tr>`;
+}).join('') || '<tr><td colspan="3">The rules could not be loaded.</td></tr>';
+$('cacheNote').innerHTML = cMeasure && cMeasure.cold && cMeasure.warm
+  ? `Measured on GitHub's runner: the cold census is commit <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.cold.commit)}"><code>${esc(cMeasure.cold.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.cold.generated).slice(0, 16).replace('T', ' '))} UTC), the warm one <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.warm.commit)}"><code>${esc(cMeasure.warm.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.warm.generated).slice(0, 16).replace('T', ' '))} UTC). Repositories being converted at the same time get new commits between runs, and are rightly checked again. Every check of both runs: <a href="https://github.com/sjgant80-hub/estate-genome/blob/main/data/foldcache-measure.json">foldcache-measure.json</a>.`
+  : 'The two census runs this judges have not been made yet.';
 
 // ── the guard: four real calls, decided again in this tab ──
 const [gRules, gMeasure] = await Promise.all([maybe(get('data/guard-rules.json')), maybe(get('data/guard-measure.json'))]);

@@ -1,0 +1,23 @@
+{
+ "registered": "2026-11-21",
+ "about": "The fold-cache measurement's pass rules, written and committed before the two census runs it judges. The result (data/foldcache-measure.json) is published whether it passes or fails, and these rules are not changed after it.",
+ "method": "Two consecutive runs of the daily public census on GitHub's runner (census.yml, started by hand): the cold run starts with no cache file, the warm run starts from the cache the cold run committed. Each run records its own wall time (listing, checking, total) and every check's HEAD commit and whether it was reused, in data/census.json. scripts/foldcache-measure.mjs reads the two published census.json files from this repository's git history and applies these rules through src/foldcache.mjs.",
+ "rules": [
+  {
+   "id": "reuse",
+   "what": "the warm run, for every declaring repository the cold run fully checked: reused when its HEAD commit did not move between the runs, checked again when it did",
+   "pass": "every unmoved repository reused (100%), at least one of them, and no repository whose HEAD moved reused"
+  },
+  {
+   "id": "same-verdicts",
+   "what": "every verdict the warm run reused, against the cold run's verdict line for the same repository",
+   "pass": "all identical, and at least one verdict reused (so the rule was tested at all)"
+  },
+  {
+   "id": "wall-time",
+   "what": "the warm census's total wall time against the cold one's, the cold run having reused nothing",
+   "pass": "warm at most half of cold",
+   "reported": "both totals, the listing time of each (the GraphQL read of every repository, the same work in both), the checking time of each, and the warm run's hit rate over every declaring repository"
+  }
+ ]
+}

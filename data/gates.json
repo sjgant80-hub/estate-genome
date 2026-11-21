@@ -1,7 +1,7 @@
 {
  "witness": "v0.6",
- "total": 317,
- "killed": 317,
+ "total": 382,
+ "killed": 382,
  "clean": true,
  "files": {
   "src/genome.mjs": {
@@ -97,6 +97,11 @@
   "src/drift.mjs": {
    "total": 32,
    "killed": 32,
+   "clean": true
+  },
+  "src/foldcache.mjs": {
+   "total": 65,
+   "killed": 65,
    "clean": true
   }
  },

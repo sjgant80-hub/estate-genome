@@ -20,5 +20,5 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/census.json data/genome-index.json data/census-history.json
+          git add data/census.json data/genome-index.json data/census-history.json data/census-cache.json
           if git diff --cached --quiet; then echo "no change"; else git commit -m "census $(date -u +%F) [skip ci]" && git push; fi

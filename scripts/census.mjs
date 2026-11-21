@@ -5,6 +5,10 @@
 // 1. Lists every repository the owner holds (GraphQL, owner-only) with its seed.json at HEAD.
 // 2. For each live repository that declares a genome, shallow-clones it to a scratch folder and runs the full birth
 //    check on it (its own hooks, under the per-hook bound). --no-clone skips this: verdicts are then left unchecked.
+//    The fold-cache conserves instead of recomputing: a repository whose HEAD commit and the checker's version are both
+//    unchanged since its last full check, under seven days ago, keeps that verdict without a clone (src/foldcache.mjs).
+//    The listing reads each repository's HEAD commit for this. --cache <file> or --no-cache change where it is kept.
+//    --only a,b checks only the named repositories (a test, or one re-check); the others are left unchecked.
 // --public-only lists public repositories only: the daily census on GitHub's runner (census.yml) runs this way, so the
 // published figures are ones anyone can re-derive from the public API.
 // Writes the full census (it may name private repositories) to ~/.estate-genome/census-full.json, never committed; the
@@ -12,8 +16,10 @@
 // seed.json essentials, for any agent or conductor to route by) to data/genome-index.json.
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync, mkdtempSync, rmSync, existsSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { homedir, tmpdir } from 'node:os';
-import { join, resolve, sep } from 'node:path';
+import { join, resolve, sep, dirname } from 'node:path';
+import { reuse, remember, keepOnly, tally as tallyCache, MAX_AGE_DAYS } from '../src/foldcache.mjs';
 import { publicView, tally } from '../src/census.mjs';
 import { check } from '../src/run.mjs';
 import { rowsOf, merge, ABOUT as HISTORY_ABOUT } from '../src/drift.mjs';
@@ -23,12 +29,22 @@ const OWNER = arg('--owner', 'sjgant80-hub');
 const CLONE = !process.argv.includes('--no-clone');
 const PUBLIC_ONLY = process.argv.includes('--public-only');
 const OUT = arg('--out', 'data');
+const STATE = join(homedir(), '.estate-genome');
+// the fold-cache (src/foldcache.mjs): the public census keeps its cache beside its output; a full census keeps its own,
+// which may name private repositories, outside every repository. --cache <file> picks another; --no-cache checks all.
+const USE_CACHE = !process.argv.includes('--no-cache');
+const ONLY = arg('--only', '') ? new Set(arg('--only', '').split(',')) : null;   // check only these (the rest are left unchecked)
+const CACHE = arg('--cache', PUBLIC_ONLY ? join(OUT, 'census-cache.json') : join(STATE, 'census-cache-full.json'));
+// the checker's version: a verdict made by different birth-check code is never reused
+const src = (f) => readFileSync(new URL(`../src/${f}`, import.meta.url), 'utf8').split('\r\n').join('\n');
+const CHECKER = createHash('sha256').update(['genome.mjs', 'run.mjs', 'supervise.mjs'].map(src).join('\0')).digest('hex').slice(0, 16);
 const TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 if (!TOKEN) { console.error('set GH_TOKEN (e.g. GH_TOKEN=$(gh auth token))'); process.exit(2); }
+const started = Date.now();
 
 const Q = `query($c:String){ repositoryOwner(login:"${OWNER}"){ repositories(first:100, after:$c, ownerAffiliations:OWNER, ${PUBLIC_ONLY ? 'privacy:PUBLIC, ' : ''}orderBy:{field:NAME, direction:ASC}){
   totalCount pageInfo{ hasNextPage endCursor }
-  nodes{ name isPrivate isArchived seed:object(expression:"HEAD:seed.json"){ ... on Blob{ text } } } } } }`;
+  nodes{ name isPrivate isArchived head:object(expression:"HEAD"){ oid } seed:object(expression:"HEAD:seed.json"){ ... on Blob{ text } } } } } }`;
 async function page(cursor) {
   for (let attempt = 1; attempt <= 4; attempt++) {
     try {
@@ -48,16 +64,29 @@ let cursor = null, total = null;
 do {
   const p = await page(cursor);
   total = p.totalCount;
-  for (const n of p.nodes) rows.push({ name: n.name, private: n.isPrivate, archived: n.isArchived, seedText: n.seed && typeof n.seed.text === 'string' ? n.seed.text : null, verdict: null });
+  for (const n of p.nodes) rows.push({ name: n.name, private: n.isPrivate, archived: n.isArchived, oid: n.head && typeof n.head.oid === 'string' ? n.head.oid : '', seedText: n.seed && typeof n.seed.text === 'string' ? n.seed.text : null, verdict: null });
   cursor = p.pageInfo.hasNextPage ? p.pageInfo.endCursor : null;
   process.stderr.write(`\rlisted ${rows.length}/${total}`);
 } while (cursor);
 process.stderr.write('\n');
 if (rows.length !== total) { console.error(`incomplete listing: ${rows.length} of ${total}; refusing to publish a partial census`); process.exit(1); }
 
-const checks = [];
+const listed = Date.now();
+const checks = [], decisions = [];
+let cache = USE_CACHE && existsSync(CACHE) ? JSON.parse(readFileSync(CACHE, 'utf8')) : { entries: {} };
+const declaring = rows.filter((x) => !x.archived && x.seedText !== null);
 if (CLONE) {
-  for (const r of rows.filter((x) => !x.archived && x.seedText !== null)) {
+  for (const r of declaring.filter((x) => ONLY === null || ONLY.has(x.name))) {
+    // conserve: the same HEAD, the same checker and a verdict under seven days old is reused, not proved again
+    const was = cache.entries ? cache.entries[r.name] : undefined;
+    const d = USE_CACHE ? reuse(was, { oid: r.oid, checker: CHECKER, at: Date.now() }) : { hit: false, why: 'the cache is off' };
+    decisions.push(d);
+    if (d.hit) {
+      r.verdict = was.verdict;
+      checks.push({ name: r.name, private: r.private, line: was.line, reasons: was.reasons, oid: r.oid, reused: true, checkedAt: was.checkedAt });
+      console.log(`${r.private ? '[private] ' : ''}${r.name}: ${was.line} (reused: ${d.why})`);
+      continue;
+    }
     const tmp = mkdtempSync(join(tmpdir(), 'genome-census-'));
     try {
       const dir = join(tmp, 'repo');
@@ -65,16 +94,23 @@ if (CLONE) {
       if (c.status !== 0) { checks.push({ name: r.name, private: r.private, error: 'clone failed: ' + String(c.stderr).trim().slice(0, 160) }); continue; }
       const k = check(dir, { timeoutMs: 120000 });
       r.verdict = k.result.cell;
-      checks.push({ name: r.name, private: r.private, line: k.line, reasons: k.result.traits.filter((t) => !t.pass).map((t) => `${t.trait}: ${t.reasons.join('; ')}`) });
-      console.log(`${r.private ? '[private] ' : ''}${r.name}: ${k.line}`);
+      const reasons = k.result.traits.filter((t) => !t.pass).map((t) => `${t.trait}: ${t.reasons.join('; ')}`), checkedAt = new Date().toISOString();
+      checks.push({ name: r.name, private: r.private, line: k.line, reasons, oid: r.oid, reused: false, checkedAt, why: d.why });
+      cache = remember(cache, r.name, { oid: r.oid, checker: CHECKER, verdict: k.result.cell, line: k.line, reasons, checkedAt });
+      console.log(`${r.private ? '[private] ' : ''}${r.name}: ${k.line} (checked: ${d.why})`);
     } finally {
       if (resolve(tmp).startsWith(resolve(tmpdir()) + sep + 'genome-census-')) rmSync(tmp, { recursive: true, force: true });
     }
   }
 }
+const done = Date.now();
+if (USE_CACHE && CLONE) {
+  mkdirSync(dirname(CACHE), { recursive: true });
+  writeFileSync(CACHE, JSON.stringify({ about: 'The census fold-cache: each declaring repository\'s last full birth-check verdict, with the HEAD commit and checker version it was made on. Reused only when both match and it is under 7 days old (src/foldcache.mjs).',
+    checker: CHECKER, maxAgeDays: MAX_AGE_DAYS, ...keepOnly(cache, declaring.map((r) => r.name)) }, null, 1) + '\n');
+}
 
 const generated = new Date().toISOString();
-const STATE = join(homedir(), '.estate-genome');
 mkdirSync(STATE, { recursive: true });
 writeFileSync(join(STATE, PUBLIC_ONLY ? 'census-public.json' : 'census-full.json'), JSON.stringify({ generated, owner: OWNER, tally: tally(rows), checks, rows: rows.map(({ seedText, ...r }) => ({ ...r, declared: seedText !== null })) }, null, 1) + '\n');
 const pub = publicView(rows, generated);
@@ -82,6 +118,8 @@ pub.owner = OWNER;
 pub.cloned = CLONE;
 pub.scope = PUBLIC_ONLY ? 'public repositories' : 'every repository the owner holds (private ones counted, never named)';
 pub.checks = checks.filter((c) => !c.private).map(({ private: _p, ...c }) => c);
+pub.cache = { on: USE_CACHE && CLONE, checker: CHECKER, maxAgeDays: MAX_AGE_DAYS, ...tallyCache(decisions) };
+pub.took = { listingMs: listed - started, checkingMs: done - listed, totalMs: done - started };
 mkdirSync(OUT, { recursive: true });
 writeFileSync(join(OUT, 'census.json'), JSON.stringify(pub, null, 1) + '\n');
 // the genome index: what a conductor routes by. Admitted public cells only; a part is not routable.
