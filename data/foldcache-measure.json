@@ -1,0 +1,473 @@
+{
+ "measured": "2026-11-21T16:40:56.066Z",
+ "rules": "data/foldcache-rules.json",
+ "registered": "2026-11-21",
+ "where": "GitHub's runner (census.yml, ubuntu-latest), started by hand twice in a row",
+ "pass": false,
+ "results": [
+  {
+   "id": "reuse",
+   "unmoved": 31,
+   "reusedUnmoved": 31,
+   "moved": 1,
+   "reusedMoved": 0,
+   "pass": true
+  },
+  {
+   "id": "same-verdicts",
+   "reused": 31,
+   "identical": 31,
+   "pass": true
+  },
+  {
+   "id": "wall-time",
+   "coldMs": 136367,
+   "warmMs": 83537,
+   "ratio": 0.61,
+   "coldListingMs": 95244,
+   "warmListingMs": 80702,
+   "coldCheckingMs": 41123,
+   "warmCheckingMs": 2835,
+   "declaring": 32,
+   "warmHits": 31,
+   "hitRate": 96.9,
+   "coldReused": 0,
+   "pass": false
+  }
+ ],
+ "cold": {
+  "commit": "003d4354d53cc1d88f11f96a7aa275c10577f766",
+  "generated": "2026-11-21T16:38:10.806Z",
+  "took": {
+   "listingMs": 95244,
+   "checkingMs": 41123,
+   "totalMs": 136367
+  },
+  "cache": {
+   "on": true,
+   "checker": "80cc6eb9613df6f5",
+   "maxAgeDays": 7,
+   "checked": 32,
+   "hits": 0,
+   "misses": 32,
+   "hitRate": 0,
+   "why": {
+    "not checked before": 32
+   }
+  },
+  "declared": 32,
+  "admitted": 32,
+  "checks": [
+   {
+    "name": "break-it",
+    "oid": "840e2ea311faec3cb817371e515c1c220e576f41",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "consumer-rights-cell",
+    "oid": "7cc613779b401b2f5ef6b460fa5fde7b79a424fb",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "docdecdemo",
+    "oid": "85bb7f6e5e9e94f891540b7d2f41dcdf92246002",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "estate-genome",
+    "oid": "cce15dc8626f062d231099d9bc5404d141e1b29d",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "falljustice",
+    "oid": "6023a3fac61940004208108bb6e2c0ed9877eee3",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "genome-fold",
+    "oid": "19d4ac4919ea99bbba3ae69d85e69e5b42f3d4f9",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-alerttriage",
+    "oid": "366a34b301980207a309534a14079dd3233bfefa",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-benfordgap",
+    "oid": "b96b3af8a45c3da28c477d6aae7b1db0cb3d99cd",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-citelock",
+    "oid": "3b0c202661cd650ebb49a7ccd08ce24e675774de",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-conform",
+    "oid": "4a449040a98eb2f3a5237e2289c063749479601c",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-consentdecay",
+    "oid": "9f6fbe915c46f92471f70715fa9cc1f76f955cb2",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-driftscore",
+    "oid": "a0f01e05fe6f9cec34403e7b0ca29045c67a7b68",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-fairshare",
+    "oid": "f98bf3f53aff674506e5bd37002c4382d770b784",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-glyphguard",
+    "oid": "e053bf515eac0850eb60aea6a7f9e7b5bdc7b187",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-irhelper",
+    "oid": "ea1cb261a20791b89fbcdcd338c1fa7b725ba354",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-isolationgate",
+    "oid": "f6d176ef548afea6e908036d1287f6bfdba72b7c",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-quorumfloor",
+    "oid": "218e6f658567ca67f4098db36abf9af3d546214b",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-quorumgate",
+    "oid": "a6c8983f071b1d875f55e4ca6db93327c4c3b784",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-quorumveil",
+    "oid": "a5557f5685818e0f1a77177b2fdedfb9d9b8b17a",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-redactseal",
+    "oid": "b9d7ca812a146a5b8055df95bb3a10390b540b49",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-scopeguard",
+    "oid": "1d72f2ac5263040cb02610924ac0afdc11ff4373",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-spendwall",
+    "oid": "b26511ff2827de6d9ce891f6447303f6da449413",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-tally",
+    "oid": "579aa37992709ffc2d22331267f692b27dc49799",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "kar-veil",
+    "oid": "bf6fdc084c9beed9274b545cdd1acf9246c64dc3",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "konomi-ablate",
+    "oid": "2864194be26051fe9420034ecc69f844f0557081",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "konomi-clean",
+    "oid": "6a868f377e1658e7176054d88f299368069bb52a",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "konomi-export",
+    "oid": "59b6a28fd283e31d3c957b65d1e7bd6ecd54849c",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "konomi-regress",
+    "oid": "19556c16648e57d01b3fb2e29a1192f63a8fefbf",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "openkonomi",
+    "oid": "a220438c4b8f3d925b394000b9b9f53b0828c2b4",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "pixelwhisperer",
+    "oid": "13943674515c71b44454acffc611d8cc075b85e7",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "seam-check",
+    "oid": "446d27c14eed7335020b5e965718f0b040f01a37",
+    "reused": false,
+    "why": "not checked before"
+   },
+   {
+    "name": "witness-kit",
+    "oid": "e4a98c775b49816f49ffd3afac85b0ea27116aa3",
+    "reused": false,
+    "why": "not checked before"
+   }
+  ]
+ },
+ "warm": {
+  "commit": "086ffc69439eff66deba2593be2aba6b2965ba9f",
+  "generated": "2026-11-21T16:40:44.587Z",
+  "took": {
+   "listingMs": 80702,
+   "checkingMs": 2835,
+   "totalMs": 83537
+  },
+  "cache": {
+   "on": true,
+   "checker": "80cc6eb9613df6f5",
+   "maxAgeDays": 7,
+   "checked": 32,
+   "hits": 31,
+   "misses": 1,
+   "hitRate": 96.9,
+   "why": {
+    "same HEAD, same checker, under 7 days old": 31,
+    "its HEAD moved": 1
+   }
+  },
+  "declared": 32,
+  "admitted": 32,
+  "checks": [
+   {
+    "name": "break-it",
+    "oid": "840e2ea311faec3cb817371e515c1c220e576f41",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "consumer-rights-cell",
+    "oid": "7cc613779b401b2f5ef6b460fa5fde7b79a424fb",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "docdecdemo",
+    "oid": "85bb7f6e5e9e94f891540b7d2f41dcdf92246002",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "estate-genome",
+    "oid": "003d4354d53cc1d88f11f96a7aa275c10577f766",
+    "reused": false,
+    "why": "its HEAD moved"
+   },
+   {
+    "name": "falljustice",
+    "oid": "6023a3fac61940004208108bb6e2c0ed9877eee3",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "genome-fold",
+    "oid": "19d4ac4919ea99bbba3ae69d85e69e5b42f3d4f9",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-alerttriage",
+    "oid": "366a34b301980207a309534a14079dd3233bfefa",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-benfordgap",
+    "oid": "b96b3af8a45c3da28c477d6aae7b1db0cb3d99cd",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-citelock",
+    "oid": "3b0c202661cd650ebb49a7ccd08ce24e675774de",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-conform",
+    "oid": "4a449040a98eb2f3a5237e2289c063749479601c",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-consentdecay",
+    "oid": "9f6fbe915c46f92471f70715fa9cc1f76f955cb2",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-driftscore",
+    "oid": "a0f01e05fe6f9cec34403e7b0ca29045c67a7b68",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-fairshare",
+    "oid": "f98bf3f53aff674506e5bd37002c4382d770b784",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-glyphguard",
+    "oid": "e053bf515eac0850eb60aea6a7f9e7b5bdc7b187",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-irhelper",
+    "oid": "ea1cb261a20791b89fbcdcd338c1fa7b725ba354",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-isolationgate",
+    "oid": "f6d176ef548afea6e908036d1287f6bfdba72b7c",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-quorumfloor",
+    "oid": "218e6f658567ca67f4098db36abf9af3d546214b",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-quorumgate",
+    "oid": "a6c8983f071b1d875f55e4ca6db93327c4c3b784",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-quorumveil",
+    "oid": "a5557f5685818e0f1a77177b2fdedfb9d9b8b17a",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-redactseal",
+    "oid": "b9d7ca812a146a5b8055df95bb3a10390b540b49",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-scopeguard",
+    "oid": "1d72f2ac5263040cb02610924ac0afdc11ff4373",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-spendwall",
+    "oid": "b26511ff2827de6d9ce891f6447303f6da449413",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-tally",
+    "oid": "579aa37992709ffc2d22331267f692b27dc49799",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "kar-veil",
+    "oid": "bf6fdc084c9beed9274b545cdd1acf9246c64dc3",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "konomi-ablate",
+    "oid": "2864194be26051fe9420034ecc69f844f0557081",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "konomi-clean",
+    "oid": "6a868f377e1658e7176054d88f299368069bb52a",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "konomi-export",
+    "oid": "59b6a28fd283e31d3c957b65d1e7bd6ecd54849c",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "konomi-regress",
+    "oid": "19556c16648e57d01b3fb2e29a1192f63a8fefbf",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "openkonomi",
+    "oid": "a220438c4b8f3d925b394000b9b9f53b0828c2b4",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "pixelwhisperer",
+    "oid": "13943674515c71b44454acffc611d8cc075b85e7",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "seam-check",
+    "oid": "446d27c14eed7335020b5e965718f0b040f01a37",
+    "reused": true,
+    "why": "reused"
+   },
+   {
+    "name": "witness-kit",
+    "oid": "e4a98c775b49816f49ffd3afac85b0ea27116aa3",
+    "reused": true,
+    "why": "reused"
+   }
+  ]
+ }
+}

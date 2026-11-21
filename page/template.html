@@ -312,8 +312,8 @@ get the same figures.</p>
 </table></div>
 <div class="card tbl"><table aria-label="Cells"><thead><tr><th>Cell</th><th>Lane</th><th>Birth check</th></tr></thead><tbody id="cellRows"></tbody></table></div>
 <p class="small muted">Read <span data-bind="census.when">…</span>. Machine-readable: <a href="data/census.json">census.json</a> and
-the <a href="data/genome-index.json">genome index</a>, the file any agent or conductor routes by. One more cell lives in a private
-repository and does not appear here: private repositories are not part of the public census.</p>
+the <a href="data/genome-index.json">genome index</a>, the file any agent or conductor routes by. Cells in private
+repositories do not appear here: private repositories are not part of the public census.</p>
 <h3 id="drift">Drift: a cell that slips is named</h3>
 <p>Being admitted once is not being trusted for ever. The census keeps a history: every day, a row for every public repository
 that declares a genome, with its verdict and the traits that failed (<a href="data/census-history.json">census-history.json</a>).
@@ -344,8 +344,8 @@ every check of both runs, in the file named under the table.</p>
 <div class="card tbl"><table aria-label="Fold-cache measurement"><thead><tr><th>What was measured</th><th>Pass rule</th><th>Result</th></tr></thead><tbody id="cacheRows"></tbody></table></div>
 <p class="small muted" id="cacheNote"></p>
 
-<p class="callout">Day one is honest: almost nothing here has a genome yet. Upgrading old repositories in one rewrite would bake in
-mistakes, so it is a job for the estate's metabolism. It flags every repository with no genome. Ones that are in use get upgraded.
+<p class="callout">Most of this estate still has no genome: <span data-bind="census.genomeLess">…</span> live public repositories.
+Upgrading old repositories in one rewrite would bake in mistakes, so it is a job for the estate's metabolism. It flags every repository with no genome. Ones that are in use get upgraded.
 Ones measured dead get retired, reversibly, after a person signs off. New parts are grown with the genome from the start.</p>
 
 <h2 id="blueprint">Blueprint: how it is built, part by part</h2>
@@ -489,8 +489,8 @@ reversibly. The census counts the result every day.</p>
   <li>The browser check on this page covers the manifest (trait 1). The other three need the part's code, and run on the command line and in CI.</li>
   <li>The conductor ranks by the words in each manifest. The command-line conductor then confirms with the cell's own lane check before handing over work. It does not understand requests.</li>
   <li>The public census covers public repositories only. Today <span data-bind="census.admitted">…</span> are cells. The rest have no genome yet.</li>
-  <li>No outside organisation has deployed it yet. The three cells are this estate's own, and the census figures are this estate's.</li>
-  <li>Three repositories are fitted so far: estate-genome itself, DocDec, and one private service. All three use Node.js hooks; the runner takes any command.</li>
+  <li>No outside organisation has deployed it yet. Every cell is this estate's own, and the census figures are this estate's.</li>
+  <li><span data-bind="census.admitted">…</span> public repositories are cells so far, all with Node.js hooks; the runner takes any command, but no other language has been tried yet.</li>
 </ul>
 
 <footer>

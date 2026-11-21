@@ -190,8 +190,14 @@ $('cacheRows').innerHTML = (cRules && Array.isArray(cRules.rules) ? cRules.rules
   const res = x ? `<span class="${x.pass ? 'yes' : 'noo'}">${x.pass ? 'PASS' : 'FAIL'}</span> · ${esc(CRESULT[rule.id] ? CRESULT[rule.id](x) : JSON.stringify(x))}` : 'not measured yet';
   return `<tr><td>${esc(rule.what)}</td><td>${esc(rule.pass)}</td><td>${res}</td></tr>`;
 }).join('') || '<tr><td colspan="3">The rules could not be loaded.</td></tr>';
+// why the wall-time rule came out as it did, from its own numbers: the cache skips checking, never the listing
+function wallNote(m) {
+  const w = Array.isArray(m.results) ? m.results.find((r) => r.id === 'wall-time') : null;
+  if (!w) return '';
+  return ` Checking fell from ${dur(w.coldCheckingMs)} to ${dur(w.warmCheckingMs)}, but reading every repository from GitHub took ${dur(w.coldListingMs)} and ${dur(w.warmListingMs)}, and the cache cannot skip that read: it is how the census learns each repository's latest commit. ${w.pass ? 'Even so, the warm run took at most half the time.' : 'So the whole census took more than half the cold time, and the wall-time rule failed. It stays failed: the cache saves the checking, not the read.'}`;
+}
 $('cacheNote').innerHTML = cMeasure && cMeasure.cold && cMeasure.warm
-  ? `Measured on GitHub's runner: the cold census is commit <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.cold.commit)}"><code>${esc(cMeasure.cold.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.cold.generated).slice(0, 16).replace('T', ' '))} UTC), the warm one <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.warm.commit)}"><code>${esc(cMeasure.warm.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.warm.generated).slice(0, 16).replace('T', ' '))} UTC). Repositories being converted at the same time get new commits between runs, and are rightly checked again. Every check of both runs: <a href="https://github.com/sjgant80-hub/estate-genome/blob/main/data/foldcache-measure.json">foldcache-measure.json</a>.`
+  ? `Measured on GitHub's runner: the cold census is commit <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.cold.commit)}"><code>${esc(cMeasure.cold.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.cold.generated).slice(0, 16).replace('T', ' '))} UTC), the warm one <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.warm.commit)}"><code>${esc(cMeasure.warm.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.warm.generated).slice(0, 16).replace('T', ' '))} UTC). Repositories with a new commit between the runs are rightly checked again.${wallNote(cMeasure)} Every check of both runs: <a href="https://github.com/sjgant80-hub/estate-genome/blob/main/data/foldcache-measure.json">foldcache-measure.json</a>.`
   : 'The two census runs this judges have not been made yet.';
 
 // ── the guard: four real calls, decided again in this tab ──
