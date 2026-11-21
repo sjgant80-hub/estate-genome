@@ -6,9 +6,9 @@
 <title>Estate Genome — the birth check</title>
 <meta name="description" content="A birth check for software parts: a repository, agent, contract, model or service is admitted only when it describes itself, its judge tells right from wrong, it can be shed and restored exactly, and it refuses work outside its lane.">
 <style>
-:root{--bg:#f7f6f2;--panel:#ffffff;--ink:#1d1f23;--muted:#5d636d;--line:#dcd9d0;--accent:#1f6f5c;--accent-ink:#ffffff;--ok:#1d7a46;--ok-bg:#e3f3e9;--no:#a33a2c;--no-bg:#f8e5e1;--warn:#8a5a00;--code:#f0eee8;--chip:#ecebe5;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131518;--panel:#1b1e22;--ink:#e8e6e1;--muted:#a3a8b0;--line:#2e3238;--accent:#5cc3a6;--accent-ink:#0e1a16;--ok:#6fd39b;--ok-bg:#16301f;--no:#f08a7a;--no-bg:#3a1c18;--warn:#e0b45c;--code:#23272c;--chip:#262a30;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#131518;--panel:#1b1e22;--ink:#e8e6e1;--muted:#a3a8b0;--line:#2e3238;--accent:#5cc3a6;--accent-ink:#0e1a16;--ok:#6fd39b;--ok-bg:#16301f;--no:#f08a7a;--no-bg:#3a1c18;--warn:#e0b45c;--code:#23272c;--chip:#262a30;color-scheme:dark}
+:root{--series:#0f8a6c;--bg:#f7f6f2;--panel:#ffffff;--ink:#1d1f23;--muted:#5d636d;--line:#dcd9d0;--accent:#1f6f5c;--accent-ink:#ffffff;--ok:#1d7a46;--ok-bg:#e3f3e9;--no:#a33a2c;--no-bg:#f8e5e1;--warn:#8a5a00;--code:#f0eee8;--chip:#ecebe5;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--series:#34a888;--bg:#131518;--panel:#1b1e22;--ink:#e8e6e1;--muted:#a3a8b0;--line:#2e3238;--accent:#5cc3a6;--accent-ink:#0e1a16;--ok:#6fd39b;--ok-bg:#16301f;--no:#f08a7a;--no-bg:#3a1c18;--warn:#e0b45c;--code:#23272c;--chip:#262a30;color-scheme:dark}}
+:root[data-theme="dark"]{--series:#34a888;--bg:#131518;--panel:#1b1e22;--ink:#e8e6e1;--muted:#a3a8b0;--line:#2e3238;--accent:#5cc3a6;--accent-ink:#0e1a16;--ok:#6fd39b;--ok-bg:#16301f;--no:#f08a7a;--no-bg:#3a1c18;--warn:#e0b45c;--code:#23272c;--chip:#262a30;color-scheme:dark}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0) 16px env(safe-area-inset-bottom,0)}
@@ -65,6 +65,16 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
 .diagram .hot{stroke:var(--accent);stroke-width:2}
 .diagram .arrow{stroke:var(--muted);stroke-width:1.5;fill:none;marker-end:url(#ah)}
 .diagram .lbl{fill:var(--muted);font-size:12px}
+.chart{max-width:640px}
+.chart svg{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font:12px system-ui,sans-serif}
+.chart .val{fill:var(--ink);font-weight:600}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .ln{stroke:var(--series);stroke-width:2;fill:none;stroke-linejoin:round;stroke-linecap:round}
+.chart .dot{fill:var(--series);stroke:var(--panel);stroke-width:2}
+.chart .hit{fill:transparent;cursor:default}
+.chart .hit:hover+.dot,.chart .hit:focus+.dot{stroke:var(--ink)}
+details summary{cursor:pointer;font-size:14px;color:var(--muted)}
 .diagram .okt{fill:var(--ok);font-weight:600}.diagram .not{fill:var(--no);font-weight:600}
 dl.words{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}dl.words dt{font-weight:600}dl.words dd{margin:0}
 @media (max-width:560px){dl.words{grid-template-columns:1fr}dl.words dd{margin:0 0 6px}}
@@ -76,7 +86,7 @@ footer{margin-top:56px;border-top:1px solid var(--line);padding-top:16px;color:v
 <body>
 <nav aria-label="Sections">
   <a class="brand" href="#top">Estate Genome</a>
-  <a href="#start">Start here</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#guard">Guard</a><a href="#census">Census</a>
+  <a href="#start">Start here</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#guard">Guard</a><a href="#census">Census</a><a href="#convert">Convert</a>
   <a href="#blueprint">Blueprint</a><a href="#business">For your business</a><a href="#paper">White paper</a><a href="#limits">Limits</a>
   <button class="ghost" id="theme" type="button" aria-label="Switch light or dark">Theme</button>
 </nav>
@@ -348,6 +358,40 @@ every check of both runs, in the file named under the table.</p>
 Upgrading old repositories in one rewrite would bake in mistakes, so it is a job for the estate's metabolism. It flags every repository with no genome. Ones that are in use get upgraded.
 Ones measured dead get retired, reversibly, after a person signs off. New parts are grown with the genome from the start.</p>
 
+<h2 id="convert">From counting cells to making them</h2>
+<p class="lead">A census that only counts changes nothing. So the census feeds a worklist: every live repository that still has
+no genome, ranked for conversion, and a ledger of each conversion and how it came out.</p>
+
+<h3>Cells over time</h3>
+<div class="card chart" id="cellChart" aria-live="polite">loading the history…</div>
+<p class="small muted">Each point is one census day, from the published history
+(<a href="data/census-history.json">census-history.json</a>): the public repositories admitted as cells that day. Point at a dot
+for its numbers, or open the table.</p>
+
+<h3>The worklist: who is converted first</h3>
+<p><code>scripts/convert.mjs</code> reads the census and the estate metabolism's latest plan, and ranks every genome-less live
+repository in this order:</p>
+<ol class="steps">
+  <li><b>In use and proved</b>: something uses it (visitors, stars, forks, or a live caller), and its proof holds (a receipt,
+  the census or a green mutation gate). It earns the genome first, because people already depend on it.</li>
+  <li><b>In use</b>, not yet proved.</li>
+  <li><b>Proved, not in use</b>.</li>
+  <li><b>No measured signal</b>: nothing says it is used or broken.</li>
+  <li><b>Not in the metabolism plan</b>: not measured at all yet.</li>
+</ol>
+<p>Within a tier, a green build comes first, then the most callers. A repository measured dead (unused, and broken, unverified
+or superseded) is not converted at all: it takes the retirement path, reversibly, after a person signs off. The ranked names stay
+on the machine that made them, because some are private. What is published is the count in each tier:</p>
+<div class="card tbl"><table aria-label="Conversion queue"><thead><tr><th>Tier</th><th class="num">Repositories</th></tr></thead><tbody id="queueRows"></tbody></table></div>
+<p class="small muted" id="queueNote"></p>
+
+<h3>The conversion ledger</h3>
+<p>Each attempt to give a repository its genome, and how it came out: <b>admitted</b> (its birth check passed) or
+<b>escalated</b> (it could not be made a cell without a person, and the reason says why). Public repositories only
+(<a href="data/convert.json">convert.json</a>).</p>
+<div class="card tbl"><table aria-label="Conversion ledger"><thead><tr><th>Repository</th><th>Outcome</th><th>Reason</th><th>Day</th></tr></thead><tbody id="ledgerRows"></tbody></table></div>
+<p class="small muted" id="ledgerNote"></p>
+
 <h2 id="blueprint">Blueprint: how it is built, part by part</h2>
 <p>Each part is a small module. Every one with logic in it is mutation-tested: a tool rewrites the code one operator at a time
 (<code>&lt;</code> to <code>&lt;=</code>, <code>&amp;&amp;</code> to <code>||</code>, and so on), and the tests must catch every
@@ -474,7 +518,7 @@ the way out.</p>
 real request, so a part that drifts is caught by the first request that shows it, not at the next review.</p>
 <p><b>How it spreads.</b> New parts are grown from the template, so they carry all four from the first commit. Old parts are not
 rewritten in one go. The metabolism flags the genome-less ones; the ones in use are upgraded, and the dead ones are retired
-reversibly. The census counts the result every day.</p>
+reversibly. The census counts the result every day, names any cell that drifts, and ranks the next repositories to convert.</p>
 
 <h2 id="limits">Limits, stated plainly</h2>
 <ul>

@@ -1,0 +1,27 @@
+{
+ "about": "The conversion ledger: each attempt to give a genome-less public repository its genome, and how it came out. Only public repositories are listed. The queue holds counts only; the ranked names stay on the machine that ran scripts/convert.mjs.",
+ "format": {
+  "repo": "the public repository's name",
+  "private": "false: an attempt without it is not published",
+  "outcome": "admitted or escalated",
+  "reason": "why it was escalated (needed for escalated, empty for admitted)",
+  "day": "YYYY-MM-DD of the attempt",
+  "batch": "which conversion batch made it (optional)"
+ },
+ "queue": {
+  "generated": "2026-11-21T16:50:28.711Z",
+  "census": "2026-11-21T16:50:28.512Z",
+  "plan": "2026-11-20T19:57:27.817Z",
+  "ranked": 1412,
+  "publicRanked": 1360,
+  "retire": 257,
+  "byTier": {
+   "in use and proved": 26,
+   "in use": 320,
+   "proved, not in use": 261,
+   "no measured signal": 805,
+   "not in the metabolism plan": 0
+  }
+ },
+ "attempts": []
+}

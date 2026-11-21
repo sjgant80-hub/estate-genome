@@ -33,6 +33,9 @@ const STATE = join(homedir(), '.estate-genome');
 // the fold-cache (src/foldcache.mjs): the public census keeps its cache beside its output; a full census keeps its own,
 // which may name private repositories, outside every repository. --cache <file> picks another; --no-cache checks all.
 const USE_CACHE = !process.argv.includes('--no-cache');
+// the full census (it may name private repositories): never committed. --full <file> writes it elsewhere, so a quick
+// listing-only run does not replace the checked one other tools read (the metabolism's nightly digest, scripts/convert.mjs)
+const FULL = arg('--full', join(STATE, PUBLIC_ONLY ? 'census-public.json' : 'census-full.json'));
 const ONLY = arg('--only', '') ? new Set(arg('--only', '').split(',')) : null;   // check only these (the rest are left unchecked)
 const CACHE = arg('--cache', PUBLIC_ONLY ? join(OUT, 'census-cache.json') : join(STATE, 'census-cache-full.json'));
 // the checker's version: a verdict made by different birth-check code is never reused
@@ -111,8 +114,8 @@ if (USE_CACHE && CLONE) {
 }
 
 const generated = new Date().toISOString();
-mkdirSync(STATE, { recursive: true });
-writeFileSync(join(STATE, PUBLIC_ONLY ? 'census-public.json' : 'census-full.json'), JSON.stringify({ generated, owner: OWNER, tally: tally(rows), checks, rows: rows.map(({ seedText, ...r }) => ({ ...r, declared: seedText !== null })) }, null, 1) + '\n');
+mkdirSync(dirname(FULL), { recursive: true });
+writeFileSync(FULL, JSON.stringify({ generated, owner: OWNER, tally: tally(rows), checks, rows: rows.map(({ seedText, ...r }) => ({ ...r, declared: seedText !== null })) }, null, 1) + '\n');
 const pub = publicView(rows, generated);
 pub.owner = OWNER;
 pub.cloned = CLONE;

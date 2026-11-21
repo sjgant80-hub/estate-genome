@@ -86,7 +86,20 @@ test('run the page: every figure and panel fills from the shipped data, and the 
   assert.equal(bound('describe.count')[0], '22');
   for (const c of census.cells) assert.ok($('cellRows').innerHTML.includes(c.name));
   const rows = $('bpTbl').child.innerHTML.split('<tr>').length - 1;
-  assert.equal(rows, 20);
+  assert.equal(rows, 21);
+  // cells over time: one dot per census day, traced from the shipped history; the table view holds the same numbers
+  const pts = (() => { const by = new Map(); for (const r of JSON.parse(read('data/census-history.json')).rows) { const p = by.get(r.day) || { day: r.day, cells: 0, declared: 0 }; p.declared += 1; if (r.verdict === 'cell') p.cells += 1; by.set(r.day, p); } return [...by.values()].sort((a, b) => a.day.localeCompare(b.day)); })();
+  const chart = $('cellChart').innerHTML;
+  assert.equal(chart.split('<circle class="dot"').length - 1, pts.length);
+  assert.match(chart, /<path class="ln" d="M[\d.]+ [\d.]+/);
+  assert.ok(chart.includes(`>${pts[pts.length - 1].cells} cells</text>`));
+  for (const p of pts) assert.ok(chart.includes(`<tr><td>${p.day}</td><td class="num">${p.cells}</td><td class="num">${p.declared}</td></tr>`), p.day);
+  // the worklist's counts and the ledger
+  const conv = JSON.parse(read('data/convert.json'));
+  assert.ok($('queueRows').innerHTML.includes(`<b>${conv.queue.ranked.toLocaleString('en-GB')}</b>`));
+  assert.equal($('queueRows').innerHTML.split('<tr>').length - 1, 7);
+  assert.match($('queueNote').textContent, new RegExp(`${conv.queue.publicRanked.toLocaleString('en-GB')} of the ranked repositories are public`));
+  assert.equal($('ledgerRows').innerHTML.split('<tr>').length - 1, Math.max(conv.attempts.filter((a) => a && a.private === false).length, 1));
   // the fold-cache: the latest census's reuse, and the measurement against its rules (before it runs: said so)
   assert.match($('cacheOut').innerHTML || $('cacheOut').textContent, census.cache && census.cache.on ? new RegExp(`had ${census.cache.checked} declaring`) : /ran before the fold-cache existed/);
   const cr = JSON.parse(read('data/foldcache-rules.json'));
@@ -172,4 +185,27 @@ test('run the page on a drifted history: the drifted cell is named, with the tra
   assert.match(out, /^<div class="verdict no">1 drifted \(2 census days up to 2026-11-21, 2 repositories watched\)/);
   assert.match(out, /<b>docdecdemo<\/b><\/a>: admitted 2026-11-20, refused since 2026-11-21\. <b>boundary<\/b>: does it still stay in its lane\? No\./);
   assert.equal(out.includes('estate-genome'), false);
+});
+
+test('run the page on a ledger with attempts: public ones listed, private and malformed ones never shown', async () => {
+  const conv = JSON.parse(read('data/convert.json'));
+  conv.attempts = [
+    { repo: 'kar-veil', private: false, outcome: 'admitted', day: '2026-11-21' },
+    { repo: 'break-it', private: false, outcome: 'escalated', reason: 'its tests need a browser', day: '2026-11-21' },
+    { repo: 'hidden-thing', private: true, outcome: 'admitted', day: '2026-11-21' },
+    { repo: 'no-flag', outcome: 'admitted', day: '2026-11-21' },
+  ];
+  const d = await runPage({ 'data/convert.json': conv });
+  const rows = d.document.getElementById('ledgerRows').innerHTML;
+  assert.equal(rows.split('<tr>').length - 1, 2);
+  assert.match(rows, /break-it<\/a><\/td><td><span class="noo">escalated<\/span><\/td><td>its tests need a browser/);
+  assert.equal(rows.includes('hidden-thing') || rows.includes('no-flag'), false);
+  assert.equal(d.document.getElementById('ledgerNote').textContent.startsWith('1 admitted, 1 escalated.'), true);
+});
+
+test('run the page with one census day and with none: the chart still says what it shows', async () => {
+  const one = await runPage({ 'data/census-history.json': { rows: [{ day: '2026-11-21', repo: 'a', verdict: 'cell', failing: [] }] } });
+  assert.equal(one.document.getElementById('cellChart').innerHTML.split('<circle class="dot"').length - 1, 1);
+  const none = await runPage({ 'data/census-history.json': { rows: [] } });
+  assert.equal(none.document.getElementById('cellChart').innerHTML, '<p>No census has been recorded yet.</p>');
 });

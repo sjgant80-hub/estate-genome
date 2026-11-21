@@ -21,6 +21,14 @@ node bin/grow.mjs <folder> --name ... --purpose ... --lane ... --escalate ... --
 `seed.json`), then its judge on the act's output. Only verified output is handed back; anything else is withheld with
 the reason. `examples/drifted-act` passes its birth check, and the guard still withholds every wrong total it makes.
 
+**The census, continuously.** The daily census (`census.yml`) keeps a history, one row per day per declaring
+repository (`data/census-history.json`); a cell admitted before and refused now is named as drifted, with the trait it
+lost (`src/drift.mjs`). It conserves instead of recomputing: a verdict is reused only on the same HEAD commit, the same
+checker version and under 7 days old (`src/foldcache.mjs`, `data/census-cache.json`). And it converts, not only counts:
+`node scripts/convert.mjs` ranks the genome-less live repositories to convert, in use and proved first, sends the
+measured-dead to retirement, writes the ranked names locally (`~/.estate-genome/convert-worklist.json`) and only counts
+to the public ledger (`data/convert.json`).
+
 In CI: `uses: sjgant80-hub/estate-genome@v1` (see `template/.github/workflows/genome.yml`).
 
 Everything else, the page explains: what it is, how to start, how it works (traced from real runs), the census of the

@@ -59,6 +59,7 @@ const BP = [
   ['Guard arithmetic', 'src/guardstats.mjs', 'counts the guard measurement against its pre-registered rules'],
   ['Honest example', 'examples/sum-checker/genome/cell.mjs', 'adds two whole numbers and checks a claimed total'],
   ['Fold-cache', 'src/foldcache.mjs', 'reuses a full verdict only on the same commit, the same checking code and under 7 days old; compares a cold census with a warm one'],
+  ['Convert', 'src/convert.mjs', 'ranks genome-less live repositories to convert, in use and proved first; sends the measured-dead to retirement; checks the public ledger'],
   ['Drift', 'src/drift.mjs', 'the census history: a cell admitted before and refused now is named, with the trait it lost'],
   ['Drifted example', 'examples/drifted-act/genome/cell.mjs', 'the same judge and lane, with an act that is wrong above 100: the guard’s test case'],
 ];
@@ -199,6 +200,42 @@ function wallNote(m) {
 $('cacheNote').innerHTML = cMeasure && cMeasure.cold && cMeasure.warm
   ? `Measured on GitHub's runner: the cold census is commit <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.cold.commit)}"><code>${esc(cMeasure.cold.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.cold.generated).slice(0, 16).replace('T', ' '))} UTC), the warm one <a href="https://github.com/sjgant80-hub/estate-genome/commit/${esc(cMeasure.warm.commit)}"><code>${esc(cMeasure.warm.commit.slice(0, 7))}</code></a> (${esc(String(cMeasure.warm.generated).slice(0, 16).replace('T', ' '))} UTC). Repositories with a new commit between the runs are rightly checked again.${wallNote(cMeasure)} Every check of both runs: <a href="https://github.com/sjgant80-hub/estate-genome/blob/main/data/foldcache-measure.json">foldcache-measure.json</a>.`
   : 'The two census runs this judges have not been made yet.';
+
+// ── cells over time: an inline line, one point per census day, from the published history ──
+function lineChart(points) {
+  if (points.length === 0) return '<p>No census has been recorded yet.</p>';
+  const W = 360, H = 190, L = 34, R = 56, T = 18, B = 34;
+  const top = Math.max(...points.map((p) => p.cells));
+  const max = top <= 5 ? 5 : top <= 10 ? 10 : Math.ceil(top / 10) * 10;
+  const day = (d) => Date.parse(d + 'T00:00:00Z') / 86400000;
+  const d0 = day(points[0].day), span = Math.max(day(points[points.length - 1].day) - d0, 1);
+  const x = (p) => (points.length === 1 ? (L + W - R) / 2 : L + ((day(p.day) - d0) / span) * (W - L - R));
+  const y = (v) => T + (1 - v / max) * (H - T - B);
+  const grid = [0, max / 2, max].map((v) => `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${fmt(v)}</text>`).join('');
+  const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${x(p).toFixed(1)} ${y(p.cells).toFixed(1)}`).join(' ');
+  const every = points.length <= 6 ? points : [points[0], points[points.length - 1]];
+  const xl = every.map((p) => `<text x="${x(p).toFixed(1)}" y="${H - B + 18}" text-anchor="middle">${esc(p.day.slice(5))}</text>`).join('');
+  const dots = points.map((p) => `<circle class="hit" r="12" cx="${x(p).toFixed(1)}" cy="${y(p.cells).toFixed(1)}" tabindex="0"><title>${esc(p.day)}: ${fmt(p.cells)} cells of ${fmt(p.declared)} declaring a genome</title></circle><circle class="dot" r="4" cx="${x(p).toFixed(1)}" cy="${y(p.cells).toFixed(1)}"/>`).join('');
+  const last = points[points.length - 1];
+  const label = `<text class="val" x="${(x(last) + 8).toFixed(1)}" y="${(y(last.cells) + 4).toFixed(1)}">${fmt(last.cells)} cells</text>`;
+  const rows = points.map((p) => `<tr><td>${esc(p.day)}</td><td class="num">${fmt(p.cells)}</td><td class="num">${fmt(p.declared)}</td></tr>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="ccT"><title id="ccT">Public cells per census day, from ${esc(points[0].day)} to ${esc(last.day)}: ${points.map((p) => fmt(p.cells)).join(', ')}</title>${grid}<path class="ln" d="${path}"/>${dots}${label}${xl}</svg>`
+    + `<details><summary>The table</summary><div class="tbl"><table><thead><tr><th>Census day</th><th class="num">Cells</th><th class="num">Declaring a genome</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
+}
+$('cellChart').innerHTML = history ? lineChart(DRIFT.series(history)) : 'The census history could not be loaded.';
+
+// ── the worklist's counts and the conversion ledger ──
+const conv = await maybe(get('data/convert.json'));
+const qd = conv && conv.queue ? conv.queue : null;
+$('queueRows').innerHTML = qd ? CONVERT.TIERS.map((label) => `<tr><td>${esc(label)}</td><td class="num">${fmt(qd.byTier[label])}</td></tr>`).join('')
+  + `<tr><td><b>Ranked to convert</b></td><td class="num"><b>${fmt(qd.ranked)}</b></td></tr><tr><td>Measured dead: the retirement path instead</td><td class="num">${fmt(qd.retire)}</td></tr>`
+  : '<tr><td colspan="2">The worklist has not been made yet.</td></tr>';
+$('queueNote').textContent = qd ? `Ranked ${String(qd.generated).slice(0, 10)}, from the census of ${String(qd.census).slice(0, 10)} and the metabolism plan of ${qd.plan ? String(qd.plan).slice(0, 10) : 'no date (none was on the machine)'}. ${fmt(qd.publicRanked)} of the ranked repositories are public; the rest are private and counted, never named.` : '';
+const led = CONVERT.ledger(conv);
+$('ledgerRows').innerHTML = led.attempts.length
+  ? led.attempts.map((a) => `<tr><td><a href="https://github.com/sjgant80-hub/${esc(a.repo)}">${esc(a.repo)}</a></td><td>${a.outcome === 'admitted' ? '<span class="yes">admitted</span>' : '<span class="noo">escalated</span>'}</td><td>${esc(a.reason) || '—'}</td><td>${esc(a.day) || '—'}</td></tr>`).join('')
+  : '<tr><td colspan="4">No conversion attempts are recorded in the ledger yet.</td></tr>';
+$('ledgerNote').textContent = led.attempts.length ? `${fmt(led.admitted)} admitted, ${fmt(led.escalated)} escalated. Checked in this tab by the same code that keeps the ledger public-only (src/convert.mjs).` : 'The ledger is checked in this tab by the same code that keeps it public-only (src/convert.mjs).';
 
 // ── the guard: four real calls, decided again in this tab ──
 const [gRules, gMeasure] = await Promise.all([maybe(get('data/guard-rules.json')), maybe(get('data/guard-measure.json'))]);
