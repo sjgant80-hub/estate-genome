@@ -1,8 +1,48 @@
 {
- "generated": "2026-11-21T05:22:05.964Z",
+ "generated": "2026-11-21T16:38:10.806Z",
  "owner": "sjgant80-hub",
  "about": "Admitted cells of the estate genome: each passed its birth check on a fresh clone when this was made. Route by lane.",
  "cells": [
+  {
+   "name": "break-it",
+   "repo": "sjgant80-hub/break-it",
+   "kind": "repo",
+   "purpose": "A secure ingest gateway that proves who sent each record, in what order and in exactly what shape, on the raw bytes before any software parses it, and refuses everything else with the stage that stopped it.",
+   "lane": {
+    "id": "raw-packet-ingest",
+    "accepts": "one raw packet as bytes (hex), the pinned public key table of its senders, and each sender's last admitted counter",
+    "refuses": "an already-parsed record: the gate checks bytes before parsing, so a record that skipped it cannot be vouched for"
+   },
+   "interface": {
+    "in": "{packet, pinned, last}: the packet in hex, sender id to 32-byte Ed25519 public key in hex, sender id to last counter; to judge, a claim: the stage",
+    "out": "admitted with the frozen parsed message, or refused with the stage (size, magic, schema, sender, signature, counter, error) and a reason"
+   },
+   "judge": {
+    "what": "a claimed gate decision for a packet is right when break-it's own decide(), with the pinned keys and counters, stops it at the same stage or admits it"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "consumer-rights-cell",
+   "repo": "sjgant80-hub/consumer-rights-cell",
+   "kind": "repo",
+   "purpose": "Answers questions about the Consumer Rights Act 2015, Part 1 from its own text only: the best-supported sentence, word for word, with its passage and character offsets. Refuses questions outside its lane.",
+   "lane": {
+    "id": "consumer-rights-cell",
+    "accepts": "a question about the Consumer Rights Act 2015, Part 1",
+    "refuses": "questions whose words the the Consumer Rights Act 2015, Part 1 text does not use"
+   },
+   "interface": {
+    "in": "{\"question\":\"<text>\"} to ask (node genome/act.mjs); an answer record {question,source,start,end,text} to audit",
+    "out": "a verified answer record (passage id, character offsets, the exact sentence), or a refusal that says why"
+   },
+   "judge": {
+    "what": "an answer record is right when its text is exactly the cited passage's characters at its offsets and that passage uses at least the lane share of the question's content words"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
   {
    "name": "docdecdemo",
    "repo": "sjgant80-hub/docdecdemo",
@@ -34,11 +74,571 @@
     "refuses": "anything that is not a part to check"
    },
    "interface": {
-    "in": "{\"part\":\"<folder>\",\"verdict\":\"cell|part\"}",
-    "out": "a verdict per trait with reasons, and admitted or not"
+    "in": "{\"part\":\"<folder>\"} to check, or {\"part\":\"<folder>\",\"verdict\":\"cell|part\"} to confirm a verdict",
+    "out": "the verdict record {\"part\",\"verdict\",\"line\"}: a verdict per trait, and admitted or not"
    },
    "judge": {
     "what": "a claimed verdict on a part is right when re-running the birth check on that part gives the same verdict"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "falljustice",
+   "repo": "sjgant80-hub/falljustice",
+   "kind": "repo",
+   "purpose": "Helps a person with no lawyer draft a Letter Before Action on the correct modern statute, and checks the law any letter cites against a hand-verified table. Not legal advice; local and encrypted.",
+   "lane": {
+    "id": "letter-citation-check",
+    "accepts": "the text of a letter or passage that cites law, to check every citation against the hand-verified table",
+    "refuses": "a request for legal advice or a prediction of the outcome: that is not a text to check, and this tool is not a lawyer"
+   },
+   "interface": {
+    "in": "{text}: the letter or passage; to judge, a claim: vouched, unvouched, pseudo-law or none",
+    "out": "each citation read from the text with whether the verified table vouches for it, the pseudo-law flag, the scope notice"
+   },
+   "judge": {
+    "what": "a claimed verdict on a letter's citations is right when falljustice's own checkLetter() gives the same verdict: it vouches only for the hand-verified table and flags pseudo-law first"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "genome-fold",
+   "repo": "sjgant80-hub/genome-fold",
+   "kind": "tool",
+   "purpose": "Folds a folder of plain-text or markdown documents into a verified question-answering cell: an index, an extractive answerer with no language model, a judge, a measured lane and a drafted seed, shipped only when the birth check admits it.",
+   "lane": {
+    "id": "corpus-fold",
+    "accepts": "a corpus of plain-text or markdown documents to fold into a cell",
+    "refuses": "anything that is not a text corpus: no documents, text with no content words, or a question with no corpus"
+   },
+   "interface": {
+    "in": "{\"corpus\":[{\"name\":\"<file>\",\"text\":\"<text>\"}]} to fold; with a record {question,source,start,end,text} to audit",
+    "out": "a cell folder (seed.json, index, judge, lane, act hook) admitted by the birth check, or the list of what is missing"
+   },
+   "judge": {
+    "what": "an answer record from a folded corpus is right when its text is exactly the cited passage's characters at its offsets and that passage uses at least the folded lane share of the question's content words"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-alerttriage",
+   "repo": "sjgant80-hub/kar-alerttriage",
+   "kind": "repo",
+   "purpose": "Turns a flood of SIEM, EDR or IDS alerts into a short ranked list of incidents: repeats become bursts, routine noise is set aside, related bursts link, and every incident's score is shown as arithmetic, with no AI model judging.",
+   "lane": {
+    "id": "alert-triage",
+    "accepts": "a list of alerts (Wazuh, Suricata eve.json, Elastic/ECS or flat rows) with at least one it can place in time, and optional options {burstGap, incidentGap, backgroundShare, backgroundMinHours}",
+    "refuses": "anything that is not alerts to triage, such as a request to block an address or act on an incident"
+   },
+   "interface": {
+    "in": "{\"alerts\":[<alert>],\"options\":{...}} plus, to audit, a claimed ranking {\"ranking\":[{\"kind\":\"incident|background\",\"rules\":[\"<rule id>\"]}]} in rank order",
+    "out": "{ok:true, groups:[{kind, score, first, last, alerts, bursts, hosts, addresses, rules, marks}], stats}, or {ok:false, why}"
+   },
+   "judge": {
+    "what": "a claimed ranking is right when AlertTriage's own run on the same alerts and options gives the same groups, of the same kind and the same rules, in the same order"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-benfordgap",
+   "repo": "sjgant80-hub/kar-benfordgap",
+   "kind": "tool",
+   "purpose": "A first-digit fraud screen for a column of amounts: compares how often each first digit appears with Benford's Law and gives one verdict, with chi-square, Nigrini's MAD and the digits to look at first, with no AI judge.",
+   "lane": {
+    "id": "benford-screen",
+    "accepts": "a column of amounts (numbers or ledger strings such as £1,200.00 or (350.50)) with at least one usable nonzero amount, and optionally the sample floor",
+    "refuses": "anything that is not a list of amounts, such as a CSV pasted as one string, a list with no usable amount, or a question about whether someone committed fraud"
+   },
+   "interface": {
+    "in": "{\"values\":[<amount>,...],\"minN\":<optional floor>,\"verdict\":\"<claimed verdict>\"}",
+    "out": "one verdict (too-few, close, acceptable, marginal or nonconformity) and which test gave it, with the counts, chi-square, MAD and z per digit"
+   },
+   "judge": {
+    "what": "a claimed screen verdict for a column is right when BenfordGap's own audit gives that same verdict for those amounts; a conforming verdict is a screen result, never proof the data is honest"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-citelock",
+   "repo": "sjgant80-hub/kar-citelock",
+   "kind": "tool",
+   "purpose": "Checks a claim against the sources it cites, with fixed rules and no AI judge: VERIFIED only when every quotation is word for word in a cited source and every content word and number is in a cited source; otherwise REFUSED, with the reason for each failed part and the offsets of every check.",
+   "lane": {
+    "id": "claim-grounding",
+    "accepts": "a claim (text) with the 1 to 50 sources it cites, as {claim, sources}",
+    "refuses": "anything that is not a claim with its sources: questions, requests for an opinion, and judgements of meaning or of whether a source is true"
+   },
+   "interface": {
+    "in": "{\"claim\":\"<text, with optional [id] markers>\",\"sources\":[{\"id\":\"s1\",\"text\":\"<source text>\"}]}",
+    "out": "VERIFIED or REFUSED, the reason for each failed part, and the trace: every quotation, number and content word checked, with the source and the offsets where it was found"
+   },
+   "judge": {
+    "what": "a claim is verified when the kernel's verify() finds every quotation word for word in a cited source and every content word and number outside the quotations in a cited source"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-conform",
+   "repo": "sjgant80-hub/kar-conform",
+   "kind": "tool",
+   "purpose": "Checks an AI model's structured output against its JSON Schema contract with no AI judge: PASS or FAIL with the exact path of every violation, and a hash that tells reformatting apart from real drift.",
+   "lane": {
+    "id": "schema-conformance",
+    "accepts": "a JSON Schema (an object, or true or false) and one model output as its raw text",
+    "refuses": "anything that is not a schema and an output's text, such as a list in place of a schema, an output already parsed into an object, or a question about whether the output is true"
+   },
+   "interface": {
+    "in": "{\"schema\":<JSON Schema>,\"json\":\"<the model output's raw text>\"}",
+    "out": "PASS or FAIL with every violation's path and message, and the output's canonical SHA-256 hash"
+   },
+   "judge": {
+    "what": "a model output is right when it parses as JSON and Kar-Conform's own validator finds no violation of the schema; a rule the validator does not check fails the output rather than passing it; shape, never truth"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-consentdecay",
+   "repo": "sjgant80-hub/kar-consentdecay",
+   "kind": "repo",
+   "purpose": "Answers whether an act is still covered by consent: consent was granted for one scope, weakens by half every half-life, and is gone once a matching revocation lands. Anything it cannot match is refused, never estimated.",
+   "lane": {
+    "id": "consent-ruling",
+    "accepts": "a grant {scope, grantedAt, halfLife, minStrength?, revocations?} and an act {scope, tick}",
+    "refuses": "anything that is not a grant and an act it can rule on, such as a request to grant or record consent on someone's behalf"
+   },
+   "interface": {
+    "in": "{\"grant\":{\"scope\":\"<purpose>\",\"grantedAt\":<n>,\"halfLife\":<n>},\"act\":{\"scope\":\"<purpose>\",\"tick\":<n>}} plus, to audit, a claimed ruling {\"ruling\":\"COVERED|EXPIRED|REFUSE-UNKNOWN\"}",
+    "out": "{ok:true, ruling: COVERED|EXPIRED|REFUSE-UNKNOWN, why?, strength?}, or {ok:false, why} for a grant or act it cannot read"
+   },
+   "judge": {
+    "what": "a claimed ruling is right when ConsentDecay's own ruling for that grant and act is the same: a revoked or decayed consent is never covered"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-driftscore",
+   "repo": "sjgant80-hub/kar-driftscore",
+   "kind": "tool",
+   "purpose": "Scores how far a model's inputs have drifted: one number from 0 (identical) to 1 (nothing shared) between two label-count distributions, the total variation distance, with no AI judge.",
+   "lane": {
+    "id": "drift-score",
+    "accepts": "two label-count distributions (what the model used to see, what it sees now), each with non-negative counts and a total above zero",
+    "refuses": "anything that is not two scorable distributions, such as raw text, a single list, negative or empty counts, or a request to retrain a model"
+   },
+   "interface": {
+    "in": "{\"distA\":{\"<label>\":<count>},\"distB\":{\"<label>\":<count>},\"score\":<claimed drift>}",
+    "out": "the drift score from 0 to 1, or a refusal saying which count is wrong"
+   },
+   "judge": {
+    "what": "a claimed drift score is right when DriftScore's own kernel recomputes the same total variation distance for those two distributions, to six decimal places"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-fairshare",
+   "repo": "sjgant80-hub/kar-fairshare",
+   "kind": "repo",
+   "purpose": "Splits a pot that cannot pay every claim in full, to the penny, by one of four standard rules (proportional, equal awards, equal losses, the Talmud rule), with leftover pence settled by name so list order never matters.",
+   "lane": {
+    "id": "claims-split",
+    "accepts": "a pot in whole pence, the claimants {id, claim} in whole pence, and a rule: proportional, cea, cel or talmud",
+    "refuses": "anything that is not a split to compute, such as a request to pay the claimants"
+   },
+   "interface": {
+    "in": "{\"pot\":<pence>,\"claims\":[{\"id\":\"<name>\",\"claim\":<pence>}],\"rule\":\"proportional|cea|cel|talmud\"} plus, to audit, a claimed payout {\"pence\":[<pence per claimant, in list order>]}",
+    "out": "{ok:true, rule, pot, total, paid, leftover, shortfall, rows:[{id, claim, pence, exact, lost}]}, or {ok:false, error}"
+   },
+   "judge": {
+    "what": "a claimed payout is right when it is, claimant for claimant, the pence FairShare's own exact split gives under that rule"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-glyphguard",
+   "repo": "sjgant80-hub/kar-glyphguard",
+   "kind": "tool",
+   "purpose": "Finds the tricks that hide in characters (invisible characters, lookalike letters, bidi overrides, hidden tag text, styled letters) with no AI judge, and re-checks any report it exported against the text, byte for byte.",
+   "lane": {
+    "id": "glyph-report-check",
+    "accepts": "a text and the Glyphguard report exported for it (the report, with its input and report hashes)",
+    "refuses": "anything that is not a text with its exported report, such as a bare text with no report, or a question about whether a message is safe"
+   },
+   "interface": {
+    "in": "{\"text\":\"<the text>\",\"export\":{\"tool\":\"glyphguard\",\"version\",\"inputHash\",\"reportHash\",\"report\":{...}}}",
+    "out": "whether the report matches a fresh scan of the text, and whether its input and report hashes match"
+   },
+   "judge": {
+    "what": "an exported report is right when Glyphguard's own re-check finds a fresh scan of the text gives the same report and neither hash disagrees; clean means these known tricks were not found, never that the text is safe"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-irhelper",
+   "repo": "sjgant80-hub/kar-irhelper",
+   "kind": "repo",
+   "purpose": "Incident-response helper for hosts you own: will not start without a written authorization naming the host, reads evidence with fixed read-only commands, proposes each step with its undo, never acts itself, and logs every step in a hash chain.",
+   "lane": {
+    "id": "authorized-response",
+    "accepts": "an incident response on a host its written authorization names: {scope: who authorized, when, why, which hosts, until when; host; now}",
+    "refuses": "a host the authorization does not name, an expired or incomplete authorization, and any request to act without a person approving it"
+   },
+   "interface": {
+    "in": "{\"scope\":{\"authorizedBy\":\"<person>\",\"authorizedAt\":\"<ISO time>\",\"expires\":\"<ISO time>\",\"purpose\":\"<why>\",\"hosts\":[\"<host>\"]},\"host\":\"<host>\",\"now\":\"<ISO time>\"}; to audit a record, {\"log\":[<entry>],\"anchor\":\"<recorded hash>\"?}",
+    "out": "a scope check {ok, why[], summary}; facts and proposals with exact commands and undo; a hash-chained log whose check gives {ok, entries, brokenAt, anchoredAt}"
+   },
+   "judge": {
+    "what": "an incident record is right when IR Helper's own log check finds every entry's number, link and hash intact and, when an anchor is given, the anchor still in the chain"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-isolationgate",
+   "repo": "sjgant80-hub/kar-isolationgate",
+   "kind": "repo",
+   "purpose": "Release gate for shared totals: remembers which contributors were in every total already released, and refuses any new release that could be subtracted against them to single out fewer than k parties (the differencing attack).",
+   "lane": {
+    "id": "aggregate-release",
+    "accepts": "a gate state {k, released: lists of contributor ids} and the contributor ids of the next total to release",
+    "refuses": "anything that is not a release to decide, such as a request for one contributor's own figure"
+   },
+   "interface": {
+    "in": "{\"state\":{\"k\":<whole n, 2 or more>,\"released\":[[\"<id>\"]]},\"contributors\":[\"<id>\"]} plus, to audit, a claimed decision {\"release\":<bool>}",
+    "out": "{ok:true, state, releases, size} when the release is safe; {ok:false, why, against?, size?, k?} when it is refused or the input is malformed"
+   },
+   "judge": {
+    "what": "a claimed decision is right when IsolationGate's own propose makes the same call: release only when no difference, reverse difference or overlap with any earlier release isolates fewer than k"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-quorumfloor",
+   "repo": "sjgant80-hub/kar-quorumfloor",
+   "kind": "repo",
+   "purpose": "Settles a vote's turnout floor exactly: decisive votes (yes plus no) as a percentage of everyone present, cross-multiplied in whole numbers so no rounding can pass a failed vote or fail a passed one.",
+   "lane": {
+    "id": "turnout-floor",
+    "accepts": "a list of votes {weight, choice: yes|no|abstain} with whole non-negative weights, and a whole-number threshold from 0 to 100 percent",
+    "refuses": "anything that is not a ballot it can settle exactly, such as a request to declare the result or act on it"
+   },
+   "interface": {
+    "in": "{\"votes\":[{\"weight\":<whole n>,\"choice\":\"yes|no|abstain\"}],\"thresholdPercent\":<0-100>} plus, to audit, a claimed result {\"clears\":<bool>,\"margin\":<whole n>}",
+    "out": "{ok:true, value:{clears, margin}}, or {ok:false, why} for a ballot it cannot settle exactly"
+   },
+   "judge": {
+    "what": "a claimed result is right when QuorumFloor's own whole-number check gives the same clears and the same exact margin"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-quorumgate",
+   "repo": "sjgant80-hub/kar-quorumgate",
+   "kind": "repo",
+   "purpose": "Decides whether an action collected a real quorum: each distinct voter counted once at a valid weight, the weight behind each choice tallied, and the total checked against the threshold.",
+   "lane": {
+    "id": "quorum-tally",
+    "accepts": "a ballot: a list of votes {voter, weight, choice} and a non-negative threshold",
+    "refuses": "anything that is not a ballot it can count, such as a request to carry out the action a vote approved"
+   },
+   "interface": {
+    "in": "{\"entries\":[{\"voter\":\"<id>\",\"weight\":<n>,\"choice\":\"<option>\"}],\"threshold\":<n>} plus, to audit, a claimed outcome {\"met\":<bool>,\"winner\":\"<option>\"|null}",
+    "out": "{ok, met, total, winner, tally}, or {ok:false, why} for a ballot it cannot count"
+   },
+   "judge": {
+    "what": "a claimed outcome is right when QuorumGate's own tally, counting each distinct voter once, reaches the same met and the same winner"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-quorumveil",
+   "repo": "sjgant80-hub/kar-quorumveil",
+   "kind": "repo",
+   "purpose": "Guards a private sum: contributions are released only as masked shares, the total is unveiled only when at least three masked shares are present, and noise is added at unveiling from a caller seed.",
+   "lane": {
+    "id": "veiled-sum",
+    "accepts": "an unveil request: a list of shares {masked, data}, a whole-number seed and a whole-number noise scale of 0 or more",
+    "refuses": "anything that is not an unveil request, such as a request to read one contributor's raw number"
+   },
+   "interface": {
+    "in": "{\"shares\":[{\"masked\":true,\"data\":[<n>]}],\"seed\":<whole n>,\"noiseScale\":<whole n>} plus, to audit, a claimed released total {\"sum\":[<n>]}",
+    "out": "{ok:true, sum, noised, quorum, live}, or {ok:false, why} when the release is refused (below quorum, an unmasked share, mismatched lengths)"
+   },
+   "judge": {
+    "what": "a claimed released total is right only when QuorumVeil's own unveil releases it (quorum met, every share masked) and gives exactly that total"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-redactseal",
+   "repo": "sjgant80-hub/kar-redactseal",
+   "kind": "repo",
+   "purpose": "Redacts named spans of a document and seals the removals in a hash chain, so a later disclosure of what was removed can be proven faithful to the sealed redaction without trusting whoever discloses it.",
+   "lane": {
+    "id": "sealed-redaction",
+    "accepts": "a document and the spans to remove {text, spans}, or a sealed redaction and a disclosure to check {redacted, positions, revealed, seal}",
+    "refuses": "anything that is neither, such as a request to show what was removed without the original"
+   },
+   "interface": {
+    "in": "{\"text\":\"<doc>\",\"spans\":[{\"start\":<n>,\"end\":<n>}]} to seal; {\"redacted\":\"<doc>\",\"positions\":[{\"start\":<n>,\"end\":<n>}],\"revealed\":[\"<text>\"],\"seal\":<n>} to check a disclosure",
+    "out": "{ok, redacted, positions, seal, spanCount} for a seal; {ok, valid, why?, original?} for a disclosure check; {ok:false, why} for input it cannot read"
+   },
+   "judge": {
+    "what": "a disclosure is right when RedactSeal's own check finds every marker, every length, every position and the recomputed hash chain equal to the seal"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-scopeguard",
+   "repo": "sjgant80-hub/kar-scopeguard",
+   "kind": "tool",
+   "purpose": "Checks how an AI coding agent got its green: reads the change and flags every test skipped, loosened or deleted, every CI step told to ignore failures, and every file outside what the task allowed.",
+   "lane": {
+    "id": "change-audit",
+    "accepts": "a change as unified diff text, with an optional scope file and the agent's own summary of what it changed",
+    "refuses": "anything that is not a readable diff and scope, such as an agent's claim that the tests pass with no change attached"
+   },
+   "interface": {
+    "in": "{\"diff\":\"<unified diff>\",\"scope\":\"<.scopeguard text, optional>\",\"claim\":\"<the agent's summary, optional>\"}",
+    "out": "a verdict (clean, review or flagged) with every finding's rule, file, line and exact text"
+   },
+   "judge": {
+    "what": "a change is right only when ScopeGuard's own audit finds nothing at all (verdict clean); any high or review finding means it is not verified"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-spendwall",
+   "repo": "sjgant80-hub/kar-spendwall",
+   "kind": "tool",
+   "purpose": "A spend wall for an AI agent's paid model calls: a daily cap checked before every call, a ceiling reserved on every call, a hard stop, and a ledger an independent auditor re-adds.",
+   "lane": {
+    "id": "spend-ledger-audit",
+    "accepts": "the wall's own ledger: its reservation, settlement and refusal lines, as one JSON array",
+    "refuses": "anything that is not a ledger, such as a request to raise the cap, move the stop or make a call"
+   },
+   "interface": {
+    "in": "[{\"seq\",\"kind\":\"reserve|settle|refuse\",...}] (the ledger lines, oldest first)",
+    "out": "the audit: rows K1, K2, K3, K4 and O, each passed, failed or undecided, with what was measured"
+   },
+   "judge": {
+    "what": "a ledger is right only when the wall's own audit passes every row: each call carried the evidence the cheaper tiers failed, no day over its cap, the total never past the stop, kar-tally re-adds every line, and no call cost more than its ceiling"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-tally",
+   "repo": "sjgant80-hub/kar-tally",
+   "kind": "tool",
+   "purpose": "Recomputes an AI agent's spend log from its budget cap and proves the claimed balances add up, no entry is missing and the cap was never exceeded, with no AI judge.",
+   "lane": {
+    "id": "spend-log-audit",
+    "accepts": "a spend log: a budget cap, a starting sequence number and a non-empty list of entries, each with its cost and claimed running balance",
+    "refuses": "anything that is not a spend log, such as a question, a bill in prose or a request to pay or move money"
+   },
+   "interface": {
+    "in": "{\"cap\":<number>,\"startSeq\":<integer>,\"entries\":[{\"seq\",\"actor\",\"action\",\"cost\",\"balance\"}]}",
+    "out": "a verdict, PASS or FAIL, naming every violation, with each entry's recomputed balance"
+   },
+   "judge": {
+    "what": "a spend log is right when Kar-Tally's own recompute finds every claimed balance equal to the cap minus the costs so far, no gap in the sequence, and the cap never exceeded"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-veil",
+   "repo": "sjgant80-hub/kar-veil",
+   "kind": "tool",
+   "purpose": "Provable redaction with no AI judge: commit a document to a root, then publish a redacted version whose proof anyone can check against that root without ever seeing the hidden lines.",
+   "lane": {
+    "id": "redaction-proof-check",
+    "accepts": "a veil proof (v2, or the older v1), with the root published before the redaction and optionally the redacted document as received",
+    "refuses": "anything that is not a well-formed proof, or a trusted root that is not 64 hex characters, such as a request to reveal a hidden line"
+   },
+   "interface": {
+    "in": "{\"proof\":{\"kind\":\"kar-veil-proof-v2\",\"root\",\"lineCount\",\"visible\",\"hidden\"},\"trustedRoot\":\"<64 hex>\",\"received\":\"<optional redacted text>\"}",
+    "out": "VERIFIED, CONSISTENT, BREACHED or MALFORMED, with every issue and every warning named"
+   },
+   "judge": {
+    "what": "a redaction proof is right only when Veil's own verify recomputes it to its stated root and to the trusted root with no warning: a v1 proof (whose faults the kernel names) or a proof with no trusted root is never verified"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "konomi-ablate",
+   "repo": "sjgant80-hub/konomi-ablate",
+   "kind": "repo",
+   "purpose": "Leave-one-out ablation for system prompts: removes each clause, tests with an exact sign test whether the eval really moved, and certifies a batch of deletions only after the joint run holds.",
+   "lane": {
+    "id": "prompt-ablation-results",
+    "accepts": "a system prompt and the per-item eval scores of its baseline and its clause-removed variants",
+    "refuses": "a prompt with no eval scores, or a single-clause prompt: there is nothing to compare"
+   },
+   "interface": {
+    "in": "{prompt, results}: results maps baseline, without-<i> and joint to per-item scores; to judge, a claim: the clause indices certified for deletion",
+    "out": "a verdict per clause (DEAD, LOAD_BEARING, HARMFUL, PROTECTED, INCONCLUSIVE), the joint check, and the certified set"
+   },
+   "judge": {
+    "what": "a claimed set of deletable clauses is right when konomi-ablate's own analyse() certifies exactly that set from the same scores"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "konomi-clean",
+   "repo": "sjgant80-hub/konomi-clean",
+   "kind": "repo",
+   "purpose": "Checks whether evaluation items appear in a reference corpus, by containment rather than Jaccard, item by item, with what the headline score becomes once the leaked items are left out.",
+   "lane": {
+    "id": "eval-contamination-check",
+    "accepts": "an evaluation item's text and a reference corpus of documents to check it against",
+    "refuses": "an item with no reference corpus, or a corpus that is not a list of documents"
+   },
+   "interface": {
+    "in": "{item, reference}: the item (text or {id, text}) and the corpus documents; to judge, a claim: EXACT, NEAR, PARTIAL or CLEAN",
+    "out": "a per-item verdict (EXACT, NEAR, PARTIAL or CLEAN) with its containment, and the score impact across a set"
+   },
+   "judge": {
+    "what": "a claimed contamination verdict for an item is right when konomi-clean's own checkItem(), at its default shingle size and thresholds, gives the same verdict against that corpus"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "konomi-export",
+   "repo": "sjgant80-hub/konomi-export",
+   "kind": "repo",
+   "purpose": "Turns graded responses into SFT and DPO training rows, and refuses the pairs that would poison them: ties, grading gaps, unexplained gaps and any pair that trades away safety or grounding.",
+   "lane": {
+    "id": "graded-preference-pairs",
+    "accepts": "a candidate pair of graded responses (each a seven-axis vector and its criterion verdicts)",
+    "refuses": "raw, ungraded responses: grade them with a rubric first"
+   },
+   "interface": {
+    "in": "{a, b} graded sides; to judge, a claim: the chosen side ('a' or 'b') or the refusal name",
+    "out": "a DPO pair with its margin and the criteria that separate the sides, or a named refusal with its reason"
+   },
+   "judge": {
+    "what": "a claimed outcome for a candidate pair is right when konomi-export's own buildPair() gives the same outcome: the same chosen side, or the same named refusal"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "konomi-regress",
+   "repo": "sjgant80-hub/konomi-regress",
+   "kind": "repo",
+   "purpose": "Compares two model-evaluation runs or refuses to: inadmissible comparisons throw, movement is paired item by item, and the gate names every hole a headline number hides.",
+   "lane": {
+    "id": "eval-run-comparison",
+    "accepts": "two recorded evaluation runs (rubric fingerprint, model version, item vectors) to compare",
+    "refuses": "questions about which model is better that come without two recorded runs"
+   },
+   "interface": {
+    "in": "{before, after} run records; to judge, a claim: the hole kinds the gate should find, or 'inadmissible'",
+    "out": "an admissibility verdict, paired movement, per-axis deltas, an exact sign test and the gate's named holes"
+   },
+   "judge": {
+    "what": "a claimed reading of a comparison is right when konomi-regress's own compare and gate find exactly the holes it names (or refuse the comparison as inadmissible)"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "openkonomi",
+   "repo": "sjgant80-hub/openkonomi",
+   "kind": "repo",
+   "purpose": "The checkpoint for an AI agent: every action is checked against its grant (a capability level per resource, and a call and spend budget) before it happens, and anything outside the grant is refused with a reason.",
+   "lane": {
+    "id": "agent-grant-check",
+    "accepts": "a grant (capabilities per resource, optional call and spend budget) and one action request naming its resource and level",
+    "refuses": "free text an agent was told to follow, such as a skill's setup instructions: that is not a request with a resource and level"
+   },
+   "interface": {
+    "in": "{grant: {caps, budget}, request: {resource, level, cost}}; to judge, a claim: allowed, or the refusal code",
+    "out": "allowed, or refused with its code (capability, budget_calls, budget_spend, unknown_resource) and a reason"
+   },
+   "judge": {
+    "what": "a claimed decision for an action is right when openkonomi's own permits() gives the same code for that request under that grant"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "pixelwhisperer",
+   "repo": "sjgant80-hub/pixelwhisperer",
+   "kind": "tool",
+   "purpose": "Draws the face of every Kardlings card from the card's own facts, with whole numbers only, and reads a sealed card file back face up only when it is exactly the file its record makes.",
+   "lane": {
+    "id": "sealed-card-read",
+    "accepts": "a sealed card file: a PNG that carries its Kardlings card record, as base64 text",
+    "refuses": "anything that is not a card file, such as a plain picture with no card record, damaged or non-canonical base64, or a request to draw a card"
+   },
+   "interface": {
+    "in": "{\"png\":\"<the card file, base64>\"}",
+    "out": "face up with the card's record, or face down with the reason (how many pixels differ and where, or what else the file carries)"
+   },
+   "judge": {
+    "what": "a card file is right only when PixelWhisperer's own reader makes the whole file again from the record it carries and every byte matches (face up); a face that is not the one its record draws stays face down"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "seam-check",
+   "repo": "sjgant80-hub/seam-check",
+   "kind": "repo",
+   "purpose": "A GitHub Action that checks a pull request's stated intent against the organisation's own repositories and says, before the merge, whether the org already owns this, partly owns it, or it is new.",
+   "lane": {
+    "id": "pr-ownership-check",
+    "accepts": "a pull request title and body that state an intent of two or more words, and the org's repositories as {name, desc} entries",
+    "refuses": "a pull request whose title is a label rather than an intent, or no list of the org's repositories"
+   },
+   "interface": {
+    "in": "{title, body, shadow}: the PR text and the org's repositories; to judge, a claim: already-owned, partly-owned or novel",
+    "out": "the verdict with the repositories that cover the intent and their support, and the PR comment"
+   },
+   "judge": {
+    "what": "a claimed ownership verdict for a pull request is right when seam-check's own checkOf() gives the same verdict against the same repositories"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "witness-kit",
+   "repo": "sjgant80-hub/witness-kit",
+   "kind": "repo",
+   "purpose": "Wires a mutation gate into a repository honestly: finds the kernel and test pairs it can gate, names the lane (wire it, add discipline to an existing mutator, or refuse as theatre) and writes the pinned workflow.",
+   "lane": {
+    "id": "repo-gate-wiring",
+    "accepts": "a repository's file listing (as git ls-files prints it) and whether the repository is an ES module package",
+    "refuses": "a request with no file listing, such as 'add a gate to my project' on its own"
+   },
+   "interface": {
+    "in": "{files, esm}: repo-relative paths and a boolean; to judge, a claim: the lane A, B or THEATRE",
+    "out": "the lane with its reason and notes, and for lane A a pinned workflow that reads every verdict"
+   },
+   "judge": {
+    "what": "a claimed lane for a repository is right when witness-kit's own detect() and plan() name the same lane for that file listing"
    },
    "escalate": "kar",
    "verdict": "cell"

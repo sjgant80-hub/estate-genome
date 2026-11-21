@@ -1,15 +1,27 @@
 {
- "generated": "2026-11-21T05:22:05.964Z",
- "scanned": 1782,
+ "generated": "2026-11-21T16:38:10.806Z",
+ "scanned": 1784,
  "archived": 135,
- "live": 1647,
- "declared": 2,
- "describes": 2,
- "admitted": 2,
+ "live": 1649,
+ "declared": 32,
+ "describes": 32,
+ "admitted": 32,
  "notAdmitted": 0,
  "unchecked": 0,
- "genomeLess": 1645,
+ "genomeLess": 1617,
  "cells": [
+  {
+   "name": "break-it",
+   "lane": "raw-packet-ingest",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "consumer-rights-cell",
+   "lane": "consumer-rights-cell",
+   "describes": true,
+   "verdict": "cell"
+  },
   {
    "name": "docdecdemo",
    "lane": "grounded-answers",
@@ -21,6 +33,174 @@
    "lane": "birth-check",
    "describes": true,
    "verdict": "cell"
+  },
+  {
+   "name": "falljustice",
+   "lane": "letter-citation-check",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "genome-fold",
+   "lane": "corpus-fold",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-alerttriage",
+   "lane": "alert-triage",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-benfordgap",
+   "lane": "benford-screen",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-citelock",
+   "lane": "claim-grounding",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-conform",
+   "lane": "schema-conformance",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-consentdecay",
+   "lane": "consent-ruling",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-driftscore",
+   "lane": "drift-score",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-fairshare",
+   "lane": "claims-split",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-glyphguard",
+   "lane": "glyph-report-check",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-irhelper",
+   "lane": "authorized-response",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-isolationgate",
+   "lane": "aggregate-release",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-quorumfloor",
+   "lane": "turnout-floor",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-quorumgate",
+   "lane": "quorum-tally",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-quorumveil",
+   "lane": "veiled-sum",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-redactseal",
+   "lane": "sealed-redaction",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-scopeguard",
+   "lane": "change-audit",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-spendwall",
+   "lane": "spend-ledger-audit",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-tally",
+   "lane": "spend-log-audit",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "kar-veil",
+   "lane": "redaction-proof-check",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "konomi-ablate",
+   "lane": "prompt-ablation-results",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "konomi-clean",
+   "lane": "eval-contamination-check",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "konomi-export",
+   "lane": "graded-preference-pairs",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "konomi-regress",
+   "lane": "eval-run-comparison",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "openkonomi",
+   "lane": "agent-grant-check",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "pixelwhisperer",
+   "lane": "sealed-card-read",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "seam-check",
+   "lane": "pr-ownership-check",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "witness-kit",
+   "lane": "repo-gate-wiring",
+   "describes": true,
+   "verdict": "cell"
   }
  ],
  "privateDeclared": 0,
@@ -29,14 +209,309 @@
  "scope": "public repositories",
  "checks": [
   {
+   "name": "break-it",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "840e2ea311faec3cb817371e515c1c220e576f41",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:31.108Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "consumer-rights-cell",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "7cc613779b401b2f5ef6b460fa5fde7b79a424fb",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:32.342Z",
+   "why": "not checked before"
+  },
+  {
    "name": "docdecdemo",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
-   "reasons": []
+   "reasons": [],
+   "oid": "85bb7f6e5e9e94f891540b7d2f41dcdf92246002",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:35.497Z",
+   "why": "not checked before"
   },
   {
    "name": "estate-genome",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
-   "reasons": []
+   "reasons": [],
+   "oid": "cce15dc8626f062d231099d9bc5404d141e1b29d",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:38.442Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "falljustice",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "6023a3fac61940004208108bb6e2c0ed9877eee3",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:39.513Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "genome-fold",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "19d4ac4919ea99bbba3ae69d85e69e5b42f3d4f9",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:40.659Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-alerttriage",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "366a34b301980207a309534a14079dd3233bfefa",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:41.768Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-benfordgap",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "b96b3af8a45c3da28c477d6aae7b1db0cb3d99cd",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:42.970Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-citelock",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "3b0c202661cd650ebb49a7ccd08ce24e675774de",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:44.267Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-conform",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "4a449040a98eb2f3a5237e2289c063749479601c",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:45.865Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-consentdecay",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "9f6fbe915c46f92471f70715fa9cc1f76f955cb2",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:46.966Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-driftscore",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "a0f01e05fe6f9cec34403e7b0ca29045c67a7b68",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:47.936Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-fairshare",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "f98bf3f53aff674506e5bd37002c4382d770b784",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:48.931Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-glyphguard",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "e053bf515eac0850eb60aea6a7f9e7b5bdc7b187",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:50.213Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-irhelper",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "ea1cb261a20791b89fbcdcd338c1fa7b725ba354",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:51.334Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-isolationgate",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "f6d176ef548afea6e908036d1287f6bfdba72b7c",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:52.294Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-quorumfloor",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "218e6f658567ca67f4098db36abf9af3d546214b",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:53.399Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-quorumgate",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "a6c8983f071b1d875f55e4ca6db93327c4c3b784",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:54.451Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-quorumveil",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "a5557f5685818e0f1a77177b2fdedfb9d9b8b17a",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:55.564Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-redactseal",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "b9d7ca812a146a5b8055df95bb3a10390b540b49",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:56.616Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-scopeguard",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "1d72f2ac5263040cb02610924ac0afdc11ff4373",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:57.770Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-spendwall",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "b26511ff2827de6d9ce891f6447303f6da449413",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:37:58.863Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-tally",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "579aa37992709ffc2d22331267f692b27dc49799",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:00.115Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "kar-veil",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "bf6fdc084c9beed9274b545cdd1acf9246c64dc3",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:01.188Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "konomi-ablate",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "2864194be26051fe9420034ecc69f844f0557081",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:02.182Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "konomi-clean",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "6a868f377e1658e7176054d88f299368069bb52a",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:03.145Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "konomi-export",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "59b6a28fd283e31d3c957b65d1e7bd6ecd54849c",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:04.149Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "konomi-regress",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "19556c16648e57d01b3fb2e29a1192f63a8fefbf",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:05.196Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "openkonomi",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "a220438c4b8f3d925b394000b9b9f53b0828c2b4",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:06.364Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "pixelwhisperer",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "13943674515c71b44454acffc611d8cc075b85e7",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:08.674Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "seam-check",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "446d27c14eed7335020b5e965718f0b040f01a37",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:09.765Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "witness-kit",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "e4a98c775b49816f49ffd3afac85b0ea27116aa3",
+   "reused": false,
+   "checkedAt": "2026-11-21T16:38:10.803Z",
+   "why": "not checked before"
   }
- ]
+ ],
+ "cache": {
+  "on": true,
+  "checker": "80cc6eb9613df6f5",
+  "maxAgeDays": 7,
+  "checked": 32,
+  "hits": 0,
+  "misses": 32,
+  "hitRate": 0,
+  "why": {
+   "not checked before": 32
+  }
+ },
+ "took": {
+  "listingMs": 95244,
+  "checkingMs": 41123,
+  "totalMs": 136367
+ }
 }

@@ -15,6 +15,18 @@
   },
   {
    "day": "2026-11-21",
+   "repo": "break-it",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "consumer-rights-cell",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
    "repo": "docdecdemo",
    "verdict": "cell",
    "failing": []
@@ -22,6 +34,174 @@
   {
    "day": "2026-11-21",
    "repo": "estate-genome",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "falljustice",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "genome-fold",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-alerttriage",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-benfordgap",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-citelock",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-conform",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-consentdecay",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-driftscore",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-fairshare",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-glyphguard",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-irhelper",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-isolationgate",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-quorumfloor",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-quorumgate",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-quorumveil",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-redactseal",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-scopeguard",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-spendwall",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-tally",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "kar-veil",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "konomi-ablate",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "konomi-clean",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "konomi-export",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "konomi-regress",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "openkonomi",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "pixelwhisperer",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "seam-check",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "witness-kit",
    "verdict": "cell",
    "failing": []
   }
