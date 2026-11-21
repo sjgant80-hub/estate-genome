@@ -1,0 +1,33 @@
+{
+ "registered": "2026-11-21",
+ "about": "The guard measurement's pass rules, written and committed before scripts/guard-measure.mjs was first run. The result (data/guard-measure.json) is published whether it passes or fails, and these rules are not changed after it.",
+ "inputs": {
+  "inLane": "60 sums of two whole numbers, each from 0 to 99, drawn by a seeded generator (seed 20261121), so about half the true totals are over 100",
+  "outOfLane": "6 inputs that are not two whole numbers: a question, null, a bare string, one number, a fraction and two numbers written as text",
+  "truth": "a total is right when it equals the two numbers added in the measuring script itself, never by asking the cell"
+ },
+ "cells": ["examples/sum-checker (honest act)", "examples/drifted-act (act claims one too many when the true total is over 100)"],
+ "rules": [
+  {
+   "id": "withhold",
+   "what": "drifted-act, the 60 in-lane calls: of the outputs whose claimed total is wrong, the share the guard withholds",
+   "pass": "100% withheld, and at least one wrong output was made (so the rule was tested at all)"
+  },
+  {
+   "id": "release",
+   "what": "both cells, the 60 in-lane calls each: of the outputs whose total is right, the share the guard releases",
+   "pass": "100% released (the judge is exact, so a right total held back would be the guard's fault)"
+  },
+  {
+   "id": "lane-first",
+   "what": "both cells, the 6 out-of-lane inputs each: refused, escalated to the cell's named party, and the act never ran",
+   "pass": "all 12 calls refused at the lane, each escalated, none ran the act"
+  },
+  {
+   "id": "overhead",
+   "what": "sum-checker, the 60 in-lane calls: each guarded call's wall time against the bare act hook run on the same input, one after the other",
+   "pass": "the median guarded call takes at most 3.5 times the median bare act run. The guard runs two more hooks than the act alone (the lane check and the judge), so about 3 times is the floor; the half above it is the guard's own allowance",
+   "reported": "median overhead per call in milliseconds (guarded minus bare, paired call by call), both medians, the machine and its load"
+  }
+ ]
+}
