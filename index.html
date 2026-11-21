@@ -314,6 +314,22 @@ get the same figures.</p>
 <p class="small muted">Read <span data-bind="census.when">…</span>. Machine-readable: <a href="data/census.json">census.json</a> and
 the <a href="data/genome-index.json">genome index</a>, the file any agent or conductor routes by. One more cell lives in a private
 repository and does not appear here: private repositories are not part of the public census.</p>
+<h3 id="drift">Drift: a cell that slips is named</h3>
+<p>Being admitted once is not being trusted for ever. The census keeps a history: every day, a row for every public repository
+that declares a genome, with its verdict and the traits that failed (<a href="data/census-history.json">census-history.json</a>).
+A repository admitted on an earlier day and refused today has <b>drifted</b>, and the trait it lost is named as the question it
+can no longer answer:</p>
+<div class="grid four" aria-label="What each trait asks">
+  <div class="card"><p class="small"><b>Describe</b><br><span data-q="describe">…</span></p></div>
+  <div class="card"><p class="small"><b>Verify</b><br><span data-q="verify">…</span></p></div>
+  <div class="card"><p class="small"><b>Prune</b><br><span data-q="prune">…</span></p></div>
+  <div class="card"><p class="small"><b>Boundary</b><br><span data-q="boundary">…</span></p></div>
+</div>
+<div class="card" id="driftOut" aria-live="polite">loading the history…</div>
+<p class="small muted">Worked out in this tab, by the same code the census uses (<code>src/drift.mjs</code>), from the published
+history. A repository that is archived or no longer public drops out of the census; that is retirement, not drift. One that
+stops shipping its <code>seed.json</code> while still live is refused on describe, and named.</p>
+
 <p class="callout">Day one is honest: almost nothing here has a genome yet. Upgrading old repositories in one rewrite would bake in
 mistakes, so it is a job for the estate's metabolism. It flags every repository with no genome. Ones that are in use get upgraded.
 Ones measured dead get retired, reversibly, after a person signs off. New parts are grown with the genome from the start.</p>
@@ -451,6 +467,7 @@ reversibly. The census counts the result every day.</p>
   <li>It makes parts self-checking. It does not make them intelligent or aware, and it does not claim to.</li>
   <li>A passing judge separates its own good and bad cases. It is not proof that the judge catches every wrong output.</li>
   <li>Health values can be <code>null</code>. A part that cannot measure its own use says so, rather than guessing.</li>
+  <li>Drift is caught once a day, by the census, on public repositories. Between censuses a regression shows up only on calls made through the guard. The history starts on 20 November 2026, the first published census.</li>
   <li>The guard is only as strong as each cell's judge. A judge that checks loosely lets loose answers through, on every call.</li>
   <li>Each guarded call runs three of the cell's hooks instead of one, so it costs more time; the measured cost is in <a href="#guard">the guard</a> section. Only calls made through <code>genome-run</code> are guarded.</li>
   <li>Three cells have an act today: estate-genome itself and the two worked examples. Cells without an act are still admitted; the guard refuses to do work for them.</li>
@@ -855,6 +872,105 @@ function decide(seed, runs, input) {
 }
 return { decide, plan };
 })();
+
+// src/drift.mjs, inlined byte for byte (export removed)
+const DRIFT = (() => {
+// drift.mjs — drift on every axis. The census keeps a history: one row per day per public repository that declares a
+// genome, with its verdict and the traits that failed. A cell admitted before and refused now has DRIFTED, and the
+// trait that regressed is named with the plain question it answers. Pure and total. The page inlines it.
+//   a row: { day: 'YYYY-MM-DD', repo, verdict: 'cell' | 'part' | null, failing: [traits] }   (null: not checked that day)
+
+const TRAITS = ['describe', 'verify', 'prune', 'boundary'];
+// the question each trait answers about a cell, as it was admitted and as it is now
+const QUESTIONS = {
+  describe: 'can it still be traced back and found?',
+  verify: 'does it still check its output?',
+  prune: 'can it still be removed?',
+  boundary: 'does it still stay in its lane?',
+};
+const ABOUT = 'One row per census day per public repository that declares a genome: its verdict (cell, part, or null when it was not checked) and the traits that failed. Written by scripts/census.mjs; read by src/drift.mjs. A cell admitted on an earlier day and refused on the latest is drifted.';
+const DAY = /^\d{4}-\d{2}-\d{2}$/;
+
+function at(o, k) {
+  if (o === null || typeof o !== 'object' || Array.isArray(o)) return undefined;
+  try { return o[k]; } catch { return undefined; }
+}
+const text = (v) => (typeof v === 'string' ? v.trim() : '');
+const list = (v) => (Array.isArray(v) ? v : []);
+
+// failingOf(line) → the traits a birth-check verdict line marks "no", in genome order
+function failingOf(line) {
+  const l = text(line);
+  return TRAITS.filter((t) => l.includes(`${t} no`));
+}
+
+// clean(row) → the row in its one shape, or null when it is not a row (no day or no repository name)
+function clean(row) {
+  const day = text(at(row, 'day')), repo = text(at(row, 'repo'));
+  if (!DAY.test(day) || repo === '') return null;
+  const v = at(row, 'verdict');
+  const verdict = v === 'cell' || v === 'part' ? v : null;
+  const failing = verdict === 'part' ? TRAITS.filter((t) => list(at(row, 'failing')).includes(t)) : [];
+  return { day, repo, verdict, failing };
+}
+
+// rowsOf(view, lost) → the history rows one census adds: a row for each declaring public repository in the census view
+// (data/census.json), and a row for each name in lost (live public repositories the history knows that no longer ship a
+// seed.json: refused on describe)
+function rowsOf(view, lost) {
+  const day = text(at(view, 'generated')).slice(0, 10);
+  if (!DAY.test(day)) return [];
+  const checks = list(at(view, 'checks'));
+  const lineOf = (name) => at(checks.find((k) => at(k, 'name') === name), 'line');
+  const seen = list(at(view, 'cells')).map((c) => clean({ day, repo: at(c, 'name'), verdict: at(c, 'verdict'), failing: failingOf(lineOf(at(c, 'name'))) }));
+  const gone = list(lost).map((name) => clean({ day, repo: name, verdict: 'part', failing: ['describe'] }));
+  return [...seen, ...gone].filter((r) => r !== null);
+}
+
+// merge(history, rows) → the history with these rows in: a census replaces every row of its own day (the later census
+// of a day is the whole truth for that day), sorted by day, then repository
+function merge(history, rows) {
+  const add = list(rows).map(clean).filter((r) => r !== null);
+  const days = new Set(add.map((r) => r.day));
+  const kept = list(at(history, 'rows')).map(clean).filter((r) => r !== null && !days.has(r.day));
+  const all = [...kept, ...add].sort((a, b) => a.day.localeCompare(b.day, 'en') || a.repo.localeCompare(b.repo, 'en'));
+  return { rows: all };
+}
+
+// series(history) → the cell count over time: one point per census day, { day, cells, declared }
+function series(history) {
+  const by = new Map();
+  for (const r of list(at(history, 'rows')).map(clean).filter((x) => x !== null)) {
+    const p = by.get(r.day) || { day: r.day, cells: 0, declared: 0 };
+    p.declared += 1;
+    if (r.verdict === 'cell') p.cells += 1;
+    by.set(r.day, p);
+  }
+  return [...by.values()].sort((a, b) => a.day.localeCompare(b.day, 'en'));
+}
+
+// drift(history) → { latest, days, watched, drifted }: a repository is drifted when its row on the latest census day says
+// refused and an earlier day admitted it. Each drifted entry names the day it was last admitted, the first refused day
+// since, and every regressed trait with its question.
+function drift(history) {
+  const rows = list(at(history, 'rows')).map(clean).filter((r) => r !== null);
+  const days = [...new Set(rows.map((r) => r.day))].sort();
+  const latest = days.length > 0 ? days[days.length - 1] : '';
+  const repos = [...new Set(rows.map((r) => r.repo))].sort((a, b) => a.localeCompare(b, 'en'));
+  const drifted = [];
+  for (const repo of repos) {
+    const mine = rows.filter((r) => r.repo === repo).sort((a, b) => a.day.localeCompare(b.day, 'en'));
+    const now = mine[mine.length - 1];
+    if (now.day !== latest || now.verdict !== 'part') continue;
+    const i = mine.findLastIndex((r) => r.verdict === 'cell');
+    if (i < 0) continue;
+    const since = mine.slice(i + 1).find((r) => r.verdict === 'part').day;
+    drifted.push({ repo, lastAdmitted: mine[i].day, since, failing: now.failing, regressed: now.failing.map((t) => ({ trait: t, question: QUESTIONS[t] })) });
+  }
+  return { latest, days: days.length, watched: repos.length, drifted };
+}
+return { drift, series, QUESTIONS, TRAITS };
+})();
 // The page. Every figure comes from a data file or from the inlined kernels (GENOME, ROUTE, COST: the gated modules,
 // byte for byte). Nothing on the page that is a number is typed here.
 (async () => {
@@ -915,6 +1031,7 @@ const BP = [
   ['Act hook', 'template/genome/act.mjs', 'runs a part’s act on one request; an act that returns nothing refuses'],
   ['Guard arithmetic', 'src/guardstats.mjs', 'counts the guard measurement against its pre-registered rules'],
   ['Honest example', 'examples/sum-checker/genome/cell.mjs', 'adds two whole numbers and checks a claimed total'],
+  ['Drift', 'src/drift.mjs', 'the census history: a cell admitted before and refused now is named, with the trait it lost'],
   ['Drifted example', 'examples/drifted-act/genome/cell.mjs', 'the same judge and lane, with an act that is wrong above 100: the guard’s test case'],
 ];
 $('bpTbl').querySelector('tbody').innerHTML = BP.map(([part, file, what]) => {
@@ -1014,6 +1131,17 @@ $('routeTraces').innerHTML = [rin, rout].filter(Boolean).map((t) => {
   return `<div class="hook ${t.status === 'routed' ? 'ok' : 'no'}">need “${esc(need)}”, input <code>${esc(input)}</code><br>`
     + (t.status === 'routed' ? `→ routed to <code>${esc(t.cell)}</code>: ${esc(t.confirmed)}.` : `→ refused: ${esc(t.why)}; escalated to <code>${esc(t.escalate)}</code>.`) + '</div>';
 }).join('');
+
+// ── drift: a cell admitted before and refused now, named by the trait it lost ──
+const history = await maybe(get('data/census-history.json'));
+document.querySelectorAll('[data-q]').forEach((el) => { el.textContent = DRIFT.QUESTIONS[el.getAttribute('data-q')] || ''; });
+if (history) {
+  const dr = DRIFT.drift(history);
+  const span = `${fmt(dr.days)} census day${dr.days === 1 ? '' : 's'} up to ${dr.latest}, ${fmt(dr.watched)} repositor${dr.watched === 1 ? 'y' : 'ies'} watched`;
+  $('driftOut').innerHTML = dr.drifted.length === 0
+    ? `<div class="verdict ok">No drift: no repository that was admitted on an earlier day is refused on the latest (${esc(span)}).</div>`
+    : `<div class="verdict no">${fmt(dr.drifted.length)} drifted (${esc(span)}):</div><ul class="reasons">${dr.drifted.map((x) => `<li><a href="https://github.com/sjgant80-hub/${esc(x.repo)}"><b>${esc(x.repo)}</b></a>: admitted ${esc(x.lastAdmitted)}, refused since ${esc(x.since)}. ${x.regressed.length ? x.regressed.map((r) => `<b>${esc(r.trait)}</b>: ${esc(r.question)} No.`).join(' ') : 'The census did not record which trait failed.'}</li>`).join('')}</ul>`;
+} else $('driftOut').textContent = 'The census history could not be loaded.';
 
 // ── the guard: four real calls, decided again in this tab ──
 const [gRules, gMeasure] = await Promise.all([maybe(get('data/guard-rules.json')), maybe(get('data/guard-measure.json'))]);

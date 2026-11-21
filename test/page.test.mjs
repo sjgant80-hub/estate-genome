@@ -63,13 +63,20 @@ const files = (u) => {
   return existsSync(p) ? { ok: true, status: 200, json: async () => JSON.parse(readFileSync(p, 'utf8')), text: async () => readFileSync(p, 'utf8') } : { ok: false, status: 404 };
 };
 
-test('run the page: every figure and panel fills from the shipped data, and the controls work', async () => {
+// runPage(swap) → the stand-in DOM after the page script has run; swap replaces a data file's JSON with a stand-in
+async function runPage(swap = {}) {
   const d = dom();
-  const box = { document: d.document, fetch: async (u) => files(u), localStorage: { getItem: () => null, setItem() {} }, matchMedia: () => ({ matches: false }), console, URL, Promise, JSON, Math, Number, String, Date, Object, Array, Set, Map };
+  const fetch = async (u) => (u in swap ? { ok: true, status: 200, json: async () => swap[u], text: async () => JSON.stringify(swap[u]) } : files(u));
+  const box = { document: d.document, fetch, localStorage: { getItem: () => null, setItem() {} }, matchMedia: () => ({ matches: false }), console, URL, Promise, JSON, Math, Number, String, Date, Object, Array, Set, Map };
   vm.createContext(box);
   const runnable = script.replace('(async () => {', 'globalThis.__run = (async () => {');
   vm.runInContext(runnable, box);
   await box.__run;
+  return d;
+}
+
+test('run the page: every figure and panel fills from the shipped data, and the controls work', async () => {
+  const d = await runPage();
   const $ = (id) => d.document.getElementById(id);
   const census = JSON.parse(read('data/census.json')), gates = JSON.parse(read('data/gates.json'));
   const bound = (k) => d.document.querySelectorAll(`[data-bind="${k}"]`).map((e) => e.textContent);
@@ -79,7 +86,12 @@ test('run the page: every figure and panel fills from the shipped data, and the 
   assert.equal(bound('describe.count')[0], '22');
   for (const c of census.cells) assert.ok($('cellRows').innerHTML.includes(c.name));
   const rows = $('bpTbl').child.innerHTML.split('<tr>').length - 1;
-  assert.equal(rows, 18);
+  assert.equal(rows, 19);
+  // drift: the four questions, and the shipped history worked out by the inlined kernel
+  for (const e of d.document.querySelectorAll('[data-q]')) assert.match(e.textContent, /\?$/, e.attrs['data-q']);
+  const hist = JSON.parse(read('data/census-history.json'));
+  const days = new Set(hist.rows.map((r) => r.day)).size;
+  assert.match($('driftOut').innerHTML, new RegExp(`^<div class="verdict ok">No drift: .*\\(${days} census days? up to `));
   for (const f of Object.keys(gates.files)) assert.ok($('bpTbl').child.innerHTML.includes(`${gates.files[f].killed}/${gates.files[f].total} clean`), f);
   assert.match($('seedOut').innerHTML, /Trait 1 holds/);
   assert.match($('traceOut').innerHTML, /the same verdict/);
@@ -135,4 +147,17 @@ test('run the page: every figure and panel fills from the shipped data, and the 
   assert.match(refused, /never ran: the lane check refused the request/);
   assert.match(refused, /Withheld \(refused\): out of lane/);
   assert.match(await guardCall('guard-own.json'), /Released: <code>\{&quot;part&quot;:&quot;examples\/sum-checker&quot;,&quot;verdict&quot;:&quot;cell&quot;/);
+});
+
+test('run the page on a drifted history: the drifted cell is named, with the trait it lost and its question', async () => {
+  const rows = [
+    { day: '2026-11-20', repo: 'docdecdemo', verdict: 'cell', failing: [] },
+    { day: '2026-11-21', repo: 'docdecdemo', verdict: 'part', failing: ['boundary'] },
+    { day: '2026-11-21', repo: 'estate-genome', verdict: 'cell', failing: [] },
+  ];
+  const d = await runPage({ 'data/census-history.json': { rows } });
+  const out = d.document.getElementById('driftOut').innerHTML;
+  assert.match(out, /^<div class="verdict no">1 drifted \(2 census days up to 2026-11-21, 2 repositories watched\)/);
+  assert.match(out, /<b>docdecdemo<\/b><\/a>: admitted 2026-11-20, refused since 2026-11-21\. <b>boundary<\/b>: does it still stay in its lane\? No\./);
+  assert.equal(out.includes('estate-genome'), false);
 });

@@ -9,6 +9,7 @@ export const KERNELS = [
   ['ROUTE', 'src/route.mjs', ['route', 'cellsOf']],
   ['COST', 'src/cost.mjs', ['defaults', 'costCase']],
   ['GUARD', 'src/guard.mjs', ['decide', 'plan']],
+  ['DRIFT', 'src/drift.mjs', ['drift', 'series', 'QUESTIONS', 'TRAITS']],
 ];
 const LF = (s) => s.split('\r\n').join('\n');
 // body(src) → the module as page code: the default-export line dropped, "export " removed from declarations

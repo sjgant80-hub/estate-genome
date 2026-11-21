@@ -24,6 +24,7 @@ export const GATED = [
   ['examples/sum-checker/genome/cell.mjs', ['test/examples.test.mjs']],
   ['examples/drifted-act/genome/cell.mjs', ['test/examples.test.mjs']],
   ['src/guardstats.mjs', ['test/guardstats.test.mjs']],
+  ['src/drift.mjs', ['test/drift.test.mjs']],
 ];
 export const NOTHING_TO_MUTATE = {
   'template/genome/io.mjs': 'reads seed.json and one line of stdin: no comparison or logic for the gate to flip; its behaviour is tested through every hook in test/grow.test.mjs',

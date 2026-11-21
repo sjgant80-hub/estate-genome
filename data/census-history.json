@@ -1,0 +1,29 @@
+{
+ "about": "One row per census day per public repository that declares a genome: its verdict (cell, part, or null when it was not checked) and the traits that failed. Written by scripts/census.mjs; read by src/drift.mjs. A cell admitted on an earlier day and refused on the latest is drifted.",
+ "rows": [
+  {
+   "day": "2026-11-20",
+   "repo": "docdecdemo",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-20",
+   "repo": "estate-genome",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "docdecdemo",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-21",
+   "repo": "estate-genome",
+   "verdict": "cell",
+   "failing": []
+  }
+ ]
+}

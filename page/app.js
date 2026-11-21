@@ -58,6 +58,7 @@ const BP = [
   ['Act hook', 'template/genome/act.mjs', 'runs a part’s act on one request; an act that returns nothing refuses'],
   ['Guard arithmetic', 'src/guardstats.mjs', 'counts the guard measurement against its pre-registered rules'],
   ['Honest example', 'examples/sum-checker/genome/cell.mjs', 'adds two whole numbers and checks a claimed total'],
+  ['Drift', 'src/drift.mjs', 'the census history: a cell admitted before and refused now is named, with the trait it lost'],
   ['Drifted example', 'examples/drifted-act/genome/cell.mjs', 'the same judge and lane, with an act that is wrong above 100: the guard’s test case'],
 ];
 $('bpTbl').querySelector('tbody').innerHTML = BP.map(([part, file, what]) => {
@@ -157,6 +158,17 @@ $('routeTraces').innerHTML = [rin, rout].filter(Boolean).map((t) => {
   return `<div class="hook ${t.status === 'routed' ? 'ok' : 'no'}">need “${esc(need)}”, input <code>${esc(input)}</code><br>`
     + (t.status === 'routed' ? `→ routed to <code>${esc(t.cell)}</code>: ${esc(t.confirmed)}.` : `→ refused: ${esc(t.why)}; escalated to <code>${esc(t.escalate)}</code>.`) + '</div>';
 }).join('');
+
+// ── drift: a cell admitted before and refused now, named by the trait it lost ──
+const history = await maybe(get('data/census-history.json'));
+document.querySelectorAll('[data-q]').forEach((el) => { el.textContent = DRIFT.QUESTIONS[el.getAttribute('data-q')] || ''; });
+if (history) {
+  const dr = DRIFT.drift(history);
+  const span = `${fmt(dr.days)} census day${dr.days === 1 ? '' : 's'} up to ${dr.latest}, ${fmt(dr.watched)} repositor${dr.watched === 1 ? 'y' : 'ies'} watched`;
+  $('driftOut').innerHTML = dr.drifted.length === 0
+    ? `<div class="verdict ok">No drift: no repository that was admitted on an earlier day is refused on the latest (${esc(span)}).</div>`
+    : `<div class="verdict no">${fmt(dr.drifted.length)} drifted (${esc(span)}):</div><ul class="reasons">${dr.drifted.map((x) => `<li><a href="https://github.com/sjgant80-hub/${esc(x.repo)}"><b>${esc(x.repo)}</b></a>: admitted ${esc(x.lastAdmitted)}, refused since ${esc(x.since)}. ${x.regressed.length ? x.regressed.map((r) => `<b>${esc(r.trait)}</b>: ${esc(r.question)} No.`).join(' ') : 'The census did not record which trait failed.'}</li>`).join('')}</ul>`;
+} else $('driftOut').textContent = 'The census history could not be loaded.';
 
 // ── the guard: four real calls, decided again in this tab ──
 const [gRules, gMeasure] = await Promise.all([maybe(get('data/guard-rules.json')), maybe(get('data/guard-measure.json'))]);

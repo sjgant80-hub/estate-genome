@@ -11,11 +11,12 @@
 // public view (counts, and public cells by name) to data/census.json; and the genome index (each admitted public cell's
 // seed.json essentials, for any agent or conductor to route by) to data/genome-index.json.
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { mkdirSync, writeFileSync, mkdtempSync, rmSync, existsSync, readFileSync } from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import { join, resolve, sep } from 'node:path';
 import { publicView, tally } from '../src/census.mjs';
 import { check } from '../src/run.mjs';
+import { rowsOf, merge, ABOUT as HISTORY_ABOUT } from '../src/drift.mjs';
 
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const OWNER = arg('--owner', 'sjgant80-hub');
@@ -94,5 +95,12 @@ const essentials = (r) => {
 const index = { generated, owner: OWNER, about: 'Admitted cells of the estate genome: each passed its birth check on a fresh clone when this was made. Route by lane.',
   cells: rows.filter((r) => !r.private && !r.archived && r.verdict === 'cell').map(essentials) };
 writeFileSync(join(OUT, 'genome-index.json'), JSON.stringify(index, null, 1) + '\n');
+// the history (src/drift.mjs): one row per day per declaring public repository, so a cell that slips is caught and named.
+// A live public repository the history knows that no longer ships a seed.json gets a row too, refused on describe.
+const HISTORY = join(OUT, 'census-history.json');
+const history = existsSync(HISTORY) ? JSON.parse(readFileSync(HISTORY, 'utf8')) : { rows: [] };
+const known = new Set((Array.isArray(history.rows) ? history.rows : []).map((r) => r && r.repo));
+const lost = rows.filter((r) => !r.private && !r.archived && r.seedText === null && known.has(r.name)).map((r) => r.name);
+writeFileSync(HISTORY, JSON.stringify({ about: HISTORY_ABOUT, ...merge(history, rowsOf(pub, lost)) }, null, 1) + '\n');
 const t = tally(rows);
 console.log(`census: ${t.scanned} repositories, ${t.live} live · ${t.declared} declare a genome · ${t.admitted} admitted as cells · ${t.notAdmitted} refused · ${t.genomeLess} genome-less`);
