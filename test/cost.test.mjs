@@ -27,7 +27,7 @@ test('costCase: the reader\'s own numbers win, and nonsense falls back to the fl
 });
 
 test('without a lock there are no invented figures: zero shares and a zero rate', () => {
-  for (const lock of [null, {}, { entries: 'x' }, { entries: [null, { id: 'ons-ashe-2025-median-hourly' }] }, { entries: [{ id: 'estate-metabolism-2026-11-17', scored: 0, noSignal: 5 }] }]) {
+  for (const lock of [null, {}, { entries: 'x' }, { entries: [null, { id: 'ons-ashe-2025-median-hourly' }] }, { entries: [{ id: 'estate-scan-2026-11-17', scored: 0, noSignal: 5 }] }]) {
     const d = defaults(lock);
     assert.equal(d.noSignalShare, 0); assert.equal(d.deadShare, 0); assert.equal(d.rate, 0);
   }

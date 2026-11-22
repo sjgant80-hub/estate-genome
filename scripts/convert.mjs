@@ -1,9 +1,9 @@
 // convert.mjs — from counting cells to making them. Reads the census and, when it is on this machine, the estate
-// metabolism's latest plan, and ranks the live repositories that still have no genome: in use and proved first;
+// health scan's latest plan, and ranks the live repositories that still have no genome: in use and proved first;
 // the measured-dead ones go to the retirement path instead (src/convert.mjs, gated).
 //   node scripts/convert.mjs [--census <file>] [--plan <file>]
 // --census: a census file with every repository's row (default ~/.estate-genome/census-full.json, else census-public.json)
-// --plan:   a metabolism plan (default the newest ~/.estate-metabolism/plan-*.json; none on this machine: all unmeasured)
+// --plan:   a health-scan plan (default the newest plan-*.json in $PLAN_DIR; none given: all unmeasured)
 // Writes the worklist, which may name private repositories, to ~/.estate-genome/convert-worklist.json (never committed),
 // and only counts to data/convert.json's queue. The ledger of conversion attempts in data/convert.json is kept as it is:
 // attempts are merged in by whoever runs the conversions, public repositories only.
@@ -13,11 +13,11 @@ import { join, basename } from 'node:path';
 import { rank, queue, OUTCOMES } from '../src/convert.mjs';
 
 const arg = (k) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : null; };
-const STATE = join(homedir(), '.estate-genome'), MET = join(homedir(), '.estate-metabolism');
+const STATE = join(homedir(), '.estate-genome'), MET = process.env.PLAN_DIR || null;
 const censusFile = arg('--census') || [join(STATE, 'census-full.json'), join(STATE, 'census-public.json')].find((f) => existsSync(f));
 if (!censusFile || !existsSync(censusFile)) { console.error('no census on this machine: run scripts/census.mjs first'); process.exit(2); }
 const census = JSON.parse(readFileSync(censusFile, 'utf8'));
-const planFile = arg('--plan') || (existsSync(MET) ? readdirSync(MET).filter((f) => /^plan-.*\.json$/.test(f)).sort().map((f) => join(MET, f)).pop() : null);
+const planFile = arg('--plan') || (MET && existsSync(MET) ? readdirSync(MET).filter((f) => /^plan-.*\.json$/.test(f)).sort().map((f) => join(MET, f)).pop() : null);
 const plan = planFile && existsSync(planFile) ? JSON.parse(readFileSync(planFile, 'utf8')) : null;
 
 const ranked = rank(census.rows, plan ? plan.rows : []);

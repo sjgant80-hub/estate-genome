@@ -9,7 +9,7 @@ const entry = (lock, id) => {
 // defaults(lock) → the floor defaults: the share of parts with no signal and the share measured dead (this estate's own
 // first scan), the UK median hourly wage, and one hour a year per part nobody can describe
 export function defaults(lock) {
-  const m = entry(lock, 'estate-metabolism-2026-11-17'), w = entry(lock, 'ons-ashe-2025-median-hourly');
+  const m = entry(lock, 'estate-scan-2026-11-17'), w = entry(lock, 'ons-ashe-2025-median-hourly');
   const scored = m ? num(m.scored, 0) : 0;
   return {
     parts: 500,

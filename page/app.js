@@ -35,7 +35,7 @@ if (census) {
     || '<tr><td colspan="3">No public repository declares a genome yet.</td></tr>';
 }
 if (gates) { bind('gates.killed', fmt(gates.killed)); bind('gates.total', fmt(gates.total)); }
-const metab = lock && Array.isArray(lock.entries) ? lock.entries.find((e) => e.id === 'estate-metabolism-2026-11-17') : null;
+const metab = lock && Array.isArray(lock.entries) ? lock.entries.find((e) => e.id === 'estate-scan-2026-11-17') : null;
 if (metab) { bind('lock.scored', fmt(metab.scored)); bind('lock.noSignal', fmt(metab.noSignal)); bind('lock.dead', fmt(metab.dead)); }
 if (lane && lane.eval) { bind('lane.in', pct(lane.eval.inLaneAccepted)); bind('lane.out', pct(lane.eval.offTopicRefused)); }
 else { bind('lane.in', 'a measured share (see DocDec’s page)'); bind('lane.out', 'a measured share'); }
@@ -311,5 +311,5 @@ function cost() {
 }
 ['cParts', 'cNo', 'cDead', 'cHours', 'cRate'].forEach((id) => $(id).addEventListener('input', cost));
 cost();
-$('costNote').innerHTML = 'Defaults are floors, to be replaced with your own. The shares come from this estate’s first full scan (<a href="https://sjgant80-hub.github.io/estate-metabolism/">the estate metabolism</a>, 17 Nov 2026). The hourly cost is the UK median for all full-time jobs, not an engineer’s rate (<a href="https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2025">ONS ASHE 2025</a>). The hours are your estimate; the default is one hour a year. Every figure is in <a href="data/prices.lock.json">the price lock</a>.';
+$('costNote').innerHTML = 'Defaults are floors, to be replaced with your own. The shares come from this estate’s first full scan (17 Nov 2026, run privately; only its counts are published, in data/prices.lock.json). The hourly cost is the UK median for all full-time jobs, not an engineer’s rate (<a href="https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2025">ONS ASHE 2025</a>). The hours are your estimate; the default is one hour a year. Every figure is in <a href="data/prices.lock.json">the price lock</a>.';
 })();

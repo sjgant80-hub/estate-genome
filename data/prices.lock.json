@@ -12,13 +12,13 @@
    "copiedFrom": "sjgant80-hub/bred-minds data/prices.lock.json"
   },
   {
-   "id": "estate-metabolism-2026-11-17",
+   "id": "estate-scan-2026-11-17",
    "kind": "measurement",
    "scored": 1696,
    "noSignal": 560,
    "dead": 254,
-   "what": "The estate metabolism's first full scan of this estate (1,837 repositories, 1,696 live and scored): 560 had no measured signal saying they were healthy or broken; 254 were measured unused and broken, unverified or superseded.",
-   "source": "https://sjgant80-hub.github.io/estate-metabolism/",
+   "what": "This estate's own first full scan (1,837 repositories, 1,696 live and scored): 560 had no measured signal saying they were healthy or broken; 254 were measured unused and broken, unverified or superseded.",
+   "source": "this estate's own scan of 17 Nov 2026, run from a private repository; only these three counts are published",
    "checked": "2026-11-17"
   }
  ]
