@@ -23,5 +23,222 @@
    "not in the metabolism plan": 0
   }
  },
- "attempts": []
+ "attempts": [
+  {
+   "repo": "kar-tally",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-a"
+  },
+  {
+   "repo": "kar-spendwall",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-a"
+  },
+  {
+   "repo": "kar-driftscore",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-a"
+  },
+  {
+   "repo": "kar-scopeguard",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-a"
+  },
+  {
+   "repo": "kar-benfordgap",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-a"
+  },
+  {
+   "repo": "kar-conform",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-a"
+  },
+  {
+   "repo": "kar-glyphguard",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-a"
+  },
+  {
+   "repo": "kar-veil",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-a"
+  },
+  {
+   "repo": "pixelwhisperer",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-a"
+  },
+  {
+   "repo": "kar-quorumgate",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-b"
+  },
+  {
+   "repo": "kar-quorumfloor",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-b"
+  },
+  {
+   "repo": "kar-quorumveil",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-b"
+  },
+  {
+   "repo": "kar-consentdecay",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-b"
+  },
+  {
+   "repo": "kar-redactseal",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-b"
+  },
+  {
+   "repo": "kar-isolationgate",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-b"
+  },
+  {
+   "repo": "kar-fairshare",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-b"
+  },
+  {
+   "repo": "kar-alerttriage",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-b"
+  },
+  {
+   "repo": "kar-irhelper",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-b"
+  },
+  {
+   "repo": "konomi-regress",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-c"
+  },
+  {
+   "repo": "konomi-export",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-c"
+  },
+  {
+   "repo": "konomi-clean",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-c"
+  },
+  {
+   "repo": "konomi-ablate",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-c"
+  },
+  {
+   "repo": "openkonomi",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-c"
+  },
+  {
+   "repo": "witness-kit",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-c"
+  },
+  {
+   "repo": "seam-check",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-c"
+  },
+  {
+   "repo": "break-it",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-c"
+  },
+  {
+   "repo": "falljustice",
+   "private": false,
+   "outcome": "admitted",
+   "reason": "",
+   "day": "2026-11-21",
+   "batch": "convert-c"
+  }
+ ]
 }
