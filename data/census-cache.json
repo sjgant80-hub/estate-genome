@@ -28,12 +28,12 @@
    "checkedAt": "2026-11-21T16:37:35.497Z"
   },
   "estate-genome": {
-   "oid": "003d4354d53cc1d88f11f96a7aa275c10577f766",
+   "oid": "e2b2a46cad33852afce42a7134e194551a61ad60",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-21T16:40:44.581Z"
+   "checkedAt": "2026-11-22T05:23:01.689Z"
   },
   "falljustice": {
    "oid": "6023a3fac61940004208108bb6e2c0ed9877eee3",

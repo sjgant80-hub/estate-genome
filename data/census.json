@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T16:40:44.587Z",
+ "generated": "2026-11-22T05:23:01.697Z",
  "scanned": 1784,
  "archived": 135,
  "live": 1649,
@@ -236,9 +236,9 @@
    "name": "estate-genome",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "003d4354d53cc1d88f11f96a7aa275c10577f766",
+   "oid": "e2b2a46cad33852afce42a7134e194551a61ad60",
    "reused": false,
-   "checkedAt": "2026-11-21T16:40:44.581Z",
+   "checkedAt": "2026-11-22T05:23:01.689Z",
    "why": "its HEAD moved"
   },
   {
@@ -480,8 +480,8 @@
   }
  },
  "took": {
-  "listingMs": 80702,
-  "checkingMs": 2835,
-  "totalMs": 83537
+  "listingMs": 124813,
+  "checkingMs": 3432,
+  "totalMs": 128245
  }
 }
