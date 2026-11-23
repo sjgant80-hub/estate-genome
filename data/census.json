@@ -1,11 +1,11 @@
 {
- "generated": "2026-11-22T05:23:01.697Z",
- "scanned": 1784,
+ "generated": "2026-11-23T05:25:48.942Z",
+ "scanned": 1785,
  "archived": 135,
- "live": 1649,
- "declared": 32,
- "describes": 32,
- "admitted": 32,
+ "live": 1650,
+ "declared": 33,
+ "describes": 33,
+ "admitted": 33,
  "notAdmitted": 0,
  "unchecked": 0,
  "genomeLess": 1617,
@@ -13,6 +13,12 @@
   {
    "name": "break-it",
    "lane": "raw-packet-ingest",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "browser-swarm",
+   "lane": "browser-swarm-documents",
    "describes": true,
    "verdict": "cell"
   },
@@ -217,6 +223,15 @@
    "checkedAt": "2026-11-21T16:37:31.108Z"
   },
   {
+   "name": "browser-swarm",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "cfe6d08df67b8a835fe78fa7c68a74c89c9e8874",
+   "reused": false,
+   "checkedAt": "2026-11-23T05:25:44.804Z",
+   "why": "not checked before"
+  },
+  {
    "name": "consumer-rights-cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
@@ -236,9 +251,9 @@
    "name": "estate-genome",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "e2b2a46cad33852afce42a7134e194551a61ad60",
+   "oid": "ceb39ed6d8b3faf9472ba5cc632e94e8adc2c584",
    "reused": false,
-   "checkedAt": "2026-11-22T05:23:01.689Z",
+   "checkedAt": "2026-11-23T05:25:47.725Z",
    "why": "its HEAD moved"
   },
   {
@@ -381,9 +396,10 @@
    "name": "kar-spendwall",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "b26511ff2827de6d9ce891f6447303f6da449413",
-   "reused": true,
-   "checkedAt": "2026-11-21T16:37:58.863Z"
+   "oid": "5c13f9810c254c2057641925b688c233ff4c063d",
+   "reused": false,
+   "checkedAt": "2026-11-23T05:25:48.936Z",
+   "why": "its HEAD moved"
   },
   {
    "name": "kar-tally",
@@ -470,18 +486,19 @@
   "on": true,
   "checker": "80cc6eb9613df6f5",
   "maxAgeDays": 7,
-  "checked": 32,
-  "hits": 31,
-  "misses": 1,
-  "hitRate": 96.9,
+  "checked": 33,
+  "hits": 30,
+  "misses": 3,
+  "hitRate": 90.9,
   "why": {
-   "same HEAD, same checker, under 7 days old": 31,
-   "its HEAD moved": 1
+   "same HEAD, same checker, under 7 days old": 30,
+   "not checked before": 1,
+   "its HEAD moved": 2
   }
  },
  "took": {
-  "listingMs": 124813,
-  "checkingMs": 3432,
-  "totalMs": 128245
+  "listingMs": 127112,
+  "checkingMs": 5820,
+  "totalMs": 132932
  }
 }

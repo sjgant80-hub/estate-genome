@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-22T05:23:01.697Z",
+ "generated": "2026-11-23T05:25:48.942Z",
  "owner": "sjgant80-hub",
  "about": "Admitted cells of the estate genome: each passed its birth check on a fresh clone when this was made. Route by lane.",
  "cells": [
@@ -19,6 +19,26 @@
    },
    "judge": {
     "what": "a claimed gate decision for a packet is right when break-it's own decide(), with the pinned keys and counters, stops it at the same stage or admits it"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "browser-swarm",
+   "repo": "sjgant80-hub/browser-swarm",
+   "kind": "repo",
+   "purpose": "Runs a swarm of small AI cells in a browser tab and releases only the answers its checks verify: an answer from your documents must be the source's own words, or it is withheld with the reason.",
+   "lane": {
+    "id": "browser-swarm-documents",
+    "accepts": "a question about the documents in its signed corpus",
+    "refuses": "questions no signed paragraph covers, and paragraphs whose signature no longer matches"
+   },
+   "interface": {
+    "in": "{\"question\":\"<text>\"} to ask; an answer record {question,answer,source} to audit",
+    "out": "a released answer with its source and character offsets, or a refusal naming the check that stopped it"
+   },
+   "judge": {
+    "what": "an answer record is right when the answer is the source's own words, in the sentence that best matches the question, carrying enough of the question's words, and not in a sentence that gives orders"
    },
    "escalate": "kar",
    "verdict": "cell"
