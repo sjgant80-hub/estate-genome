@@ -1,11 +1,11 @@
 {
- "generated": "2026-11-23T05:25:48.942Z",
- "scanned": 1785,
+ "generated": "2026-11-24T05:24:13.778Z",
+ "scanned": 1786,
  "archived": 135,
- "live": 1650,
- "declared": 33,
- "describes": 33,
- "admitted": 33,
+ "live": 1651,
+ "declared": 34,
+ "describes": 34,
+ "admitted": 34,
  "notAdmitted": 0,
  "unchecked": 0,
  "genomeLess": 1617,
@@ -203,6 +203,12 @@
    "verdict": "cell"
   },
   {
+   "name": "the-climb",
+   "lane": "the-climb-step",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
    "name": "witness-kit",
    "lane": "repo-gate-wiring",
    "describes": true,
@@ -226,10 +232,10 @@
    "name": "browser-swarm",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "cfe6d08df67b8a835fe78fa7c68a74c89c9e8874",
+   "oid": "281d45ad368cef3924266e132ff60f9efd38b2e7",
    "reused": false,
-   "checkedAt": "2026-11-23T05:25:44.804Z",
-   "why": "not checked before"
+   "checkedAt": "2026-11-24T05:24:08.873Z",
+   "why": "its HEAD moved"
   },
   {
    "name": "consumer-rights-cell",
@@ -251,9 +257,9 @@
    "name": "estate-genome",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "ceb39ed6d8b3faf9472ba5cc632e94e8adc2c584",
+   "oid": "57bd424c9281f28b3dbe8a38be8e28775070130c",
    "reused": false,
-   "checkedAt": "2026-11-23T05:25:47.725Z",
+   "checkedAt": "2026-11-24T05:24:12.178Z",
    "why": "its HEAD moved"
   },
   {
@@ -397,9 +403,8 @@
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
    "oid": "5c13f9810c254c2057641925b688c233ff4c063d",
-   "reused": false,
-   "checkedAt": "2026-11-23T05:25:48.936Z",
-   "why": "its HEAD moved"
+   "reused": true,
+   "checkedAt": "2026-11-23T05:25:48.936Z"
   },
   {
    "name": "kar-tally",
@@ -474,6 +479,15 @@
    "checkedAt": "2026-11-21T16:38:09.765Z"
   },
   {
+   "name": "the-climb",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "e27345f12edaa1edd827d3d1e187a5b6aaa7435b",
+   "reused": false,
+   "checkedAt": "2026-11-24T05:24:13.773Z",
+   "why": "not checked before"
+  },
+  {
    "name": "witness-kit",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
@@ -486,19 +500,19 @@
   "on": true,
   "checker": "80cc6eb9613df6f5",
   "maxAgeDays": 7,
-  "checked": 33,
-  "hits": 30,
+  "checked": 34,
+  "hits": 31,
   "misses": 3,
-  "hitRate": 90.9,
+  "hitRate": 91.2,
   "why": {
-   "same HEAD, same checker, under 7 days old": 30,
-   "not checked before": 1,
-   "its HEAD moved": 2
+   "same HEAD, same checker, under 7 days old": 31,
+   "its HEAD moved": 2,
+   "not checked before": 1
   }
  },
  "took": {
-  "listingMs": 127112,
-  "checkingMs": 5820,
-  "totalMs": 132932
+  "listingMs": 135909,
+  "checkingMs": 6793,
+  "totalMs": 142702
  }
 }
