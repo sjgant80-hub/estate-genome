@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-24T05:24:13.778Z",
+ "generated": "2026-11-25T05:25:06.296Z",
  "owner": "sjgant80-hub",
  "about": "Admitted cells of the estate genome: each passed its birth check on a fresh clone when this was made. Route by lane.",
  "cells": [
@@ -659,6 +659,46 @@
    },
    "judge": {
     "what": "a step is right when its working, worked out in exact whole-number fractions, equals the value claimed for it"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "the-crystal",
+   "repo": "sjgant80-hub/the-crystal",
+   "kind": "repo",
+   "purpose": "Grows a calculation as a crystal in a browser tab: a small AI model is asked one single step at a time, a step it states exactly right bonds, a step it gets wrong is split into smaller steps, and a step with nothing smaller dissolves. A crystal that completes is right.",
+   "lane": {
+    "id": "the-crystal-cell",
+    "accepts": "one cell: one operation on two numbers (26 × 12), and a reply to it",
+    "refuses": "anything that is not a single step of arithmetic: words, a bare number, working with more than one operation"
+   },
+   "interface": {
+    "in": "{\"cell\":\"26 × 12\",\"reply\":\"26 × 12 = 312\"}",
+    "out": "verified when the reply states that cell's value exactly, unverified when it does not, refused when the cell is not a single step"
+   },
+   "judge": {
+    "what": "a reply bonds a cell only by stating that cell's value exactly right: a true line about the cell, or the bare value"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "the-verifier-set",
+   "repo": "sjgant80-hub/the-verifier-set",
+   "kind": "repo",
+   "purpose": "Answers questions about documents in a browser tab with a small AI model, and labels how true each answer is. A cited figure must be in the document word for word, a rule written as a formula must pass its tests, a claim is decided by an exact solver, and each step is checked by exact arithmetic. Where a figure is missing or stated two ways, it gives no answer and says why.",
+   "lane": {
+    "id": "the-verifier-set-citation",
+    "accepts": "a document, something it states once with one figure (the unit price), and a quote offered as stating it",
+    "refuses": "a figure the document does not state, states two ways, or that is asked for in words the document does not use"
+   },
+   "interface": {
+    "in": "{\"document\":\"The unit price is 126 pounds.\\nThe order size is 12 crates.\",\"cell\":\"the unit price\",\"reply\":\"The unit price is 126 pounds.\"}",
+    "out": "verified when the quote is in the document letter for letter, in the line that states the cell, with its one figure; unverified when it is not; refused when the document cannot give the figure"
+   },
+   "judge": {
+    "what": "a quote cites a figure only when it is the document's own words, begun and ended at the edge of a word or number, in the line that is about what was asked"
    },
    "escalate": "kar",
    "verdict": "cell"

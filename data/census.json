@@ -1,11 +1,11 @@
 {
- "generated": "2026-11-24T05:24:13.778Z",
- "scanned": 1786,
+ "generated": "2026-11-25T05:25:06.296Z",
+ "scanned": 1788,
  "archived": 135,
- "live": 1651,
- "declared": 34,
- "describes": 34,
- "admitted": 34,
+ "live": 1653,
+ "declared": 36,
+ "describes": 36,
+ "admitted": 36,
  "notAdmitted": 0,
  "unchecked": 0,
  "genomeLess": 1617,
@@ -209,6 +209,18 @@
    "verdict": "cell"
   },
   {
+   "name": "the-crystal",
+   "lane": "the-crystal-cell",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
+   "name": "the-verifier-set",
+   "lane": "the-verifier-set-citation",
+   "describes": true,
+   "verdict": "cell"
+  },
+  {
    "name": "witness-kit",
    "lane": "repo-gate-wiring",
    "describes": true,
@@ -233,9 +245,8 @@
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
    "oid": "281d45ad368cef3924266e132ff60f9efd38b2e7",
-   "reused": false,
-   "checkedAt": "2026-11-24T05:24:08.873Z",
-   "why": "its HEAD moved"
+   "reused": true,
+   "checkedAt": "2026-11-24T05:24:08.873Z"
   },
   {
    "name": "consumer-rights-cell",
@@ -257,9 +268,9 @@
    "name": "estate-genome",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "57bd424c9281f28b3dbe8a38be8e28775070130c",
+   "oid": "3afe5ab133ac2b42f6ca8eeffe46f0ef4e7bba1c",
    "reused": false,
-   "checkedAt": "2026-11-24T05:24:12.178Z",
+   "checkedAt": "2026-11-25T05:25:01.937Z",
    "why": "its HEAD moved"
   },
   {
@@ -482,9 +493,27 @@
    "name": "the-climb",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "e27345f12edaa1edd827d3d1e187a5b6aaa7435b",
+   "oid": "cd00c63be3f892c90667d8e3f2648e49e417bc2b",
    "reused": false,
-   "checkedAt": "2026-11-24T05:24:13.773Z",
+   "checkedAt": "2026-11-25T05:25:03.290Z",
+   "why": "its HEAD moved"
+  },
+  {
+   "name": "the-crystal",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "71274e425e166d72310eeaa838f48afbf1216c39",
+   "reused": false,
+   "checkedAt": "2026-11-25T05:25:04.763Z",
+   "why": "not checked before"
+  },
+  {
+   "name": "the-verifier-set",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "oid": "332784cb20c2f881b2427cb072b4768d79c0cdb3",
+   "reused": false,
+   "checkedAt": "2026-11-25T05:25:06.291Z",
    "why": "not checked before"
   },
   {
@@ -500,19 +529,19 @@
   "on": true,
   "checker": "80cc6eb9613df6f5",
   "maxAgeDays": 7,
-  "checked": 34,
-  "hits": 31,
-  "misses": 3,
-  "hitRate": 91.2,
+  "checked": 36,
+  "hits": 32,
+  "misses": 4,
+  "hitRate": 88.9,
   "why": {
-   "same HEAD, same checker, under 7 days old": 31,
+   "same HEAD, same checker, under 7 days old": 32,
    "its HEAD moved": 2,
-   "not checked before": 1
+   "not checked before": 2
   }
  },
  "took": {
-  "listingMs": 135909,
-  "checkingMs": 6793,
-  "totalMs": 142702
+  "listingMs": 158280,
+  "checkingMs": 7466,
+  "totalMs": 165746
  }
 }
