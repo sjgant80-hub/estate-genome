@@ -36,12 +36,12 @@
    "checkedAt": "2026-11-21T16:37:35.497Z"
   },
   "estate-genome": {
-   "oid": "3afe5ab133ac2b42f6ca8eeffe46f0ef4e7bba1c",
+   "oid": "ca4be61038b710e0274ca115f65945b6d77d3c4f",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-25T05:25:01.937Z"
+   "checkedAt": "2026-11-26T05:24:11.138Z"
   },
   "falljustice": {
    "oid": "6023a3fac61940004208108bb6e2c0ed9877eee3",
@@ -58,6 +58,14 @@
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
    "checkedAt": "2026-11-21T16:37:40.659Z"
+  },
+  "house-standard": {
+   "oid": "adf9ab739066bb4b90d8d82d286bbc637f7516a3",
+   "checker": "80cc6eb9613df6f5",
+   "verdict": "cell",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "checkedAt": "2026-11-26T05:24:12.446Z"
   },
   "kar-alerttriage": {
    "oid": "366a34b301980207a309534a14079dd3233bfefa",
@@ -260,28 +268,44 @@
    "checkedAt": "2026-11-21T16:38:09.765Z"
   },
   "the-climb": {
-   "oid": "cd00c63be3f892c90667d8e3f2648e49e417bc2b",
+   "oid": "ebe420b3a23fa6c894bbbeac8613b6f28edcb3d4",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-25T05:25:03.290Z"
+   "checkedAt": "2026-11-26T05:24:13.859Z"
   },
   "the-crystal": {
-   "oid": "71274e425e166d72310eeaa838f48afbf1216c39",
+   "oid": "89880559b9984fe50e587f3908f13e669d99f591",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-25T05:25:04.763Z"
+   "checkedAt": "2026-11-26T05:24:15.217Z"
+  },
+  "the-distillation": {
+   "oid": "230754a878aa6788dfc288108b8e49b8345d9bf8",
+   "checker": "80cc6eb9613df6f5",
+   "verdict": "cell",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "checkedAt": "2026-11-26T05:24:16.591Z"
+  },
+  "the-seed": {
+   "oid": "859205260e4a3c5e42d7a2cf3b4f0aaee8c77eea",
+   "checker": "80cc6eb9613df6f5",
+   "verdict": "cell",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "checkedAt": "2026-11-26T05:24:17.848Z"
   },
   "the-verifier-set": {
-   "oid": "332784cb20c2f881b2427cb072b4768d79c0cdb3",
+   "oid": "6b645d57435fad49341f6cc7ab06ca36f04a6474",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-25T05:25:06.291Z"
+   "checkedAt": "2026-11-26T05:24:19.204Z"
   },
   "witness-kit": {
    "oid": "e4a98c775b49816f49ffd3afac85b0ea27116aa3",

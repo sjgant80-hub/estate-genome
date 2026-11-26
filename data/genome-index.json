@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-25T05:25:06.296Z",
+ "generated": "2026-11-26T05:24:19.211Z",
  "owner": "sjgant80-hub",
  "about": "Admitted cells of the estate genome: each passed its birth check on a fresh clone when this was made. Route by lane.",
  "cells": [
@@ -139,6 +139,26 @@
    },
    "judge": {
     "what": "an answer record from a folded corpus is right when its text is exactly the cited passage's characters at its offsets and that passage uses at least the folded lane share of the question's content words"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "house-standard",
+   "repo": "sjgant80-hub/house-standard",
+   "kind": "repo",
+   "purpose": "The one starting point for every repository in the estate: a dark design kit (a living crystal hero, receipt cards, a stack, a glass that runs on the visitor's device, an honest expander) and a ship gate that holds any built page to seven rules, so a page leads with numbers it can prove and keeps its limits one click away.",
+   "lane": {
+    "id": "house-standard-ship-gate",
+    "accepts": "a built web page, as its HTML",
+    "refuses": "anything that is not a page: there is nothing to hold to the standard"
+   },
+   "interface": {
+    "in": "{\"html\":\"<!doctype html>…the whole page…\"}",
+    "out": "verified when the page meets all seven rules of the house standard; unverified when it fails any; refused when what is given is not a page"
+   },
+   "judge": {
+    "what": "a page ships only when it has the kit, greets no one with a wall of text, sources every receipt, leaves nothing unfinished, shows its failures, wears the house identity and keeps the house rules"
    },
    "escalate": "kar",
    "verdict": "cell"
@@ -679,6 +699,46 @@
    },
    "judge": {
     "what": "a reply bonds a cell only by stating that cell's value exactly right: a true line about the cell, or the bare value"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "the-distillation",
+   "repo": "sjgant80-hub/the-distillation",
+   "kind": "repo",
+   "purpose": "Trains a small AI model only on its own working that exact arithmetic verified, then measures it cold (one try, no checker) on problems it never saw. The trained weights are kept only if it is right more often and no more confidently wrong, and a later round starts from them only when a person grants it. Every round is sealed and can be judged again from its records.",
+   "lane": {
+    "id": "the-distillation-training-gate",
+    "accepts": "a calculation and a reply of worked steps ending in ANSWER: n, offered as a training example",
+    "refuses": "anything that is not an exact calculation: there is no check for it, so nothing can be verified or trained on"
+   },
+   "interface": {
+    "in": "{\"ask\":\"13 × 12 × 26\",\"reply\":\"13 × 12 = 156\\n156 × 26 = 4056\\nANSWER: 4056\"}",
+    "out": "verified when every line is one step and exactly true and the answer is the calculation's own; unverified when any line or the answer is not; refused when what is asked is not a calculation"
+   },
+   "judge": {
+    "what": "a reply may be trained on only when every line of its working is a single true step and its answer is the calculation's own"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "the-seed",
+   "repo": "sjgant80-hub/the-seed",
+   "kind": "repo",
+   "purpose": "A handful of small files that grow verified software one cell at a time: a model writes each cell, code checks it down to an axiom floor the seed works out itself, a cell that proves out is sealed, and one that cannot is dissolved.",
+   "lane": {
+    "id": "the-seed-floor",
+    "accepts": "a whole-number sum of + - and ×, with brackets, and a reply to it",
+    "refuses": "anything the floor cannot work out exactly: words, letters, division, fractions, or a reply with no whole number in it"
+   },
+   "interface": {
+    "in": "{\"ask\":\"12 × 11\",\"reply\":\"132\"}",
+    "out": "verified when the sum comes to exactly the whole number the reply ends on, unverified when it does not, refused when the sum or the reply cannot be read"
+   },
+   "judge": {
+    "what": "a reply is right when the sum, worked out in exact whole numbers with no rounding, equals the whole number the reply ends on"
    },
    "escalate": "kar",
    "verdict": "cell"
