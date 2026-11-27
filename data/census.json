@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-26T05:24:19.211Z",
+ "generated": "2026-11-27T05:24:59.026Z",
  "scanned": 1791,
  "archived": 135,
  "live": 1656,
@@ -286,9 +286,9 @@
    "name": "estate-genome",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "ca4be61038b710e0274ca115f65945b6d77d3c4f",
+   "oid": "d6b0fd592c807fdd46a253a7405f32461727c26b",
    "reused": false,
-   "checkedAt": "2026-11-26T05:24:11.138Z",
+   "checkedAt": "2026-11-27T05:24:52.551Z",
    "why": "its HEAD moved"
   },
   {
@@ -311,10 +311,10 @@
    "name": "house-standard",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "adf9ab739066bb4b90d8d82d286bbc637f7516a3",
+   "oid": "b310e6ffbd12a92972131fd65d317e548fba5f34",
    "reused": false,
-   "checkedAt": "2026-11-26T05:24:12.446Z",
-   "why": "not checked before"
+   "checkedAt": "2026-11-27T05:24:53.549Z",
+   "why": "its HEAD moved"
   },
   {
    "name": "kar-alerttriage",
@@ -520,45 +520,45 @@
    "name": "the-climb",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "ebe420b3a23fa6c894bbbeac8613b6f28edcb3d4",
+   "oid": "9c14be6b0167225f3763c9f53cfe79b8aa32e336",
    "reused": false,
-   "checkedAt": "2026-11-26T05:24:13.859Z",
+   "checkedAt": "2026-11-27T05:24:54.560Z",
    "why": "its HEAD moved"
   },
   {
    "name": "the-crystal",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "89880559b9984fe50e587f3908f13e669d99f591",
+   "oid": "b269efe2c07239874cd69e63d41439ba7e6b0c7a",
    "reused": false,
-   "checkedAt": "2026-11-26T05:24:15.217Z",
+   "checkedAt": "2026-11-27T05:24:55.556Z",
    "why": "its HEAD moved"
   },
   {
    "name": "the-distillation",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "230754a878aa6788dfc288108b8e49b8345d9bf8",
+   "oid": "418c84b0e599581f4a4e5196388d9b02b2eb676e",
    "reused": false,
-   "checkedAt": "2026-11-26T05:24:16.591Z",
-   "why": "not checked before"
+   "checkedAt": "2026-11-27T05:24:56.952Z",
+   "why": "its HEAD moved"
   },
   {
    "name": "the-seed",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "859205260e4a3c5e42d7a2cf3b4f0aaee8c77eea",
+   "oid": "b3de41914ee31b9c9c3cd121770ef040b9d45dc3",
    "reused": false,
-   "checkedAt": "2026-11-26T05:24:17.848Z",
-   "why": "not checked before"
+   "checkedAt": "2026-11-27T05:24:57.909Z",
+   "why": "its HEAD moved"
   },
   {
    "name": "the-verifier-set",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "oid": "6b645d57435fad49341f6cc7ab06ca36f04a6474",
+   "oid": "f1eb2712dd0ccc9fb7250210fe8bfc8126c3a650",
    "reused": false,
-   "checkedAt": "2026-11-26T05:24:19.204Z",
+   "checkedAt": "2026-11-27T05:24:59.019Z",
    "why": "its HEAD moved"
   },
   {
@@ -580,13 +580,12 @@
   "hitRate": 82.1,
   "why": {
    "same HEAD, same checker, under 7 days old": 32,
-   "its HEAD moved": 4,
-   "not checked before": 3
+   "its HEAD moved": 7
   }
  },
  "took": {
-  "listingMs": 139275,
-  "checkingMs": 11330,
-  "totalMs": 150605
+  "listingMs": 140961,
+  "checkingMs": 9379,
+  "totalMs": 150340
  }
 }

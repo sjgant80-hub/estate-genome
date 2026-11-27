@@ -1248,6 +1248,240 @@
    "repo": "witness-kit",
    "verdict": "cell",
    "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "break-it",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "browser-swarm",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "consumer-rights-cell",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "docdecdemo",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "estate-genome",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "falljustice",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "genome-fold",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "house-standard",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-alerttriage",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-benfordgap",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-citelock",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-conform",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-consentdecay",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-driftscore",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-fairshare",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-glyphguard",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-irhelper",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-isolationgate",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-quorumfloor",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-quorumgate",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-quorumveil",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-redactseal",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-scopeguard",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-spendwall",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-tally",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "kar-veil",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "konomi-ablate",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "konomi-clean",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "konomi-export",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "konomi-regress",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "openkonomi",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "pixelwhisperer",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "seam-check",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "the-climb",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "the-crystal",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "the-distillation",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "the-seed",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "the-verifier-set",
+   "verdict": "cell",
+   "failing": []
+  },
+  {
+   "day": "2026-11-27",
+   "repo": "witness-kit",
+   "verdict": "cell",
+   "failing": []
   }
  ]
 }
