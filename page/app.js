@@ -13,7 +13,7 @@ const maybe = (p) => p.catch(() => null);
 // theme: the viewer's own choice, remembered in this browser only
 const root = document.documentElement;
 try { const t = localStorage.getItem('genome-theme'); if (t === 'dark' || t === 'light') root.setAttribute('data-theme', t); } catch { /* storage off */ }
-$('theme').addEventListener('click', () => {
+$('theme')?.addEventListener('click', () => {
   const dark = root.getAttribute('data-theme') ? root.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   root.setAttribute('data-theme', dark ? 'light' : 'dark');
   try { localStorage.setItem('genome-theme', dark ? 'light' : 'dark'); } catch { /* storage off */ }

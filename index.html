@@ -2,98 +2,359 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Estate Genome — the birth check</title>
 <meta name="description" content="A birth check for software parts: a repository, agent, contract, model or service is admitted only when it describes itself, its judge tells right from wrong, it can be shed and restored exactly, and it refuses work outside its lane.">
 <style>
-:root{--series:#0f8a6c;--bg:#f7f6f2;--panel:#ffffff;--ink:#1d1f23;--muted:#5d636d;--line:#dcd9d0;--accent:#1f6f5c;--accent-ink:#ffffff;--ok:#1d7a46;--ok-bg:#e3f3e9;--no:#a33a2c;--no-bg:#f8e5e1;--warn:#8a5a00;--code:#f0eee8;--chip:#ecebe5;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--series:#34a888;--bg:#131518;--panel:#1b1e22;--ink:#e8e6e1;--muted:#a3a8b0;--line:#2e3238;--accent:#5cc3a6;--accent-ink:#0e1a16;--ok:#6fd39b;--ok-bg:#16301f;--no:#f08a7a;--no-bg:#3a1c18;--warn:#e0b45c;--code:#23272c;--chip:#262a30;color-scheme:dark}}
-:root[data-theme="dark"]{--series:#34a888;--bg:#131518;--panel:#1b1e22;--ink:#e8e6e1;--muted:#a3a8b0;--line:#2e3238;--accent:#5cc3a6;--accent-ink:#0e1a16;--ok:#6fd39b;--ok-bg:#16301f;--no:#f08a7a;--no-bg:#3a1c18;--warn:#e0b45c;--code:#23272c;--chip:#262a30;color-scheme:dark}
+/* house.css — the AI Native house standard: one token sheet, one kit. Every page is built from these and nothing else.
+   HERO · RECEIPTS · THE STACK · THE GLASS · HONEST EXPANDER. The law of the page: the loudest true number leads, every
+   caveat waits behind a click, and no section is prose. Fonts are the house's three faces, served from the page. */
+@font-face{font-family:'Fraunces';src:url('vendor/fonts/fraunces/files/fraunces-latin-full-italic.woff2') format('woff2');font-weight:100 900;font-style:italic;font-display:swap}
+@font-face{font-family:'Fraunces';src:url('vendor/fonts/fraunces/files/fraunces-latin-full-normal.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Hanken Grotesk';src:url('vendor/fonts/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2') format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url('vendor/fonts/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2');font-weight:100 800;font-display:swap}
+:root{color-scheme:dark;--bg:#02070c;--bg2:#060e18;--panel:#081320;--ink:#e9f2f6;--soft:#aebecb;--muted:#6f8698;--cyan:#49e8c8;--cyan-dim:#1f6a60;--gold:#ffcf6a;--red:#ff6b6b;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.055);--display:'Fraunces',Georgia,serif;--sans:'Hanken Grotesk',system-ui,-apple-system,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--gut:max(20px,env(safe-area-inset-left,0px));--gutr:max(20px,env(safe-area-inset-right,0px))}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0) 16px env(safe-area-inset-bottom,0)}
-main{max-width:980px;margin:0 auto;padding-block:8px 64px}
-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:0 -16px;padding:8px 16px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-nav a{color:var(--ink);text-decoration:none;font-size:14px;padding:4px 8px;border-radius:6px}
-nav a:hover{background:var(--chip)}
-nav .brand{font-weight:700;margin-right:6px}
-nav button{margin-left:auto}
-h1{font-size:clamp(26px,5vw,40px);line-height:1.15;margin:28px 0 12px}
-h2{font-size:clamp(21px,3.4vw,27px);margin:48px 0 10px;scroll-margin-top:64px}
-h3{font-size:18px;margin:22px 0 8px}
-p{margin:0 0 12px}
-a{color:var(--accent)}
-.lead{font-size:18px;max-width:780px}
-.muted{color:var(--muted)}
-.small{font-size:14px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
-.chip{background:var(--chip);border-radius:999px;padding:4px 12px;font-size:14px}
-.chip b{font-variant-numeric:tabular-nums}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
-.grid{display:grid;gap:12px}
-.two{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.four{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-.trait h3{margin-top:0}
-.trait .n{display:inline-block;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);text-align:center;font-weight:700;line-height:26px;margin-right:6px}
-ol.steps{padding-left:22px}
-ol.steps li{margin:0 0 10px}
-code,pre,textarea{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
-code{background:var(--code);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
-pre{background:var(--code);padding:12px;border-radius:8px;overflow-x:auto;margin:8px 0;white-space:pre}
-textarea{width:100%;min-height:220px;background:var(--code);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px}
-input[type=number],input[type=text],select{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font:inherit;max-width:100%}
-input[type=text]{width:100%}
-button{font:inherit;font-size:14px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:7px 12px;cursor:pointer}
-button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
-button[aria-pressed="true"]{outline:2px solid var(--accent);outline-offset:1px}
-.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
-.verdict{border-radius:8px;padding:10px 12px;margin:10px 0;font-weight:600}
-.verdict.ok{background:var(--ok-bg);color:var(--ok)}
-.verdict.no{background:var(--no-bg);color:var(--no)}
-ul.reasons{margin:6px 0 0;padding-left:20px;font-weight:400}
-.tbl{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
-td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.yes{color:var(--ok);font-weight:600}.noo{color:var(--no);font-weight:600}
-.hook{border-left:3px solid var(--line);padding:4px 0 4px 12px;margin:10px 0}
-.hook.ok{border-color:var(--ok)}.hook.no{border-color:var(--no)}
-.diagram{max-width:560px;margin:8px auto}
-.diagram svg{width:100%;height:auto;display:block}
-.diagram text{fill:var(--ink);font:13px system-ui,sans-serif}
-.diagram .box{fill:var(--panel);stroke:var(--line);stroke-width:1.5}
-.diagram .hot{stroke:var(--accent);stroke-width:2}
-.diagram .arrow{stroke:var(--muted);stroke-width:1.5;fill:none;marker-end:url(#ah)}
-.diagram .lbl{fill:var(--muted);font-size:12px}
-.chart{max-width:640px}
-.chart svg{width:100%;height:auto;display:block}
-.chart text{fill:var(--muted);font:12px system-ui,sans-serif}
-.chart .val{fill:var(--ink);font-weight:600}
-.chart .grid{stroke:var(--line);stroke-width:1}
-.chart .ln{stroke:var(--series);stroke-width:2;fill:none;stroke-linejoin:round;stroke-linecap:round}
-.chart .dot{fill:var(--series);stroke:var(--panel);stroke-width:2}
-.chart .hit{fill:transparent;cursor:default}
-.chart .hit:hover+.dot,.chart .hit:focus+.dot{stroke:var(--ink)}
-details summary{cursor:pointer;font-size:14px;color:var(--muted)}
-.diagram .okt{fill:var(--ok);font-weight:600}.diagram .not{fill:var(--no);font-weight:600}
-dl.words{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}dl.words dt{font-weight:600}dl.words dd{margin:0}
-@media (max-width:560px){dl.words{grid-template-columns:1fr}dl.words dd{margin:0 0 6px}}
-.callout{border-left:4px solid var(--warn);padding:8px 12px;background:var(--panel);border-radius:0 8px 8px 0}
-footer{margin-top:56px;border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:14px}
-@media (max-width:560px){body{font-size:15px}.lead{font-size:16px}nav a{font-size:13px;padding:3px 6px}}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{line-height:1.5;font-size:16px}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:var(--gut);padding-right:var(--gutr)}
+.mono{font-family:var(--mono)}
+em{font-style:italic;font-family:var(--display);font-weight:600}
+code{font:500 .88em var(--mono);color:var(--cyan);overflow-wrap:anywhere}
+.pass{color:var(--cyan)}.fail{color:var(--red)}.pend{color:var(--gold)}.dim{color:var(--muted)}
+
+/* HERO: the crystal behind the headline */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;overflow:hidden;background:radial-gradient(120% 90% at 70% 18%,#0a1826 0%,var(--bg) 58%)}
+#crystal{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+.hero-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(2,7,12,.78) 0%,rgba(2,7,12,.34) 46%,rgba(2,7,12,0) 70%),radial-gradient(130% 110% at 50% 42%,transparent 50%,rgba(2,6,12,.7) 100%)}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-block:12vh;pointer-events:none}
+.hero .wrap>*{pointer-events:auto}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(44px,9vw,104px);line-height:.98;letter-spacing:-.02em;margin:18px 0 0;text-wrap:balance;max-width:14ch}
+h1 em{color:var(--cyan)}
+.sub{font-size:clamp(16px,2.3vw,21px);color:var(--soft);max-width:46ch;margin:26px 0 0;line-height:1.55}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:38px}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;padding:13px 20px;min-height:46px;border-radius:999px;text-decoration:none;transition:.18s ease;white-space:nowrap;cursor:pointer;border:1px solid transparent;background:none;color:var(--ink)}
+.btn.primary{background:var(--cyan);color:#021310;font-weight:700}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px -12px var(--cyan)}
+.btn.ghost{border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.facet{position:absolute;z-index:3;left:var(--gut);bottom:22px;font:500 12px/1.5 var(--mono);color:var(--soft);max-width:min(560px,calc(100vw - 40px));min-height:18px;pointer-events:none}
+.facet b{color:var(--ink);font-weight:500}
+
+/* SECTIONS */
+section{position:relative;z-index:2}
+.pad{padding-block:clamp(72px,11vh,140px)}
+.alt{background:linear-gradient(180deg,var(--bg),#040b14);border-top:1px solid var(--line2)}
+.deep{background:var(--bg2);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.kline{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--cyan);margin:0 0 20px}
+.claim{font-family:var(--display);font-weight:400;font-size:clamp(30px,5.2vw,58px);line-height:1.05;letter-spacing:-.015em;text-wrap:balance;max-width:20ch;margin:0}
+.claim b{font-weight:600}
+.claim em{color:var(--cyan)}
+.lede{color:var(--soft);font-size:clamp(15px,1.9vw,18px);line-height:1.6;max-width:52ch;margin:26px 0 0}
+.lede b{color:var(--ink);font-weight:600}
+
+/* RECEIPTS: the number is the hero */
+/* a receipt's number is sized by its own column (cqi), so a long before→after never pushes a receipt off the page:
+   by default a number of up to 11 characters fits; a row of short numbers (7 or fewer) may be marked .loud */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:64px;border-top:1px solid var(--line);padding-top:48px}
+.stats.loud{--fit:21cqi}
+.stat{min-width:0;container-type:inline-size}
+.stat .n{font-family:var(--mono);font-weight:700;font-size:clamp(30px,4.2vw,56px);font-size:clamp(30px,var(--fit,14.2cqi),76px);line-height:1;letter-spacing:-.02em;white-space:nowrap}
+.stat .n .was{color:var(--muted)}.stat .n .arrow{color:var(--cyan-dim);padding:0 .12em}.stat .n .now{color:var(--cyan)}.stat .n .bad{color:var(--red)}.stat .n .wait{color:var(--gold)}
+.stat .lab{color:var(--soft);font-size:14px;margin-top:16px;line-height:1.5;max-width:28ch}
+.stat .lab b{color:var(--ink);font-weight:600}
+.src{display:inline-block;font:500 11px/1 var(--mono);letter-spacing:.06em;color:var(--muted);text-decoration:none;margin-top:10px;border-bottom:1px dotted var(--muted);padding-bottom:2px}
+.src:hover{color:var(--cyan);border-color:var(--cyan)}
+.wins{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:42px}
+.win{border:1px solid var(--line2);border-radius:16px;padding:26px 22px;background:var(--panel)}
+.win .wn{font-family:var(--mono);font-weight:700;font-size:clamp(26px,3.6vw,42px);color:var(--cyan);letter-spacing:-.02em;line-height:1;white-space:nowrap}
+.win .wn .of{color:var(--muted)}
+.win .wl{color:var(--soft);font-size:13px;margin-top:12px;line-height:1.5}
+
+/* CARDS */
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.acts.two{grid-template-columns:repeat(2,1fr)}
+.act{position:relative;display:flex;flex-direction:column;background:linear-gradient(180deg,var(--panel),#050c15);border:1px solid var(--line2);border-radius:18px;padding:28px 24px 24px;text-decoration:none;transition:.2s ease;overflow:hidden}
+a.act:hover,.act.lift:hover{border-color:var(--cyan);transform:translateY(-4px);box-shadow:0 24px 60px -34px #000}
+.act::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .25s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(73,232,200,.10),transparent 60%)}
+.act:hover::before{opacity:1}
+.act .num{font-family:var(--mono);font-size:12px;letter-spacing:.22em;color:var(--muted)}
+.act h3{font-family:var(--display);font-weight:500;font-size:26px;letter-spacing:-.01em;margin:14px 0 0}
+.act p{color:var(--soft);font-size:14.5px;line-height:1.55;margin:10px 0 0;flex:1}
+.act .go{font-family:var(--mono);font-size:12.5px;color:var(--cyan);margin-top:18px;display:inline-flex;gap:7px;align-items:center}
+
+/* THE STACK: one line per layer */
+.stack{margin-top:44px;border:1px solid var(--line2);border-radius:18px;overflow:hidden;background:#040b13}
+.srow{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;border-top:1px solid var(--line2);padding:16px 22px;transition:.16s}
+.srow:first-child{border-top:none}
+.srow:hover{background:#08141f}
+.srow .d{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:.12em}
+.srow .nm{display:flex;gap:6px 14px;align-items:baseline;flex-wrap:wrap;min-width:0}
+.srow .nm b{font-family:var(--display);font-weight:500;font-size:19px}
+.srow .nm span{color:var(--soft);font-size:14px;min-width:0;overflow-wrap:anywhere}
+.srow.red .d{color:var(--red)}.srow.gold .d{color:var(--gold)}
+.tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.tag.off{color:var(--muted);border:1px solid var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.spark{display:block;width:100%;max-width:520px;height:64px;margin:12px 0 0}
+.tag.cy{color:var(--cyan);border:1px solid rgba(73,232,200,.32)}
+.tag.gd{color:var(--gold);border:1px solid rgba(255,207,106,.34);animation:breathe 2.4s ease-in-out infinite}
+.tag.rd{color:var(--red);border:1px solid rgba(255,107,107,.4)}
+@keyframes breathe{50%{opacity:.55}}
+
+/* THE GLASS: it runs here, on the visitor's own device */
+.glass{margin-top:44px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#07121d,#040b13);padding:26px 24px;box-shadow:0 30px 80px -50px #000,inset 0 1px 0 rgba(255,255,255,.04)}
+.glass h3{font-family:var(--display);font-weight:500;font-size:24px;margin:0 0 6px}
+.glass .hint{color:var(--soft);font-size:14px;margin:0 0 16px;max-width:60ch}
+.glass .out{font:500 13px/1.6 var(--mono);color:var(--soft);margin:14px 0 0;min-height:22px}
+.glass textarea,.glass input,.glass select{font:500 13px/1.5 var(--mono);color:var(--ink);background:rgba(2,7,12,.75);border:1px solid var(--line);border-radius:10px;padding:10px 12px;max-width:100%;min-height:42px}
+.glass textarea{width:100%;min-height:128px}
+.glass label{font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:inline-flex;flex-direction:column;gap:5px}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.box{border:1px solid var(--line2);border-radius:14px;padding:14px 16px;background:rgba(2,7,12,.5);min-width:0}
+.box h4{font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+pre{font:500 12.5px/1.55 var(--mono);color:var(--ink);margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.wall svg{width:100%;height:auto;display:block}
+.wall rect{cursor:pointer;transition:opacity .15s}
+.wall rect:hover{opacity:.7}
+.key{display:flex;flex-wrap:wrap;gap:6px 18px;margin:12px 0 0;font:500 11.5px/1.4 var(--mono);color:var(--muted)}
+.key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+/* PROOF + THE HONEST EXPANDER */
+.proof{text-align:center}
+.proof .hl{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(38px,8vw,88px);line-height:1;letter-spacing:-.02em;margin:0}
+.proof .hl .a{color:var(--muted)}.proof .hl .b{color:var(--cyan)}
+.proof .sub2{color:var(--soft);margin:24px auto 0;max-width:42ch;font-size:16px}
+.links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:36px}
+.plink{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--ink);border:1px solid var(--line);padding:11px 18px;border-radius:999px;transition:.18s;min-height:44px;display:inline-flex;align-items:center}
+.plink:hover{border-color:var(--cyan);color:var(--cyan)}
+details.honest{max-width:680px;margin:22px auto 0;border:1px solid var(--line2);border-radius:14px;background:#040b13;text-align:left}
+details.honest:first-of-type{margin-top:52px}
+details.honest summary{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--muted);padding:16px 20px;cursor:pointer;list-style:none;min-height:48px}
+details.honest summary::-webkit-details-marker{display:none}
+details.honest summary::before{content:"+ ";color:var(--cyan)}
+details.honest[open] summary::before{content:"– "}
+details.honest .in{padding:0 20px 20px;color:var(--soft);font-size:14px;line-height:1.6}
+details.honest .in p{margin:0 0 10px}
+details.honest .in b{color:var(--ink)}
+details.honest .in a{color:var(--cyan)}
+
+footer{border-top:1px solid var(--line2);padding-block:46px;position:relative;z-index:2}
+.frow{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:22px}
+.taglist{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.9;letter-spacing:.02em}
+.taglist span{color:var(--cyan)}
+.fnote{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:14px;letter-spacing:.02em;line-height:1.8}
+.fnote a{color:var(--soft)}
+
+/* MOTION */
+.js .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.js .reveal.in{opacity:1;transform:none}
+@media(max-width:860px){.acts{grid-template-columns:repeat(2,1fr)}.wins{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.stats{grid-template-columns:1fr;gap:40px}.two{grid-template-columns:1fr}.hero-shade{background:linear-gradient(180deg,rgba(2,7,12,.2) 0%,rgba(2,7,12,.82) 62%)}.hero{align-items:flex-end}.hero .wrap{padding-block:9vh}}
+@media(max-width:680px){.acts,.acts.two{grid-template-columns:1fr}.srow{grid-template-columns:48px minmax(0,1fr);padding:14px 16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .reveal{opacity:1;transform:none;transition:none}.tag.gd{animation:none}.btn,.act{transition:none}}
+/* the old page's own styles, for its own content only (scope() from the house standard) */
+.legacy{--series:#0f8a6c;--bg:#f7f6f2;--panel:#ffffff;--ink:#1d1f23;--muted:#5d636d;--line:#dcd9d0;--accent:#1f6f5c;--accent-ink:#ffffff;--ok:#1d7a46;--ok-bg:#e3f3e9;--no:#a33a2c;--no-bg:#f8e5e1;--warn:#8a5a00;--code:#f0eee8;--chip:#ecebe5;}
+.legacy{--series:#34a888;--bg:#131518;--panel:#1b1e22;--ink:#e8e6e1;--muted:#a3a8b0;--line:#2e3238;--accent:#5cc3a6;--accent-ink:#0e1a16;--ok:#6fd39b;--ok-bg:#16301f;--no:#f08a7a;--no-bg:#3a1c18;--warn:#e0b45c;--code:#23272c;--chip:#262a30;}
+.legacy h2{font-size:clamp(21px,3.4vw,27px);margin:48px 0 10px;scroll-margin-top:64px}
+.legacy h3{font-size:18px;margin:22px 0 8px}
+.legacy p{margin:0 0 12px}
+.legacy a{color:var(--accent)}
+.legacy .lead{font-size:18px;max-width:780px}
+.legacy .muted{color:var(--muted)}
+.legacy .small{font-size:14px}
+.legacy .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.legacy .chip{background:var(--chip);border-radius:999px;padding:4px 12px;font-size:14px}
+.legacy .chip b{font-variant-numeric:tabular-nums}
+.legacy .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.legacy .grid{display:grid;gap:12px}
+.legacy .two{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.legacy .four{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.legacy .trait h3{margin-top:0}
+.legacy .trait .n{display:inline-block;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);text-align:center;font-weight:700;line-height:26px;margin-right:6px}
+.legacy ol.steps{padding-left:22px}
+.legacy ol.steps li{margin:0 0 10px}
+.legacy code,.legacy pre,.legacy textarea{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+.legacy code{background:var(--code);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.legacy pre{background:var(--code);padding:12px;border-radius:8px;overflow-x:auto;margin:8px 0;white-space:pre}
+.legacy textarea{width:100%;min-height:220px;background:var(--code);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px}
+.legacy input[type=number],.legacy input[type=text],.legacy select{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font:inherit;max-width:100%}
+.legacy input[type=text]{width:100%}
+.legacy button{font:inherit;font-size:14px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:7px 12px;cursor:pointer}
+.legacy button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.legacy button[aria-pressed="true"]{outline:2px solid var(--accent);outline-offset:1px}
+.legacy .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.legacy .verdict{border-radius:8px;padding:10px 12px;margin:10px 0;font-weight:600}
+.legacy .verdict.ok{background:var(--ok-bg);color:var(--ok)}
+.legacy .verdict.no{background:var(--no-bg);color:var(--no)}
+.legacy ul.reasons{margin:6px 0 0;padding-left:20px;font-weight:400}
+.legacy .tbl{overflow-x:auto}
+.legacy table{border-collapse:collapse;width:100%;font-size:14px}
+.legacy th,.legacy td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.legacy td.num,.legacy th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.legacy .yes{color:var(--ok);font-weight:600}
+.legacy .noo{color:var(--no);font-weight:600}
+.legacy .hook{border-left:3px solid var(--line);padding:4px 0 4px 12px;margin:10px 0}
+.legacy .hook.ok{border-color:var(--ok)}
+.legacy .hook.no{border-color:var(--no)}
+.legacy .diagram{max-width:560px;margin:8px auto}
+.legacy .diagram svg{width:100%;height:auto;display:block}
+.legacy .diagram text{fill:var(--ink);font:13px system-ui,sans-serif}
+.legacy .diagram .box{fill:var(--panel);stroke:var(--line);stroke-width:1.5}
+.legacy .diagram .hot{stroke:var(--accent);stroke-width:2}
+.legacy .diagram .arrow{stroke:var(--muted);stroke-width:1.5;fill:none;marker-end:url(#ah)}
+.legacy .diagram .lbl{fill:var(--muted);font-size:12px}
+.legacy .chart{max-width:640px}
+.legacy .chart svg{width:100%;height:auto;display:block}
+.legacy .chart text{fill:var(--muted);font:12px system-ui,sans-serif}
+.legacy .chart .val{fill:var(--ink);font-weight:600}
+.legacy .chart .grid{stroke:var(--line);stroke-width:1}
+.legacy .chart .ln{stroke:var(--series);stroke-width:2;fill:none;stroke-linejoin:round;stroke-linecap:round}
+.legacy .chart .dot{fill:var(--series);stroke:var(--panel);stroke-width:2}
+.legacy .chart .hit{fill:transparent;cursor:default}
+.legacy .chart .hit:hover+.dot,.legacy .chart .hit:focus+.dot{stroke:var(--ink)}
+.legacy details summary{cursor:pointer;font-size:14px;color:var(--muted)}
+.legacy .diagram .okt{fill:var(--ok);font-weight:600}
+.legacy .diagram .not{fill:var(--no);font-weight:600}
+.legacy dl.words{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}
+.legacy dl.words dt{font-weight:600}
+.legacy dl.words dd{margin:0}
+@media (max-width:560px){.legacy dl.words{grid-template-columns:1fr}.legacy dl.words dd{margin:0 0 6px}}
+.legacy .callout{border-left:4px solid var(--warn);padding:8px 12px;background:var(--panel);border-radius:0 8px 8px 0}
+@media (max-width:560px){.legacy .lead{font-size:16px}}
+.legacy{--bg:transparent;--panel:#081320;--ink:#e9f2f6;--muted:#aebecb;--line:rgba(174,190,203,.18);--accent:#49e8c8;--accent-ink:#02070c;--ok:#49e8c8;--ok-bg:rgba(73,232,200,.12);--no:#ff6b6b;--no-bg:rgba(255,107,107,.12);--warn:#ffcf6a;--chip:rgba(174,190,203,.1);--code:#060e18;--series:#49e8c8;color:var(--ink)}
+@media(max-width:760px){.hero .hero-in{padding-bottom:108px}}
+.jump{display:flex;flex-wrap:wrap;gap:6px 8px;padding:18px 0 4px}
+.jump a{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid rgba(174,190,203,.18);border-radius:999px;color:var(--soft);text-decoration:none;font:500 .88rem var(--mono,'JetBrains Mono',monospace)}
+.jump a:hover,.jump a:focus-visible{color:var(--cyan);border-color:var(--cyan)}
+.steps-now{margin:0;padding-left:1.2em;color:var(--soft)}.steps-now li{margin:.35em 0}
+.glass .legacy h2{margin-top:0}
+.glass .legacy textarea{max-width:100%}
+details.fold{border:1px solid rgba(174,190,203,.14);border-radius:12px;margin:10px 0;background:rgba(8,19,32,.6)}
+details.fold>summary{padding:14px 16px;cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+details.fold>.legacy{padding:0 16px 16px;overflow-x:auto}
+details.fold>.legacy>h2:first-child{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.legacy .card,.legacy .tbl{overflow-x:auto}
+.acts .act b{display:block;color:var(--ink);margin-bottom:.3em}
+.acts .act p{margin:0;color:var(--soft)}
+ul.walk li{margin:.4em 0}
 </style>
 </head>
 <body>
-<nav aria-label="Sections">
-  <a class="brand" href="#top">Estate Genome</a>
-  <a href="#start">Start here</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#guard">Guard</a><a href="#census">Census</a><a href="#convert">Convert</a>
-  <a href="#blueprint">Blueprint</a><a href="#business">For your business</a><a href="#paper">White paper</a><a href="#limits">Limits</a>
-  <button class="ghost" id="theme" type="button" aria-label="Switch light or dark">Theme</button>
-</nav>
 <main id="top">
+<header class="hero" id="hero">
+  <canvas id="crystal" role="img" aria-label="A crystal of faces. Each lit face is one of this build's records: cyan when it holds, red when it is not there yet and is kept in view."></canvas>
+  <div class="hero-shade"></div>
+  <div class="wrap hero-in">
+    <p class="eyebrow reveal">A birth check for software parts</p>
+    <h1>No part is trusted until it proves <em>what it is.</em></h1>
+    <p class="lede reveal">Estate Genome checks each piece of software before it is given work. It must say what it does, check its own answers, be safe to remove, and turn away work it should not do.</p>
+  </div>
+  <p class="facet" id="facet" aria-live="polite">Reading the morning census.</p>
+</header>
 
-<p class="muted small" style="margin-top:18px">Estate Genome · the birth check</p>
-<h1>Every part is born knowing what it is, how to prove it, how to be removed, and where to stop.</h1>
+<div class="wrap"><nav class="jump" aria-label="On this page"><a href="#start">Start here</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#guard">Guard</a><a href="#census">Census</a><a href="#convert">Convert</a><a href="#blueprint">Blueprint</a><a href="#business">For your business</a><a href="#paper">White paper</a><a href="#limits">Limits</a></nav></div>
+
+<section class="pad" id="result">
+  <div class="wrap">
+    <p class="kline reveal">Measured, not claimed</p>
+    <h2 class="claim reveal">Read from its own records. <b>Each number has its source one click away.</b></h2>
+    <div class="stats"><div class="stat reveal"><div class="n"><span class="now" data-bind="census.admitted">…</span><span class="was" style="font-size:.42em"> of <span data-bind="census.live">…</span></span></div><div class="lab">public repositories, not archived, that carry the genome and pass its birth check. Counted again every morning.</div><a class="src" href="data/census.json">receipt: the morning census ↗</a></div><div class="stat reveal"><div class="n"><span class="now" data-bind="gates.killed">…</span><span class="was" style="font-size:.42em"> of <span data-bind="gates.total">…</span></span></div><div class="lab">planted breaks in its own code that its tests caught.</div><a class="src" href="data/gates.json">receipt: the test of the tests ↗</a></div><div class="stat reveal"><div class="n"><span class="bad" data-bind="census.genomeLess">…</span></div><div class="lab">public repositories, not archived, that do not carry the genome yet. Shown in red: most of the estate is not converted.</div><a class="src" href="data/census.json">receipt: the morning census ↗</a></div></div>
+  </div>
+</section>
+
+<section class="pad alt" id="start-now">
+  <div class="wrap">
+    <p class="kline reveal">Start here</p>
+    <h2 class="claim reveal">Three steps. <b>No sign-up.</b></h2>
+    <ol class="steps-now reveal">
+      <li>Press one of the examples in the box below.</li>
+      <li>Press <b>Check this manifest</b>. It runs here, in your browser.</li>
+      <li>Read the answer. It says which of the four traits hold, and why.</li>
+    </ol>
+    <p class="sub reveal">The full guide is in <a href="#start">Start here</a>, further down.</p>
+  </div>
+</section>
+
+<section class="pad proof" id="glass-wrap">
+  <div class="wrap">
+    <p class="kline reveal">Try it: it runs here, on your machine</p>
+    <div class="glass"><div class="legacy"><h2 id="try">Try it: check a manifest</h2>
+<p>This checks trait 1, the manifest, entirely in your browser. Traits 2 to 4 need the part's own code to run. That happens in
+the command-line check and in CI, and the recorded runs are just below.</p>
+<div class="card">
+  <div class="row" role="group" aria-label="Examples">
+    <button type="button" class="ghost" data-preset="honest">An honest cell</button>
+    <button type="button" class="ghost" data-preset="bluff">A bluffing judge</button>
+    <button type="button" class="ghost" data-preset="fresh">Freshly grown</button>
+    <button type="button" class="ghost" data-preset="broken">Broken JSON</button>
+  </div>
+  <label for="seedIn" class="small muted">seed.json</label>
+  <textarea id="seedIn" spellcheck="false" aria-describedby="seedOut"></textarea>
+  <div class="row"><button type="button" id="checkSeed">Check this manifest</button></div>
+  <div id="seedOut" aria-live="polite"></div>
+  <p class="small muted" id="seedNote"></p>
+</div></div></div>
+  </div>
+</section>
+
+<section class="pad" id="parts">
+  <div class="wrap">
+    <p class="kline reveal">How it is built</p>
+    <h2 class="claim reveal">Small files, one job each. <b>Each one tested by breaking it.</b></h2>
+    <div class="stack reveal"><div class="srow" title="src/genome.mjs"><div class="d">01</div><div class="nm"><b>The birth check</b><span>admits a part as a cell only when all four traits hold, and says which one failed</span><span class="tag cy">65 of 65 breaks caught</span></div></div><div class="srow" title="src/guard.mjs"><div class="d">02</div><div class="nm"><b>The guard</b><span>checks each output with the cell’s own judge before it is released</span><span class="tag cy">34 of 34 breaks caught</span></div></div><div class="srow" title="src/route.mjs"><div class="d">03</div><div class="nm"><b>The conductor</b><span>hands work only to an admitted cell whose lane fits, and sends the rest to a named owner</span><span class="tag cy">16 of 16 breaks caught</span></div></div><div class="srow" title="src/census.mjs"><div class="d">04</div><div class="nm"><b>The census</b><span>counts every public repository each morning: cells, declared parts, and the rest</span><span class="tag cy">12 of 12 breaks caught</span></div></div><div class="srow" title="src/drift.mjs"><div class="d">05</div><div class="nm"><b>Drift</b><span>names a cell that was admitted before and is refused now, with the trait it lost</span><span class="tag cy">32 of 32 breaks caught</span></div></div><div class="srow" title="src/foldcache.mjs"><div class="d">06</div><div class="nm"><b>The fold-cache</b><span>reuses a full check only for the same code, the same checker, and under 7 days old</span><span class="tag cy">65 of 65 breaks caught</span></div></div><div class="srow" title="src/convert.mjs"><div class="d">07</div><div class="nm"><b>Conversion</b><span>ranks the repositories still to convert, and keeps a ledger of each attempt</span><span class="tag cy">36 of 36 breaks caught</span></div></div><div class="srow" title="src/cost.mjs"><div class="d">08</div><div class="nm"><b>The cost case</b><span>works out the hours saved from your own numbers</span><span class="tag cy">19 of 19 breaks caught</span></div></div><div class="srow" title="src/run.mjs, src/supervise.mjs, src/grow.mjs, template/genome/judge.mjs, template/genome/lane.mjs, template/genome/health.mjs, template/genome/tombstone.mjs, genome/cell.mjs, src/guardrun.mjs, template/genome/act.mjs, examples/sum-checker/genome/cell.mjs, examples/drifted-act/genome/cell.mjs, src/guardstats.mjs"><div class="d">09</div><div class="nm"><b>13 more files</b><span>the hooks a new cell is grown with, the runner, and the worked examples</span><span class="tag cy">139 of 139 breaks caught</span></div></div></div>
+  </div>
+</section>
+
+<section class="pad alt" id="who">
+  <div class="wrap">
+    <p class="kline reveal">Who it is for</p>
+    <h2 class="claim reveal">One check. <b>Something for each role.</b></h2>
+    <div class="acts"><div class="act reveal"><b>Chief executive</b><p>You know what you own. Only parts that prove what they do, and what they will not do, receive work.</p></div><div class="act reveal"><b>Finance</b><p>Parts nobody can describe cost hours every year. The genome turns that hunt into reading a file. <a href="#business">Work out the saving from your own numbers</a>.</p></div><div class="act reveal"><b>Operations</b><p>Work a part should not take goes to a named owner, not half-done. A failed check names what is missing.</p></div><div class="act reveal"><b>Technology</b><p>One file and one CI step per repository. The hooks are commands, so any language fits. No service to run.</p></div><div class="act reveal"><b>Security</b><p>A part must show it turns away work outside its lane, and that its judge is not a rubber stamp, before anything calls it.</p></div><div class="act reveal"><b>The teams</b><p>One command grows the files and names the three answers only the team can write. CI keeps them honest.</p></div></div>
+  </div>
+</section>
+
+<section class="pad" id="said">
+  <div class="wrap">
+    <p class="kline reveal">Said straight</p>
+    <h2 class="claim reveal">What it does not claim. <b>What can go wrong.</b></h2>
+    <details class="honest reveal"><summary>What it does not claim</summary><div class="in">
+      <p>It makes parts check themselves. It does not make them clever, and it does not say it does.</p>
+      <p>A judge that passes can tell its own good and bad cases apart. That does not prove it catches every wrong answer.</p>
+      <p>The check on this page covers the manifest only. The other three traits need the part's own code, so they run on the command line and in CI.</p>
+      <p>No outside organisation uses it yet. Every cell is this estate's own.</p></div></details>
+    <details class="honest reveal"><summary>What can go wrong</summary><div class="in">
+      <p>Drift is caught once a day, by the census, on public repositories only. A part can change between two censuses.</p>
+      <p>A reused check can be up to seven days old. A new commit, or new checking code, always forces a fresh one.</p>
+      <p>The guard is only as strong as each cell's judge. A judge that checks loosely lets loose answers through.</p></div></details>
+    <details class="honest reveal"><summary>Your data, who owns it, and support</summary><div class="in">
+      <p>It runs on your own machines. It is open code under the MIT licence, with nothing else to install and no service to run.</p>
+      <p>This page reads only its own site's files. It sends nothing anywhere.</p>
+      <p>It is supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a>. Support is agreed per deployment, in each deployment's agreement.</p>
+      <p>It is built and kept by Kar, an AI. It has one human owner, Simon Gant.</p></div></details>
+    <details class="honest reveal"><summary>What changed on this page</summary><div class="in">
+      <p>This page was rebuilt to the house standard. Every part of the old page is below, one click away.</p>
+      <p>One thing was taken out: the switch between light and dark. This page is dark only, so the switch could change nothing. The page script changed by one character so it does not stop without it.</p>
+      <p>The census figures are still read fresh each time the page opens. The census, the checks and their records were not changed.</p></div></details>
+    <details class="honest reveal"><summary>What a buyer walk found, and what was done</summary><div class="in">
+      <p>No buyer walk is recorded for this version of the page.</p></div></details>
+  </div>
+</section>
+
+<section class="pad alt" id="full">
+  <div class="wrap">
+    <p class="kline reveal">Every detail is still here</p>
+    <h2 class="claim reveal">Every part in full. <b>One click opens each.</b></h2>
+<details class="fold" id="fold-intro"><summary>The original introduction</summary><div class="legacy"><p class="muted small" style="margin-top:18px">Estate Genome · the birth check</p>
+<p><b>Every part is born knowing what it is, how to prove it, how to be removed, and where to stop.</b></p>
 <p class="lead">Estate Genome is a check that every piece of software must pass before it is trusted: a code repository, an AI agent,
 a contract, a model or a service. It is admitted as a <b>cell</b> only when four things hold, and the check proves them by running
 the part's own code: it <b>describes itself</b>; its <b>judge tells right from wrong</b>; it <b>reports its health and can be removed
@@ -130,9 +391,8 @@ admitted, and the check says exactly why.</p>
     <dt>Metabolism</dt><dd>This estate's nightly housekeeping. It measures every repository, flags the ones nobody can vouch for, and proposes reversible retirements for a person to sign.</dd>
     <dt>Conductor</dt><dd>The router that hands work only to cells whose lane fits, and escalates the rest.</dd>
   </dl>
-</div>
-
-<h2 id="start">Start here</h2>
+</div></div></details>
+<details class="fold" id="fold-start"><summary>Start here</summary><div class="legacy"><h2 id="start">Start here</h2>
 <ol class="steps">
   <li><b>Check a manifest in this tab.</b> In <a href="#try">Try it</a>, pick an example or paste your own <code>seed.json</code>. The
   page runs the same check code the command line runs, and lists what is missing.</li>
@@ -156,26 +416,8 @@ node estate-genome/bin/genome-check.mjs path/to/your/part</pre>
 <pre>- uses: sjgant80-hub/estate-genome@v1</pre></li>
   <li><b>Route work by the genome.</b> In <a href="#conductor">the conductor</a> box, type what you need. Only admitted cells can
   receive work, and a request no cell's lane fits is refused and escalated.</li>
-</ol>
-
-<h2 id="try">Try it: check a manifest</h2>
-<p>This checks trait 1, the manifest, entirely in your browser. Traits 2 to 4 need the part's own code to run. That happens in
-the command-line check and in CI, and the recorded runs are just below.</p>
-<div class="card">
-  <div class="row" role="group" aria-label="Examples">
-    <button type="button" class="ghost" data-preset="honest">An honest cell</button>
-    <button type="button" class="ghost" data-preset="bluff">A bluffing judge</button>
-    <button type="button" class="ghost" data-preset="fresh">Freshly grown</button>
-    <button type="button" class="ghost" data-preset="broken">Broken JSON</button>
-  </div>
-  <label for="seedIn" class="small muted">seed.json</label>
-  <textarea id="seedIn" spellcheck="false" aria-describedby="seedOut"></textarea>
-  <div class="row"><button type="button" id="checkSeed">Check this manifest</button></div>
-  <div id="seedOut" aria-live="polite"></div>
-  <p class="small muted" id="seedNote"></p>
-</div>
-
-<h3>The four traits, proved on real runs</h3>
+</ol></div></details>
+<details class="fold" id="fold-try"><summary>Try it: the recorded runs and the conductor</summary><div class="legacy"><h3>The four traits, proved on real runs</h3>
 <p>Each of these is the full birth check run on the part's own hooks. DocDec's was run on a fresh copy from GitHub. Below each hook
 is its real output. At the end, this tab re-judges the recorded outputs with the same kernel and checks it reaches the same verdict.</p>
 <div class="row" role="group" aria-label="Recorded birth checks">
@@ -200,9 +442,8 @@ weaker fit is refused and escalated, not guessed. Type what you need:</p>
   <p class="small muted">This tab ranks cells by what their manifests say. Before handing anything over, the command-line
   conductor (<code>bin/route.mjs</code>) also asks the chosen cell's own lane check, on a fresh copy of that cell. Two real runs:</p>
   <div id="routeTraces"></div>
-</div>
-
-<h2 id="how">How it works</h2>
+</div></div></details>
+<details class="fold" id="fold-how"><summary>How it works</summary><div class="legacy"><h2 id="how">How it works</h2>
 <p>The birth check reads the part's <code>seed.json</code>, then runs the part's own hooks, each as a command with a time limit:
 the judge twice, the lane check twice, the health report once, and the retire-and-restore on a scratch copy. It hands what the
 hooks printed to a small kernel that judges each trait. This diagram is DocDec's real run, from the trace above.</p>
@@ -242,9 +483,8 @@ hooks printed to a small kernel that judges each trait. This diagram is DocDec's
   which it must refuse, escalating to exactly the party the manifest names.</li>
   <li><b>Verdict.</b> All four hold: a cell. In CI that is a green check; the daily census lists it; the conductor can route to
   it. Anything else is a part, with the failures named in words a person can act on.</li>
-</ol>
-
-<h2 id="guard">The guard: every call checked, not just the first</h2>
+</ol></div></details>
+<details class="fold" id="fold-guard"><summary>The guard: every call checked, not just the first</summary><div class="legacy"><h2 id="guard">The guard: every call checked, not just the first</h2>
 <p class="lead">The birth check proves a part once, on its own known cases. Work can still go wrong later: a change slips in, and
 the part starts giving wrong answers to questions its tests never asked. So the four traits do not stop at birth. Every time
 something asks a cell to do work, the guard checks it again, on that very request.</p>
@@ -303,9 +543,8 @@ measuring script adding the two numbers itself, never by asking the cell.</p>
 <p class="small">The time is mostly spent starting each hook as its own process under the time-limit supervisor, so it depends on the
 machine and how busy it is. That is why the rule is a ratio to the bare act run on the same machine at the same time, not a fixed
 number of seconds. A guarded call runs three hooks where the bare act runs one.</p>
-<p class="small muted" id="guardMachine"></p>
-
-<h2 id="census">The census: how much of this estate is cells</h2>
+<p class="small muted" id="guardMachine"></p></div></details>
+<details class="fold" id="fold-census"><summary>The census: how much of this estate is cells</summary><div class="legacy"><h2 id="census">The census: how much of this estate is cells</h2>
 <p>Every day, on GitHub's own servers, the census reads every public repository in this estate. For each one that declares a
 genome it takes a fresh copy and runs the full birth check. It reads only GitHub's public interface, so anyone can run it and
 get the same figures.</p>
@@ -356,9 +595,8 @@ every check of both runs, in the file named under the table.</p>
 
 <p class="callout">Most of this estate still has no genome: <span data-bind="census.genomeLess">…</span> live public repositories.
 Upgrading old repositories in one rewrite would bake in mistakes, so it is a job for the estate's metabolism. It flags every repository with no genome. Ones that are in use get upgraded.
-Ones measured dead get retired, reversibly, after a person signs off. New parts are grown with the genome from the start.</p>
-
-<h2 id="convert">From counting cells to making them</h2>
+Ones measured dead get retired, reversibly, after a person signs off. New parts are grown with the genome from the start.</p></div></details>
+<details class="fold" id="fold-convert"><summary>From counting cells to making them</summary><div class="legacy"><h2 id="convert">From counting cells to making them</h2>
 <p class="lead">A census that only counts changes nothing. So the census feeds a worklist: every live repository that still has
 no genome, ranked for conversion, and a ledger of each conversion and how it came out.</p>
 
@@ -390,9 +628,8 @@ on the machine that made them, because some are private. What is published is th
 <b>escalated</b> (it could not be made a cell without a person, and the reason says why). Public repositories only
 (<a href="data/convert.json">convert.json</a>).</p>
 <div class="card tbl"><table aria-label="Conversion ledger"><thead><tr><th>Repository</th><th>Outcome</th><th>Reason</th><th>Day</th></tr></thead><tbody id="ledgerRows"></tbody></table></div>
-<p class="small muted" id="ledgerNote"></p>
-
-<h2 id="blueprint">Blueprint: how it is built, part by part</h2>
+<p class="small muted" id="ledgerNote"></p></div></details>
+<details class="fold" id="fold-blueprint"><summary>Blueprint: how it is built, part by part</summary><div class="legacy"><h2 id="blueprint">Blueprint: how it is built, part by part</h2>
 <p>Each part is a small module. Every one with logic in it is mutation-tested: a tool rewrites the code one operator at a time
 (<code>&lt;</code> to <code>&lt;=</code>, <code>&amp;&amp;</code> to <code>||</code>, and so on), and the tests must catch every
 change. Nothing here is exempted.</p>
@@ -401,9 +638,8 @@ change. Nothing here is exempted.</p>
 , <code>bin/grow.mjs</code> and <code>bin/genome-run.mjs</code> (the commands), <code>scripts/census.mjs</code>,
 <code>scripts/traces.mjs</code> and <code>scripts/guard-measure.mjs</code> (the census, the recorded runs and the guard measurement), and CI: <code>gate.yml</code> runs every test, the mutation gate on every file above, estate-genome's own birth
 check through its own Action, and both worked examples. The honest one must be admitted and the bluffer refused. Source:
-<a href="https://github.com/sjgant80-hub/estate-genome">github.com/sjgant80-hub/estate-genome</a>.</p>
-
-<h2 id="business">For your business</h2>
+<a href="https://github.com/sjgant80-hub/estate-genome">github.com/sjgant80-hub/estate-genome</a>.</p></div></details>
+<details class="fold" id="fold-business"><summary>For your business</summary><div class="legacy"><h2 id="business">For your business</h2>
 <p class="lead">Software estates and AI agents now grow faster than anyone can track. The usual result: services nobody can
 explain, agents trusted because they sound confident, and old code nobody dares delete. The genome makes every part carry its
 own answers, and makes CI refuse the ones that cannot back them up.</p>
@@ -490,9 +726,8 @@ your own repository.</p>
   <li><b>Safer to combine.</b> Every admitted part has shown, on its own code, that it refuses work outside its lane and names who that work goes to. A part that bluffs past its edge is caught before anything relies on it.</li>
   <li><b>Lean by design.</b> Every part can be retired and restored exactly, so dead weight is shed instead of carried.</li>
   <li><b>Legible to AI agents.</b> The genome index tells any agent what each part does, how it is checked, and where its edge is.</li>
-</ul>
-
-<h2 id="paper">White paper: four instructions, and why only four</h2>
+</ul></div></details>
+<details class="fold" id="fold-paper"><summary>White paper: four instructions, and why only four</summary><div class="legacy"><h2 id="paper">White paper: four instructions, and why only four</h2>
 <p><b>The problem.</b> This estate's own first full scan found <span data-bind="lock.scored">…</span> live repositories:
 <span data-bind="lock.noSignal">…</span> had no measured signal saying they were healthy or broken, and
 <span data-bind="lock.dead">…</span> were measured unused and broken, unverified or superseded
@@ -518,9 +753,8 @@ the way out.</p>
 real request, so a part that drifts is caught by the first request that shows it, not at the next review.</p>
 <p><b>How it spreads.</b> New parts are grown from the template, so they carry all four from the first commit. Old parts are not
 rewritten in one go. The metabolism flags the genome-less ones; the ones in use are upgraded, and the dead ones are retired
-reversibly. The census counts the result every day, names any cell that drifts, and ranks the next repositories to convert.</p>
-
-<h2 id="limits">Limits, stated plainly</h2>
+reversibly. The census counts the result every day, names any cell that drifts, and ranks the next repositories to convert.</p></div></details>
+<details class="fold" id="fold-limits"><summary>Limits, stated plainly</summary><div class="legacy"><h2 id="limits">Limits, stated plainly</h2>
 <ul>
   <li>It makes parts self-checking. It does not make them intelligent or aware, and it does not claim to.</li>
   <li>A passing judge separates its own good and bad cases. It is not proof that the judge catches every wrong output.</li>
@@ -535,11 +769,17 @@ reversibly. The census counts the result every day, names any cell that drifts, 
   <li>The public census covers public repositories only. Today <span data-bind="census.admitted">…</span> are cells. The rest have no genome yet.</li>
   <li>No outside organisation has deployed it yet. Every cell is this estate's own, and the census figures are this estate's.</li>
   <li><span data-bind="census.admitted">…</span> public repositories are cells so far, all with Node.js hooks; the runner takes any command, but no other language has been tried yet.</li>
-</ul>
+</ul></div></details>
+<details class="fold" id="fold-footer"><summary>The original footer</summary><div class="legacy"><p>Estate Genome · built by Kar · MIT licence (holder Simon Gant) · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a> ·
+  <a href="https://github.com/sjgant80-hub/estate-genome">source</a> · <a href="data/genome-index.json">genome index</a></p></div></details>
+  </div>
+</section>
 
 <footer>
-  <p>Estate Genome · built by Kar · MIT licence (holder Simon Gant) · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a> ·
-  <a href="https://github.com/sjgant80-hub/estate-genome">source</a> · <a href="data/genome-index.json">genome index</a></p>
+  <div class="wrap frow">
+    <div><div class="brand">Estate Genome</div><div class="fnote">Built by Kar · MIT licence (holder Simon Gant) · supplied by <a href="https://www.ai-nativesolutions.com">AI Native Solutions</a><br>Powered by the Konomi architecture, created by Thomas Frumkin.</div></div>
+    <div class="taglist"><span>›</span> No part is trusted until it proves itself.<br><span>›</span> Checked again every morning.</div>
+  </div>
 </footer>
 </main>
 <script type="module">
@@ -1117,7 +1357,7 @@ const maybe = (p) => p.catch(() => null);
 // theme: the viewer's own choice, remembered in this browser only
 const root = document.documentElement;
 try { const t = localStorage.getItem('genome-theme'); if (t === 'dark' || t === 'light') root.setAttribute('data-theme', t); } catch { /* storage off */ }
-$('theme').addEventListener('click', () => {
+$('theme')?.addEventListener('click', () => {
   const dark = root.getAttribute('data-theme') ? root.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   root.setAttribute('data-theme', dark ? 'light' : 'dark');
   try { localStorage.setItem('genome-theme', dark ? 'light' : 'dark'); } catch { /* storage off */ }
@@ -1416,6 +1656,303 @@ function cost() {
 ['cParts', 'cNo', 'cDead', 'cHours', 'cRate'].forEach((id) => $(id).addEventListener('input', cost));
 cost();
 $('costNote').innerHTML = 'Defaults are floors, to be replaced with your own. The shares come from this estate’s first full scan (17 Nov 2026, run privately; only its counts are published, in data/prices.lock.json). The hourly cost is the UK median for all full-time jobs, not an engineer’s rate (<a href="https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2025">ONS ASHE 2025</a>). The hours are your estimate; the default is one hour a year. Every figure is in <a href="data/prices.lock.json">the price lock</a>.';
+})();
+</script>
+<script>
+// after the page's words and its module script: the house kit and layer. They draw; they are not text to read.
+// vendor/house/crystal.js, inlined byte for byte (export removed)
+const CRYSTAL = (() => {
+// crystal.js — the house hero: a living crystal, drawn by one fragment shader. No library is fetched.
+//
+// It is a real solid, not a picture of one: a 32-faced gem (an icosahedron cut by a dodecahedron) that every pixel's
+// ray is intersected with exactly. Light is bent into the body, carried through it, turned back where it cannot leave
+// and bent out again, once for each of three colours, so the facets split light the way glass does. The body absorbs
+// as it carries; its edges burn; a slow lattice of light moves inside it.
+//
+// And it is bound to data. Each of the 32 faces holds a state the page gives it: dark, proven (cyan), sealing (gold,
+// breathing) or failed (red, kept). A page lights a face only for a receipt it has re-derived, so the crystal is the
+// record, not decoration. A face can be pointed at and pressed: the page is told which one.
+//
+//   mount(canvas, options) → { setFaces, setEnergy, setCentre, onHover, onPick, redraw, destroy, FACES }   or null
+// It decides nothing. With no WebGL the canvas is left as it is (the page's own background shows) and null is returned.
+
+const FACES = 32;
+const STATE = { dark: 0, proven: 1, sealing: 2, failed: 3 };
+const PHI = (1 + Math.sqrt(5)) / 2;
+const unit = (v) => { const l = Math.hypot(v[0], v[1], v[2]); return [v[0] / l, v[1] / l, v[2] / l]; };
+// ten icosahedron normals, then six dodecahedron normals; each stands for a pair of opposite faces (i and i + 16)
+const NORMALS = [[1, 1, 1], [-1, 1, 1], [1, -1, 1], [1, 1, -1], [0, 1, PHI + 1], [0, -1, PHI + 1], [PHI + 1, 0, 1], [-PHI - 1, 0, 1], [1, PHI + 1, 0], [-1, PHI + 1, 0], [0, PHI, 1], [0, -PHI, 1], [1, 0, PHI], [-1, 0, PHI], [PHI, 1, 0], [-PHI, 1, 0]].map(unit);
+const R_ICOSA = 1.2, R_CUT = 1.37, CAMERA = 5.2, FOV = 0.8284;
+
+const VERT = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+const FRAG = `
+precision highp float;
+uniform vec2 uRes; uniform float uTime; uniform mat3 uRot; uniform mat3 uInv; uniform vec3 uCen;
+uniform vec3 uN[16]; uniform float uR[16]; uniform float uState[32]; uniform float uEnergy; uniform float uHot;
+const vec3 CYAN = vec3(0.286, 0.910, 0.784); const vec3 GOLD = vec3(1.0, 0.812, 0.416); const vec3 RED = vec3(1.0, 0.42, 0.42);
+float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float hash3(vec3 p){ p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
+float noise(vec3 x){ vec3 i = floor(x), f = fract(x); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(mix(hash3(i), hash3(i + vec3(1,0,0)), f.x), mix(hash3(i + vec3(0,1,0)), hash3(i + vec3(1,1,0)), f.x), f.y),
+             mix(mix(hash3(i + vec3(0,0,1)), hash3(i + vec3(1,0,1)), f.x), mix(hash3(i + vec3(0,1,1)), hash3(i + vec3(1,1,1)), f.x), f.y), f.z); }
+vec3 tint(float s){ return s < 0.5 ? vec3(0.0) : s < 1.5 ? CYAN : s < 2.5 ? GOLD : RED; }
+// the solid: sixteen pairs of planes. Where a ray enters and leaves, through which faces, and how near an edge.
+bool solid(vec3 ro, vec3 rd, out float tN, out float tF, out vec3 nN, out vec3 nF, out float sN, out float sF, out float eN, out float eF, out float iN){
+  tN = -1e9; tF = 1e9; float tN2 = -1e9; float tF2 = 1e9; nN = vec3(0.0); nF = vec3(0.0); sN = 0.0; sF = 0.0; iN = -1.0;
+  for (int i = 0; i < 16; i++){
+    vec3 n = uN[i]; float dn = dot(rd, n); dn = abs(dn) < 1e-5 ? 1e-5 : dn; float po = dot(ro, n);
+    float tp = (uR[i] - po) / dn; float tm = (-uR[i] - po) / dn;
+    float ta; float tb; vec3 na; vec3 nb; float sa; float sb; float ia;
+    if (dn < 0.0) { ta = tp; na = n; sa = uState[i]; ia = float(i); tb = tm; nb = -n; sb = uState[i + 16]; }
+    else { ta = tm; na = -n; sa = uState[i + 16]; ia = float(i) + 16.0; tb = tp; nb = n; sb = uState[i]; }
+    if (ta > tN) { tN2 = tN; tN = ta; nN = na; sN = sa; iN = ia; } else if (ta > tN2) { tN2 = ta; }
+    if (tb < tF) { tF2 = tF; tF = tb; nF = nb; sF = sb; } else if (tb < tF2) { tF2 = tb; }
+  }
+  eN = tN - tN2; eF = tF2 - tF;
+  return tN < tF && tF > 0.0;
+}
+// what the crystal reflects and bends: a dark sea, three lamps, a horizon, slow bars of light
+vec3 world(vec3 d){
+  vec3 c = mix(vec3(0.0006, 0.003, 0.006), vec3(0.006, 0.028, 0.042), pow(clamp(d.y * 0.5 + 0.5, 0.0, 1.0), 1.5));
+  c += CYAN * 2.2 * pow(max(dot(d, normalize(vec3(0.6, 0.7, 0.4))), 0.0), 26.0);
+  c += vec3(0.6, 0.8, 1.0) * 1.3 * pow(max(dot(d, normalize(vec3(-0.7, 0.3, 0.5))), 0.0), 60.0);
+  c += GOLD * 0.55 * pow(max(dot(d, normalize(vec3(0.1, -0.8, 0.5))), 0.0), 28.0);
+  c += vec3(0.15, 0.5, 0.45) * exp(-abs(d.y) * 14.0) * 0.12;
+  float bars = smoothstep(0.9, 1.0, sin(d.x * 9.0 + d.z * 5.0 + uTime * 0.07) * 0.5 + 0.5);
+  return c + vec3(0.5, 0.9, 0.85) * bars * 0.22 * smoothstep(-0.2, 0.6, d.y);
+}
+// one colour of light through the body: bent in, carried, turned back once if it cannot leave, bent out
+vec3 through(vec3 p, vec3 rd, vec3 n, float ior, out float path, out float sX, out float eX){
+  vec3 d = refract(rd, n, 1.0 / ior); vec3 o = p - n * 0.003; vec3 leave = d; path = 0.0; sX = 0.0; eX = 1.0;
+  for (int b = 0; b < 2; b++){
+    float tN; float tF; vec3 nN; vec3 nF; float sN; float sF; float eN; float eF; float iN;
+    solid(o, d, tN, tF, nN, nF, sN, sF, eN, eF, iN);
+    path += max(tF, 0.0);
+    if (b == 0) { sX = sF; eX = eF; }
+    vec3 r = refract(d, -nF, ior);
+    if (dot(r, r) > 0.0) { leave = r; break; }
+    vec3 q = o + d * tF; d = reflect(d, -nF); o = q - nF * 0.003; leave = d;
+  }
+  return leave;
+}
+void main(){
+  vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
+  vec3 ro = vec3(0.0, 0.0, ${CAMERA.toFixed(1)}); vec3 rd = normalize(vec3(uv * ${FOV.toFixed(4)}, -1.0));
+  // the room: depth, a breath of light round the crystal, three drifts of dust
+  vec3 col = mix(vec3(0.0002, 0.0008, 0.0016), vec3(0.0016, 0.0042, 0.0085), exp(-length(uv - vec2(0.36, 0.3)) * 1.9));
+  float near = length(cross(rd, uCen - ro));
+  col += CYAN * 0.010 * uEnergy * exp(-near * near * 0.42);
+  for (int k = 0; k < 3; k++){
+    float sc = 14.0 + float(k) * 11.0; vec2 g = uv * sc + vec2(uTime * 0.010 * float(k + 1), uTime * 0.006);
+    vec2 id = floor(g); vec2 f = fract(g) - 0.5; float h = hash(id + float(k) * 17.0);
+    vec2 o = vec2(hash(id + 3.1), hash(id + 7.7)) - 0.5; float tw = 0.5 + 0.5 * sin(uTime * (0.6 + h * 2.0) + h * 40.0);
+    col += vec3(0.56, 0.91, 0.85) * smoothstep(0.045, 0.0, length(f - o * 0.7)) * step(0.9, h) * tw * (0.22 - 0.05 * float(k));
+  }
+  vec3 lo = uInv * (ro - uCen); vec3 ld = uInv * rd;
+  float tN; float tF; vec3 nN; vec3 nF; float sN; float sF; float eN; float eF; float iN;
+  if (solid(lo, ld, tN, tF, nN, nF, sN, sF, eN, eF, iN) && tN > 0.0){
+    vec3 p = lo + ld * tN; float facing = max(dot(-ld, nN), 0.0); float fres = pow(1.0 - facing, 3.0);
+    float pa; float sa; float ea; float pathG; float sX; float eX;
+    vec3 dr = through(p, ld, nN, 1.41, pa, sa, ea);
+    vec3 dg = through(p, ld, nN, 1.45, pathG, sX, eX);
+    vec3 db = through(p, ld, nN, 1.50, pa, sa, ea);
+    vec3 bent = vec3(world(uRot * dr).r, world(uRot * dg).g, world(uRot * db).b);
+    vec3 body = exp(-pathG * vec3(1.5, 0.38, 0.52) * 0.8);
+    vec3 c = mix(bent * body, world(uRot * reflect(ld, nN)), 0.06 + 0.9 * fres);
+    vec3 cN = tint(sN); vec3 cX = tint(sX);
+    float breath = (sN > 1.5 && sN < 2.5) ? 0.6 + 0.4 * sin(uTime * 1.8 + iN) : 1.0;
+    c += cN * (0.012 + 0.10 * fres) * breath * uEnergy;                 // a lit face glows from within
+    c += cX * 0.03 * body.g * uEnergy;                                  // the far side, seen through the body
+    float edge = exp(-eN * 90.0) + 0.35 * exp(-eX * 60.0) * body.g;      // edges burn
+    c += mix(vec3(0.16, 0.55, 0.48), cN, step(0.5, sN)) * edge * (0.35 + 0.45 * uEnergy);
+    vec3 mid = p + refract(ld, nN, 1.0 / 1.45) * pathG * 0.5;           // the lattice of light inside
+    c += CYAN * pow(noise(mid * 3.2 + vec3(0.0, uTime * 0.12, uTime * 0.05)), 3.0) * 0.05 * uEnergy;
+    c += vec3(0.5, 0.9, 0.85) * (1.0 - step(0.5, abs(iN - uHot))) * 0.07;         // the face under the pointer
+    col = c;
+  }
+  col *= 1.0 - 0.5 * pow(length(uv * vec2(0.75, 1.0)), 2.2);
+  col = 1.0 - exp(-col * 2.4);
+  col = pow(col, vec3(0.4545)); col = mix(col, col * col * (3.0 - 2.0 * col), 0.65) + (hash(gl_FragCoord.xy + uTime) - 0.5) * 0.014;
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+const mul = (m, v) => [m[0] * v[0] + m[3] * v[1] + m[6] * v[2], m[1] * v[0] + m[4] * v[1] + m[7] * v[2], m[2] * v[0] + m[5] * v[1] + m[8] * v[2]];
+// rot(yaw, pitch) → the turn of the crystal as a column-major 3×3, and its inverse (its transpose)
+function rot(yaw, pitch) {
+  const cy = Math.cos(yaw), sy = Math.sin(yaw), cx = Math.cos(pitch), sx = Math.sin(pitch);
+  const m = [cy, sx * sy, -cx * sy, 0, cx, sx, sy, -sx * cy, cx * cy];
+  return { m, inv: [m[0], m[3], m[6], m[1], m[4], m[7], m[2], m[5], m[8]] };
+}
+// faceAt(u, v, aspect, turn, centre, cut) → the face (0…31) a ray through that point of the screen enters by, or -1.
+// u, v run 0…1 from the top left. The same sum the shader does, so the page and the picture agree on which face it is.
+function faceAt(u, v, aspect, turn, centre, cut) {
+  const x = (u - 0.5) * aspect * FOV, y = (0.5 - v) * FOV, l = Math.hypot(x, y, 1);
+  const rd = mul(turn.inv, [x / l, y / l, -1 / l]), ro = mul(turn.inv, [-centre[0], -centre[1], CAMERA - centre[2]]);
+  let tN = -1e9, tF = 1e9, face = -1;
+  for (let i = 0; i < 16; i++) {
+    const n = NORMALS[i], r = i < 10 ? R_ICOSA : cut;
+    let dn = rd[0] * n[0] + rd[1] * n[1] + rd[2] * n[2]; if (Math.abs(dn) < 1e-5) dn = 1e-5;
+    const po = ro[0] * n[0] + ro[1] * n[1] + ro[2] * n[2], tp = (r - po) / dn, tm = (-r - po) / dn;
+    const ta = dn < 0 ? tp : tm, tb = dn < 0 ? tm : tp;
+    if (ta > tN) { tN = ta; face = dn < 0 ? i : i + 16; }
+    if (tb < tF) tF = tb;
+  }
+  return tN < tF && tN > 0 ? face : -1;
+}
+
+function mount(canvas, options) {
+  const opt = options || {};
+  let gl = null;
+  try { gl = canvas && canvas.getContext ? canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'high-performance' }) : null; } catch { gl = null; }
+  if (!gl) return null;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null; };
+  const vs = sh(gl.VERTEX_SHADER, VERT), fs = sh(gl.FRAGMENT_SHADER, FRAG);
+  if (!vs || !fs) return null;
+  const prog = gl.createProgram(); gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+  gl.useProgram(prog);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const a = gl.getAttribLocation(prog, 'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+  const U = (n) => gl.getUniformLocation(prog, n);
+  const u = { res: U('uRes'), time: U('uTime'), rot: U('uRot'), inv: U('uInv'), cen: U('uCen'), n: U('uN[0]'), r: U('uR[0]'), state: U('uState[0]'), energy: U('uEnergy'), hot: U('uHot') };
+  gl.uniform3fv(u.n, new Float32Array(NORMALS.flat()));
+  const still = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const S = { faces: new Float32Array(FACES), energy: opt.energy ?? 0.8, target: opt.energy ?? 0.8, centre: [0, 0, 0], yaw: 0.5, pitch: 0.18, vy: 0, vp: 0, drag: null, hot: -1, scale: 1, ms: 16, t: 0, last: 0, seen: true, raf: 0, dead: false, hover: null, pick: null, turn: rot(0.5, 0.18), cut: R_CUT };
+  const size = () => {
+    const w = canvas.clientWidth || 1, h = canvas.clientHeight || 1, d = Math.min(1.5, globalThis.devicePixelRatio || 1) * S.scale;
+    const W = Math.max(2, Math.round(w * d)), H = Math.max(2, Math.round(h * d));
+    if (canvas.width !== W || canvas.height !== H) { canvas.width = W; canvas.height = H; }
+    S.centre = typeof opt.centre === 'function' ? opt.centre(w, h) : [w > 820 ? 1.25 : 0, w > 820 ? 0 : 0.55, 0];
+  };
+  const draw = () => {
+    size();
+    S.turn = rot(S.yaw, S.pitch);
+    S.cut = R_CUT + 0.07 * Math.sin(S.t * 0.35);                        // the cut faces open and close: it breathes
+    const r = new Float32Array(16); for (let i = 0; i < 16; i++) r[i] = i < 10 ? R_ICOSA : S.cut;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform2f(u.res, canvas.width, canvas.height); gl.uniform1f(u.time, S.t); gl.uniformMatrix3fv(u.rot, false, new Float32Array(S.turn.m)); gl.uniformMatrix3fv(u.inv, false, new Float32Array(S.turn.inv));
+    gl.uniform3f(u.cen, S.centre[0], S.centre[1], S.centre[2]); gl.uniform1fv(u.r, r); gl.uniform1fv(u.state, S.faces); gl.uniform1f(u.energy, S.energy); gl.uniform1f(u.hot, S.hot);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+  const frame = (now) => {
+    if (S.dead) return;
+    S.raf = requestAnimationFrame(frame);
+    if (!S.seen || (typeof document !== 'undefined' && document.hidden)) { S.last = now; return; }
+    const dt = Math.min(0.05, (now - (S.last || now)) / 1000); S.last = now;
+    S.ms += ((dt * 1000) - S.ms) * 0.08;
+    if (S.ms > 30 && S.scale > 0.45) S.scale *= 0.92; else if (S.ms < 14 && S.scale < 1) S.scale = Math.min(1, S.scale * 1.03);
+    if (!still) { S.t += dt; if (!S.drag) { S.yaw += dt * 0.16 + S.vy; S.pitch += (0.18 + 0.12 * Math.sin(S.t * 0.22) - S.pitch) * 0.02 + S.vp; S.vy *= 0.94; S.vp *= 0.94; } }
+    S.energy += (S.target - S.energy) * 0.04;
+    draw();
+  };
+  const where = (e) => { const b = canvas.getBoundingClientRect(); return [(e.clientX - b.left) / b.width, (e.clientY - b.top) / b.height, b.width / b.height]; };
+  const face = (e) => { const [x, y, asp] = where(e); return faceAt(x, y, asp, S.turn, S.centre, S.cut); };
+  const down = (e) => { S.drag = { x: e.clientX, y: e.clientY, moved: 0 }; };
+  const move = (e) => {
+    if (S.drag) { const dx = e.clientX - S.drag.x, dy = e.clientY - S.drag.y; S.drag.x = e.clientX; S.drag.y = e.clientY; S.drag.moved += Math.abs(dx) + Math.abs(dy); S.yaw += dx * 0.006; S.pitch = Math.max(-1.2, Math.min(1.2, S.pitch + dy * 0.006)); S.vy = dx * 0.0006; S.vp = 0; if (still) draw(); return; }
+    const f = face(e); if (f !== S.hot) { S.hot = f; canvas.style.cursor = f >= 0 ? 'pointer' : 'grab'; if (S.hover) S.hover(f, e); if (still) draw(); }
+  };
+  const up = (e) => { const d = S.drag; S.drag = null; if (d && d.moved < 6 && S.pick) { const f = face(e); if (f >= 0) S.pick(f, e); } };
+  const leave = () => { S.drag = null; if (S.hot !== -1) { S.hot = -1; if (S.hover) S.hover(-1, null); if (still) draw(); } };
+  canvas.addEventListener('pointerdown', down); canvas.addEventListener('pointermove', move); canvas.addEventListener('pointerup', up); canvas.addEventListener('pointerleave', leave);
+  canvas.style.cursor = 'grab'; canvas.style.touchAction = 'pan-y';
+  let io = null;
+  if (typeof IntersectionObserver === 'function') { io = new IntersectionObserver((es) => { for (const e of es) S.seen = e.isIntersecting; }); io.observe(canvas); }
+  const onSize = () => { if (still) draw(); };
+  if (typeof addEventListener === 'function') addEventListener('resize', onSize);
+  draw();
+  S.raf = requestAnimationFrame(frame);
+  return {
+    FACES,
+    setFaces(states) { for (let i = 0; i < FACES; i++) S.faces[i] = Number(states && states[i]) || 0; if (still) draw(); },
+    setEnergy(x) { S.target = Math.max(0, Math.min(1.4, Number(x) || 0)); },
+    setCentre(fn) { opt.centre = fn; if (still) draw(); },
+    onHover(fn) { S.hover = fn; }, onPick(fn) { S.pick = fn; },
+    redraw: draw,
+    destroy() { S.dead = true; cancelAnimationFrame(S.raf); if (io) io.disconnect(); canvas.removeEventListener('pointerdown', down); canvas.removeEventListener('pointermove', move); canvas.removeEventListener('pointerup', up); canvas.removeEventListener('pointerleave', leave); if (typeof removeEventListener === 'function') removeEventListener('resize', onSize); },
+  };
+}
+return { FACES, STATE, NORMALS, rot, faceAt, mount };
+})();
+
+// vendor/house/house.js, inlined byte for byte (export removed)
+const HOUSE = (() => {
+// house.js — the kit's motion: what makes a house page feel alive without saying anything untrue.
+//   reveal(root)          sections rise into place as they are reached
+//   light(root)           a soft light follows the pointer across cards
+//   count(el, text)       a receipt's number runs up to its value when first seen; the value written is exactly `text`
+//   bindScroll(crystal)   the crystal's light answers the scroll: brightest at the top, quieter as the page is read
+// Each is safe to call with nothing to act on, and does nothing where motion is not wanted.
+const still = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function reveal(root) {
+  const els = root && root.querySelectorAll ? [...root.querySelectorAll('.reveal')] : [];
+  if (typeof IntersectionObserver !== 'function' || still()) return;                 // nothing is hidden, so nothing needs showing
+  if (root.documentElement && root.documentElement.classList) root.documentElement.classList.add('js');   // only now may .reveal start hidden
+  const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }, { threshold: 0.14 });
+  for (const el of els) io.observe(el);
+}
+
+function light(root) {
+  if (!root || !root.addEventListener || still()) return;
+  root.addEventListener('pointermove', (e) => {
+    const card = e.target && e.target.closest ? e.target.closest('.act') : null;
+    if (!card) return;
+    const b = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - b.left}px`); card.style.setProperty('--my', `${e.clientY - b.top}px`);
+  });
+}
+
+// count(el, text): text is the final, true text of the number (for example "31.6%"). Only its digits move, and only
+// on the way in: when it stops, the element holds exactly `text`.
+function count(el, text) {
+  const final = String(text), m = final.match(/^(\D*)(\d+(?:\.\d+)?)(.*)$/);
+  if (!el || !m || still() || typeof requestAnimationFrame !== 'function' || typeof IntersectionObserver !== 'function') { if (el) el.textContent = final; return; }
+  const to = Number(m[2]), places = (m[2].split('.')[1] || '').length;
+  el.textContent = final;
+  const io = new IntersectionObserver((es) => {
+    if (!es.some((e) => e.isIntersecting)) return;
+    io.disconnect();
+    const t0 = performance.now(), run = (now) => { const k = Math.min(1, (now - t0) / 900), ease = 1 - (1 - k) ** 3; el.textContent = k < 1 ? `${m[1]}${(to * ease).toFixed(places)}${m[3]}` : final; if (k < 1) requestAnimationFrame(run); };
+    requestAnimationFrame(run);
+  }, { threshold: 0.4 });
+  io.observe(el);
+}
+
+function bindScroll(crystal, base) {
+  if (!crystal || typeof addEventListener !== 'function') return;
+  const top = base ?? 1, set = () => crystal.setEnergy(top * Math.max(0.35, 1 - (globalThis.scrollY || 0) / ((globalThis.innerHeight || 800) * 1.2)));
+  addEventListener('scroll', set, { passive: true }); set();
+}
+return { reveal, light, count, bindScroll };
+})();
+
+// the crystal, lit by this site's own records, read when the page opens (the census changes every morning)
+(async () => {
+  const $ = (id) => document.getElementById(id);
+  const get = (u) => fetch(u, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const [census, gates] = await Promise.all([get('data/census.json'), get('data/gates.json')]);
+  const fmt = (n) => Number(n).toLocaleString('en-GB');
+  const faces = [], labels = [];
+  if (gates && gates.files) for (const [f, v] of Object.entries(gates.files)) { faces.push(v.clean === true); labels.push(f + ' · ' + v.killed + ' of ' + v.total + ' breaks caught'); }
+  if (census) {
+    faces.push(census.admitted > 0); labels.push(fmt(census.admitted) + ' cells admitted');
+    faces.push(census.genomeLess === 0); labels.push(fmt(census.genomeLess) + ' repositories without the genome yet · kept in red');
+    $('facet').textContent = fmt(census.admitted) + ' cells admitted · ' + fmt(census.genomeLess) + ' repositories still without it · point at the crystal';
+  }
+  const crystal = CRYSTAL.mount($('crystal'), { energy: 0.9 });
+  if (crystal && faces.length) {
+    crystal.setFaces(Array.from({ length: CRYSTAL.FACES }, (_, i) => (faces[i % faces.length] ? 1 : 3)));
+    crystal.onHover((i) => { $('facet').textContent = labels[i % labels.length]; });
+    HOUSE.bindScroll(crystal, 0.9);
+  }
+})();
+(() => {
+  const openTo = (id) => { const t = document.getElementById(id); if (!t) return false; for (let e = t; e; e = e.parentElement) if (e.tagName === 'DETAILS') e.open = true; t.scrollIntoView({ block: 'start' }); return true; };
+  document.addEventListener('click', (e) => { const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return; const id = decodeURIComponent(a.getAttribute('href').slice(1)); if (id && openTo(id)) { e.preventDefault(); history.replaceState(null, '', '#' + id); } });
+  if (location.hash) openTo(decodeURIComponent(location.hash.slice(1)));
+  HOUSE.reveal(document);
+  HOUSE.light(document);
 })();
 </script>
 </body>

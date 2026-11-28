@@ -122,7 +122,17 @@ test('run the page: every figure and panel fills from the shipped data, and the 
   assert.match($('traceOut').innerHTML, /the same verdict/);
   assert.equal($('dgVerdict').textContent, 'ADMITTED: a cell (4 of 4)');
   assert.equal($('dgOut').textContent, 'refused → kar');
-  assert.match($('routeOut').innerHTML, /Routed to <code>docdecdemo<\/code>/);
+  // routing: the kernel's own route() on the shipped index with the page's demo request. Since the census admitted
+  // browser-swarm (it honestly declares a documents lane too), two cells fit this request at 100% and route() breaks
+  // the tie by name, so the test no longer hard-codes one name. It asserts what must stay true instead.
+  const { route } = await import('../src/route.mjs');
+  const demo = d.document.getElementById('need').attrs.value;
+  const rr = route(JSON.parse(read('data/genome-index.json')), { need: demo });
+  assert.equal(rr.status, 'routed', 'the demo request is routed');
+  const top = rr.candidates.filter((c) => c.score === rr.candidates[0].score).map((c) => c.name);
+  assert.ok(top.includes('docdecdemo'), 'the document-answering cell is among the best fits for a documents question: ' + top.join(', '));
+  assert.ok($('routeOut').innerHTML.includes(`Routed to <code>${rr.cell}</code>`), 'the page shows the choice route() made');
+  if (top.length > 1) assert.match($('routeOut').innerHTML, /Ranked: /, 'a tie is shown to the visitor');
   assert.match($('routeTraces').innerHTML, /its own lane check took the input/);
   assert.match($('costOut').innerHTML, /£3,245\.55/);
   // the guard: the drifted call shown first, decided again here; the diagram from it; the measurement against its rules
