@@ -1,0 +1,274 @@
+{
+ "file": "index.html (rendered page text, as a visitor sees it)",
+ "model": "qwen2.5:7b",
+ "parts": 10,
+ "chars": 49187,
+ "started": "2026-11-28T01:04:40.990Z",
+ "personas": [
+  {
+   "key": "CFO",
+   "who": "the CFO of a 400-person firm",
+   "cares": "what it costs, what it saves, what it replaces, and what could go wrong with the numbers"
+  },
+  {
+   "key": "CTO",
+   "who": "the CTO who also owns security",
+   "cares": "how it works, what runs where, what data leaves, what it depends on, and what is not proven"
+  },
+  {
+   "key": "COO",
+   "who": "the COO who runs the teams that would use it",
+   "cares": "how people would use it day to day, how to roll it out, and what happens when it fails"
+  },
+  {
+   "key": "OWNER",
+   "who": "the owner-manager of a 12-person business with no technical staff",
+   "cares": "whether you can understand it, try it in ten minutes, and whether it is for you"
+  }
+ ],
+ "readings": [
+  {
+   "who": "CFO",
+   "part": 1,
+   "seconds": 524,
+   "reply": "- \"Estate Genome checks each piece of software before it is given work.\" This is unclear. How exactly does it \"give work\"? What does it mean for software to be \"given work\"?\n- \"Read from its own records. Each number has its source one click away.\" This is unclear. What specific numbers are being referred to, and how can I verify their sources with just one click?\n- \"Drift names a cell that was admitted before and is refused now, with the trait it lost.\" This is unclear. What exactly is \"drift\"? How does it identify and name cells that were previously admitted but are now refused?\n- \"A judge that passes can tell its own good and bad cases apart. That does not prove it catches every wrong answer.\" This is unclear. How can a judge tell its own good and bad cases apart? What does this mean in practice?"
+  },
+  {
+   "who": "CFO",
+   "part": 2,
+   "seconds": 124,
+   "reply": "- None."
+  },
+  {
+   "who": "CFO",
+   "part": 3,
+   "seconds": 158,
+   "reply": "- The exact process of how the conductor routes work to the genome is not fully clear. How does it handle requests that don't perfectly match any cell's lane?\n- The diagram mentioned is referenced but not provided in this text. It would be helpful to see the actual diagram for a clearer understanding.\n- The consequences of a judge being a \"rubber stamp\" are not elaborated on. How does the system catch and handle such cases?\n- The text mentions that the guard checks the cell's work on every request, but it does not specify how often or under what circumstances this check is performed."
+  },
+  {
+   "who": "CFO",
+   "part": 4,
+   "seconds": 153,
+   "reply": "- \"escalated to kar\" - Who is \"kar\" and what does this escalation process entail?\n- \"the half above it is the guard's own allowance\" - What exactly does this allowance cover, and how was it determined?\n- \"Load: a shared laptop: eight other build agents were running on it during this measurement\" - How does the presence of other build agents affect the measured times, and is this typical for such measurements?"
+  },
+  {
+   "who": "CFO",
+   "part": 5,
+   "seconds": 151,
+   "reply": "- \"Being admitted once is not being trusted for ever.\" This statement is unclear about the criteria or process for re-evaluation or revocation of admission status.\n- \"A repository that is archived or no longer public drops out of the census; that is retirement, not drift.\" It is not clear what happens to repositories that are archived but still public.\n- \"The latest census (2026-11-27) had 39 declaring repositories to check:\" This sentence does not specify what a \"declaring repository\" is or why it is relevant.\n- \"The warm run at most half of cold\" This statement is unclear and seems to be a comparison, but the context is not provided to understand what \"warm run\" and \"cold run\" are in relation to."
+  },
+  {
+   "who": "CFO",
+   "part": 6,
+   "seconds": 216,
+   "reply": "- \"foldcache-measure.json\" seems to be a file name, but its content or purpose is not clear from this context.\n- \"ones measured dead get retired, reversibly, after a person signs off\" is unclear. What exactly does \"reversibly\" mean in this context?\n- \"Kernel | src/genome.mjs | judges the four traits from the evidence; the verdict and every reason | 65/65 clean\" - What are the four traits being judged?\n- \"Runner | src/run.mjs | runs a part’s own hooks; tries retire and restore on a scratch copy; hashes the tree\" - What does \"tries retire and restore on a scratch copy\" mean in this context?"
+  },
+  {
+   "who": "CFO",
+   "part": 7,
+   "seconds": 234,
+   "reply": "- \"plants the genome in a folder, never overwriting anything\" - What does \"the genome\" refer to in this context?\n\n- \"the calculator on this page, from sourced floors and your own numbers\" - What are \"sourced floors\"?\n\n- \"the guard measurement against its pre-registered rules\" - What are \"pre-registered rules\"?\n\n- \"the census history: a cell admitted before and refused now is named, with the trait it lost\" - What does \"trait it lost\" mean in this context?"
+  },
+  {
+   "who": "CFO",
+   "part": 8,
+   "seconds": 185,
+   "reply": "- \"The hourly cost is the UK median for all full-time jobs, not an engineer’s rate ( ONS ASHE 2025 ).\" This is unclear without the specific median value.\n- \"The default is one hour a year.\" It's not clear what \"one hour a year\" refers to in the context of the cost calculation.\n- \"The shares come from this estate’s first full scan (17 Nov 2026, run privately; only its counts are published, in data/prices.lock.json).\" The exact share percentages are not provided.\n- \"The genome holds descriptions of software, not personal data.\" It's unclear how this impacts data protection and compliance."
+  },
+  {
+   "who": "CFO",
+   "part": 9,
+   "seconds": 260,
+   "reply": "- \"DocDec's lane is a word-overlap check.\" What exactly does \"word-overlap check\" mean in this context?\n- \"The census shows the real number every day, and the metabolism raises it a part at a time.\" How exactly does the \"metabolism\" work to increase coverage?\n- \"A manifest on its own cannot pass.\" What specific failures can a manifest encounter that the genome check would catch?\n- \"The guard is only as strong as each cell's judge.\" How can we ensure that judges are not checking loosely?"
+  },
+  {
+   "who": "CFO",
+   "part": 10,
+   "seconds": 170,
+   "reply": "- \"No outside organisation has deployed it yet.\" This statement is unclear without context on why deployment by others is significant.\n- \"The runner takes any command, but no other language has been tried yet.\" It's not clear what commands are allowed or what the implications are of only using Node.js.\n- \"Powered by the Konomi architecture, created by Thomas Frumkin.\" The Konomi architecture is not explained or its benefits highlighted.\n- \"No part is trusted until it proves itself. Checked again every morning.\" This is a vague statement and it's unclear what \"it\" refers to and how this process ensures reliability."
+  },
+  {
+   "who": "CTO",
+   "part": 1,
+   "seconds": 194,
+   "reply": "- \"Estate Genome checks each piece of software before it is given work.\" This statement is unclear. It's not clear what \"given work\" means in this context. Is it referring to the software being executed or receiving tasks?"
+  },
+  {
+   "who": "CTO",
+   "part": 2,
+   "seconds": 213,
+   "reply": "- \"Every part is born knowing what it is, how to prove it, how to be removed, and where to stop.\" This sentence is a bit vague. It's not clear what \"where to stop\" means in this context.\n- \"A part that fails any one is not admitted, and the check says exactly why.\" It would be more helpful if the page specified which checks (describe, verify, prune, boundary) could fail and what the consequences are.\n- \"39 admitted cells in 1,656 live public repositories\" - This number is impressive but lacks context. It would be more meaningful to know what percentage of the total repositories this represents.\n- \"DocDec, the honest example or the bluffing example\" - These examples are mentioned but not described. It would be helpful to have a brief explanation or a link to where these examples can be found."
+  },
+  {
+   "who": "CTO",
+   "part": 3,
+   "seconds": 201,
+   "reply": "- \"escalate to kar\" is unclear. Who is \"kar\" and what does this escalation process entail?\n- \"The part is copied to a scratch folder. Its retire command runs there and must change it; its restore command must bring back a byte-identical copy.\" This is not clear. What specific changes should the retire command make, and how is \"byte-identical\" ensured?\n- \"The guard runs three of the cell's own hooks in order, and stops at the first that says no:\" This is ambiguous. Which three hooks are referred to, and what does \"says no\" mean in this context?\n- \"A part, with the failures named in words a person can act on.\" This is vague. What exactly constitutes a failure, and how are these failures communicated to the person?"
+  },
+  {
+   "who": "CTO",
+   "part": 4,
+   "seconds": 200,
+   "reply": "- \"Escalated to kar\" is unclear. Who is \"kar\" and what does this escalation entail?\n- \"The guard runs two more hooks than the act alone (the lane check and the judge), so about 3 times is the floor\" is a bit vague. How exactly is the \"3 times\" calculation derived?\n- \"The census: how much of this estate is cells\" section mentions \"Admitted as cells (all four traits, on a fresh copy)\" but does not specify what the four traits are.\n- \"declared but refused\" is mentioned but no details are provided on why these repositories were refused."
+  },
+  {
+   "who": "CTO",
+   "part": 5,
+   "seconds": 187,
+   "reply": "- \"Being admitted once is not being trusted for ever.\" This statement is unclear without additional context on how the trust is re-evaluated or what the criteria are for re-admission.\n\n- \"A repository that is archived or no longer public drops out of the census; that is retirement, not drift.\" It is not clear what happens to repositories that are archived but still public.\n\n- \"The latest census (2026-11-27) had 39 declaring repositories to check:\" It is unclear what \"declaring repositories\" means in this context.\n\n- \"The warm run took 2 min 21 s reading every repository from GitHub, 9.4 s checking.\" The exact method of measuring the \"reading\" and \"checking\" times is not clear."
+  },
+  {
+   "who": "CTO",
+   "part": 6,
+   "seconds": 275,
+   "reply": "- \"foldcache-measure.json\" seems to be a file name, but its content or purpose is not clear. What does this file contain, and how is it relevant to the census process?\n- \"The wall-time rule failed\" is mentioned, but it is not clear what the wall-time rule is or why it failed. Could you provide more context on this?\n- \"From counting cells to making them\" is a heading, but it is not clear what the transition from counting to making cells entails. What specific steps or processes are involved?\n- \"Blueprint: how it is built, part by part\" introduces the concept of small modules and mutation testing, but it does not specify which parts or modules are being referred to. Could you provide more details on the modules mentioned?"
+  },
+  {
+   "who": "CTO",
+   "part": 7,
+   "seconds": 236,
+   "reply": "- \"plants the genome in a folder, never overwriting anything\" is unclear. Does \"genome\" refer to the code or some configuration? \n- \"out of lane is refused and escalated\" is unconvincing. How does the system ensure that \"out of lane\" behavior is consistently detected and escalated?\n- \"the public view names public repositories only\" is unclear. Does this mean the system only lists public repositories or does it filter out private ones?\n- \"the mutation gate on every file above\" is unconvincing. How is the mutation gate applied, and what does it actually check for?"
+  },
+  {
+   "who": "CTO",
+   "part": 8,
+   "seconds": 205,
+   "reply": "- \"The hourly cost is the UK median for all full-time jobs, not an engineer’s rate ( ONS ASHE 2025 ).\" This cost seems high and I need more context on why it is applicable.\n- \"The default is one hour a year.\" This is vague and I need a clearer rationale for why the default is set to one hour.\n- \"The genome holds descriptions of software, not personal data.\" This statement is too brief and I need more details on how the genome ensures no personal data is stored or processed.\n- \"Choose bad cases that look like the mistakes you fear, and add more checks inside the judge as you learn.\" This is a bit vague and I need more guidance on how to effectively choose and implement these bad cases."
+  },
+  {
+   "who": "CTO",
+   "part": 9,
+   "seconds": 185,
+   "reply": "- \"DocDec's lane is a word-overlap check.\" This is unclear. What exactly does a word-overlap check entail, and how does it measure on-topic and off-topic questions?\n- \"The census shows the real number every day, and the metabolism raises it a part at a time.\" This is missing specific details on how the \"metabolism\" works and what it means for the growth of parts.\n- \"A manifest alone cannot prove anything.\" This is unconvincing without more context on how the system ensures that the code actually adheres to the manifest's claims.\n- \"The browser check on this page covers the manifest (trait 1).\" This is unclear. How does the browser check the manifest, and what does \"trait 1\" specifically refer to?"
+  },
+  {
+   "who": "CTO",
+   "part": 10,
+   "seconds": 166,
+   "reply": "- \"No outside organisation has deployed it yet.\" This statement is unclear without knowing the context of \"it.\" What specific system or feature is being referred to?\n- \"The runner takes any command, but no other language has been tried yet.\" This is unconvincing because it suggests a lack of testing and validation for different languages, which could be a security risk.\n- \"Powered by the Konomi architecture, created by Thomas Frumkin.\" This is missing any details about the Konomi architecture, such as its security features, performance, or any relevant certifications.\n- \"MIT licence (holder Simon Gant)\" is unclear as it doesn't specify if Simon Gant is the copyright holder or the license grant holder, which could affect legal interpretations."
+  },
+  {
+   "who": "COO",
+   "part": 1,
+   "seconds": 394,
+   "reply": "- \"Estate Genome checks each piece of software before it is given work.\" This is unclear. How does it check the software before it is given work? What exactly does \"given work\" mean in this context?\n- \"Read from its own records. Each number has its source one click away.\" This is unclear. What records are being referred to, and how exactly can one click away provide the source of each number?\n- \"Drift names a cell that was admitted before and is refused now, with the trait it lost.\" This is unclear. What exactly is \"drift\"? How does it identify and name cells that were admitted but are now refused?\n- \"It is open code under the MIT licence, with nothing else to install and no service to run.\" This is unclear. Does this mean the software can be run locally without any additional dependencies or services, or is there more to it than stated?"
+  },
+  {
+   "who": "COO",
+   "part": 2,
+   "seconds": 335,
+   "reply": "- \"Every part is born knowing what it is, how to prove it, how to be removed, and where to stop.\" This sentence is a bit vague. Could use more concrete examples or a clearer explanation of what \"where to stop\" means in practice.\n- \"A part that fails any one is not admitted, and the check says exactly why.\" It would be helpful to have a more detailed breakdown of what constitutes a failure and the specific reasons why a part might be rejected.\n- \"39 admitted cells in 1,656 live public repositories\" - This number is impressive but could be more contextually relevant. It would be helpful to know what percentage of the total repositories this represents.\n- \"DocDec, the honest example or the bluffing example\" - These terms are used without much explanation. It would be clearer if there was a brief description of what these examples entail and what they demonstrate."
+  },
+  {
+   "who": "COO",
+   "part": 3,
+   "seconds": 307,
+   "reply": "- \"escalate to kar\" is unclear. Who is \"kar\" and what does this escalation process entail?\n- \"The guard runs three of the cell's own hooks in order, and stops at the first that says no:\" This is a bit confusing. Does \"no\" mean the hook fails or refuses the request?\n- \"The work never starts.\" This is a bit vague. Could you clarify what \"the work\" refers to in this context?\n- \"Anything else\" is too vague. Could you provide more specific outcomes or states that the judge might return besides \"verified,\" \"unverified,\" or \"refused\"?"
+  },
+  {
+   "who": "COO",
+   "part": 4,
+   "seconds": 290,
+   "reply": "- \"Escalated to kar.\" is unclear. Who is \"kar\" and what does this escalation mean in practice?\n- \"The guard runs two more hooks than the act alone (the lane check and the judge), so about 3 times is the floor\" is a bit vague. How exactly is the \"3 times\" calculation derived?\n- \"The census: how much of this estate is cells\" section seems to lack details on what the four traits are that determine if a repository is admitted as a cell.\n- \"Load: a shared laptop: eight other build agents were running on it during this measurement\" is not clear. How does this shared load affect the measurement results?"
+  },
+  {
+   "who": "COO",
+   "part": 5,
+   "seconds": 306,
+   "reply": "- \"Being admitted once is not being trusted for ever.\" This statement is unclear without additional context on how the trust is re-evaluated or what actions can lead to a repository being re-admitted or removed from the census.\n\n- \"A verdict is reused only when the repository's latest commit is that same commit, the checking code is the same, and the verdict is under seven days old.\" This could be clearer about what happens if any of these conditions are not met.\n\n- \"The latest census (2026-11-27) had 39 declaring repositories to check:\" This sentence is fine, but it would be helpful to know how many repositories were checked in total, not just the number of declaring ones.\n\n- \"The warm run took 2 min 21 s reading every repository from GitHub, 9.4 s checking.\" This is clear, but it would be useful to know the total time for the warm run, as the table only provides the cold run's total time."
+  },
+  {
+   "who": "COO",
+   "part": 6,
+   "seconds": 363,
+   "reply": "- \"foldcache-measure.json\" seems like a placeholder or a typo. What is the actual file name or purpose?\n- \"ones measured dead get retired, reversibly, after a person signs off\" is unclear. How does a person sign off? What does this process look like in practice?\n- \"The ranked names stay on the machine that made them, because some are private.\" This is a bit vague. How are these private repositories identified and managed?\n- \"27 admitted, 0 escalated. Checked in this tab by the same code that keeps the ledger public-only (src/convert.mjs).\" This is a technical detail. How does the code ensure the ledger is public-only, and what are the implications if it fails?"
+  },
+  {
+   "who": "COO",
+   "part": 7,
+   "seconds": 231,
+   "reply": "- \"The genome makes every part carry its own answers, and makes CI refuse the ones that cannot back them up.\" This sentence is a bit unclear. How exactly does the CI refuse parts that cannot back up their answers? More details would be helpful."
+  },
+  {
+   "who": "COO",
+   "part": 8,
+   "seconds": 246,
+   "reply": "- \"The hourly cost is the UK median for all full-time jobs, not an engineer’s rate ( ONS ASHE 2025 ).\" This is unclear without the actual median cost.\n- \"The default is one hour a year.\" It's not clear how this default was determined.\n- \"The genome holds descriptions of software, not personal data.\" This is a bit vague; it would be helpful to know exactly what kind of data is included in the descriptions.\n- \"Choose bad cases that look like the mistakes you fear, and add more checks inside the judge as you learn.\" This is a bit vague on how to implement and what to look for in bad cases."
+  },
+  {
+   "who": "COO",
+   "part": 9,
+   "seconds": 263,
+   "reply": "- \"The rest is caught later, by DocDec's own refusal.\" This is unclear. How exactly does DocDec's refusal catch the remaining off-topic questions?\n- \"The census shows the real number every day, and the metabolism raises it a part at a time.\" This is missing. What exactly is the \"metabolism\" and how does it work?\n- \"A manifest on its own cannot pass.\" This is unconvincing. Why can't a manifest pass on its own, and how does the birth check prove this?\n- \"The browser check on this page covers the manifest (trait 1).\" This is unclear. How does the browser check cover the manifest, and what does \"trait 1\" mean in this context?"
+  },
+  {
+   "who": "COO",
+   "part": 10,
+   "seconds": 101,
+   "reply": "- \"The public census covers public repositories only.\" This is unclear without knowing the definition of \"public repositories\" and how it differs from private ones.\n- \"Every cell is this estate's own, and the census figures are this estate's.\" It's not clear what \"cells\" are in this context.\n- \"The runner takes any command, but no other language has been tried yet.\" This implies a limitation; it would be better to know if there are plans to support other languages.\n- \"No part is trusted until it proves itself. Checked again every morning.\" This is a vague statement. It would be helpful to know what specifically is checked and how often."
+  },
+  {
+   "who": "OWNER",
+   "part": 1,
+   "seconds": 302,
+   "reply": "- \"Estate Genome checks each piece of software before it is given work.\" This is unclear. How does it check the software if it hasn't been given work yet?\n\n- \"Read from its own records. Each number has its source one click away.\" The source of the numbers is not immediately clear. How can I click to see the source?\n\n- \"Drift names a cell that was admitted before and is refused now, with the trait it lost.\" This is confusing. What exactly is \"drift\" and how does it work?\n\n- \"A judge that passes can tell its own good and bad cases apart. That does not prove it catches every wrong answer.\" This is unconvincing. How can I be sure the judge is thorough if it doesn't catch every wrong answer?"
+  },
+  {
+   "who": "OWNER",
+   "part": 2,
+   "seconds": 197,
+   "reply": "- None."
+  },
+  {
+   "who": "OWNER",
+   "part": 3,
+   "seconds": 275,
+   "reply": "- The exact process of how the \"act\" hook is used and its role is not clear. What kind of work does it perform, and how does it interact with the other hooks?\n- The phrase \"Every time something asks a cell to do work, the guard checks it again, on that very request.\" is a bit vague. Could you provide an example of what \"something\" might be and how this check is performed?\n- The term \"lane\" is used without a clear definition. Could you explain what constitutes an \"in-lane\" or \"out-of-lane\" sample more clearly?\n- The steps involved in the \"retire\" and \"restore\" commands are not fully explained. Could you provide more details on what these commands do and how they are supposed to work?"
+  },
+  {
+   "who": "OWNER",
+   "part": 4,
+   "seconds": 268,
+   "reply": "- \"act.carries\" and its usage are not fully explained. What exactly does \"act.carries\" mean, and how does it affect the process?\n\n- \"escalated to kar\" - Who or what is \"kar,\" and what happens during this escalation?\n\n- \"The guard runs two more hooks than the act alone (the lane check and the judge), so about 3 times is the floor\" - What is meant by \"the floor\" in this context?\n\n- \"Load: a shared laptop: eight other build agents were running on it during this measurement\" - How does the presence of other build agents affect the measurement results?"
+  },
+  {
+   "who": "OWNER",
+   "part": 5,
+   "seconds": 269,
+   "reply": "- \"Being admitted once is not being trusted for ever.\" This statement is unclear without additional context on how the trust is re-evaluated.\n- \"A verdict is reused only when the repository's latest commit is that same commit, the checking code is the same, and the verdict is under seven days old.\" This is a bit complex and might be hard to verify without more details on the process.\n- \"The latest census (2026-11-27) had 39 declaring repositories to check:\" This is a bit confusing as it doesn't specify what \"declaring repositories\" means in this context.\n- \"The warm run took 2 min 21 s reading every repository from GitHub, 9.4 s checking.\" This is a bit unclear as it doesn't specify if these times are for a single repository or all 39."
+  },
+  {
+   "who": "OWNER",
+   "part": 6,
+   "seconds": 336,
+   "reply": "- \"foldcache-measure.json\" seems like a file name, but I'm not sure what it contains or how it relates to the process described.\n- \"ones measured dead get retired, reversibly, after a person signs off\" is a bit vague. What exactly does \"reversibly\" mean in this context?\n- \"The conversion ledger\" section lists repositories that were admitted, but there's no explanation of what \"admitted\" means in terms of the repository's status or next steps.\n- \"Blueprint: how it is built, part by part\" mentions mutation-testing but doesn't explain what the four traits are or how they are judged."
+  },
+  {
+   "who": "OWNER",
+   "part": 7,
+   "seconds": 290,
+   "reply": "- \"The genome makes every part carry its own answers, and makes CI refuse the ones that cannot back them up.\" This sentence is a bit unclear. It's not immediately obvious how the CI system refuses parts that cannot back up their answers.\n\n- \"A judge that verifies everything, or a lane check that takes everything, is caught at birth, not in production.\" This statement is a bit vague. It's not clear what specific actions or criteria are used to catch such judges or lane checks.\n\n- \"It replaces the hunt: asking around to learn what a service does, who owns it and whether it is safe to switch off.\" This is a bit abstract. It would be more convincing if it provided specific examples or scenarios where this replacement would be beneficial.\n\n- \"It does not replace them.\" This is a bit unclear. It's not clear what \"them\" refers to in this context."
+  },
+  {
+   "who": "OWNER",
+   "part": 8,
+   "seconds": 237,
+   "reply": "- \"The hourly cost is the UK median for all full-time jobs, not an engineer’s rate ( ONS ASHE 2025 ).\" This cost seems high and I need more context to understand if it's reasonable for my business.\n- \"The default is one hour a year.\" This default seems too low; I need a clearer rationale for why it was chosen.\n- \"The genome holds descriptions of software, not personal data.\" I'm not sure how this impacts my business's compliance with data protection regulations.\n- \"AI Native Solutions ; start a conversation through that site.\" I need more information on the support and service levels offered by AI Native Solutions."
+  },
+  {
+   "who": "OWNER",
+   "part": 9,
+   "seconds": 240,
+   "reply": "- \"DocDec's lane is a word-overlap check.\" This is unclear without context. What exactly does a word-overlap check entail?\n- \"The census shows the real number every day, and the metabolism raises it a part at a time.\" This is missing a clear explanation of what \"metabolism\" means in this context.\n- \"A manifest on its own cannot pass.\" This is unconvincing without a concrete example or further explanation of how a manifest fails the birth check.\n- \"The browser check on this page covers the manifest (trait 1).\" This is unclear. What specific aspects of the manifest are being checked by the browser?"
+  },
+  {
+   "who": "OWNER",
+   "part": 10,
+   "seconds": 95,
+   "reply": "- \"No outside organisation has deployed it yet.\" This statement is unclear without more context on what \"it\" refers to.\n- \"The runner takes any command, but no other language has been tried yet.\" It's not clear what \"the runner\" is or how it works.\n- \"Powered by the Konomi architecture, created by Thomas Frumkin.\" This is unclear without knowing what Konomi architecture is or how it benefits the product.\n- \"No part is trusted until it proves itself. Checked again every morning.\" This is a vague statement and unclear on the process or criteria for proving trustworthiness."
+  }
+ ],
+ "finished": "2026-11-28T03:44:26.399Z",
+ "snapshotSha256": "d6faea7bdd66da076a2f90189a5e2c3ae141f85831d728dc002db88d143c9171",
+ "note": "The file field was a local path; it is replaced by the page name and the SHA-256 of the exact text the walk read. Every reading is as the tool wrote it."
+}

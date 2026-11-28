@@ -1,0 +1,96 @@
+{
+ "model": "qwen2.5:7b",
+ "at": "2026-11-28",
+ "page": "index.html",
+ "snapshotSha256": "d6faea7bdd66da076a2f90189a5e2c3ae141f85831d728dc002db88d143c9171",
+ "buyers": [
+  "the CFO of a 400-person firm",
+  "the CTO who also owns security",
+  "the COO who runs the teams that would use it",
+  "the owner-manager of a 12-person business with no technical staff"
+ ],
+ "parts": 10,
+ "readings": 40,
+ "points": [
+  {
+   "outcome": "fixed",
+   "point": "\"Before it is given work\" was unclear (all four buyers).",
+   "why": "The opening now says: before any other program may hand it a job."
+  },
+  {
+   "outcome": "fixed",
+   "point": "\"Each number has its source one click away\" did not say how.",
+   "why": "The heading now says: press \"receipt\" under a number to open the file it comes from."
+  },
+  {
+   "outcome": "fixed",
+   "point": "\"Drift\" was not explained.",
+   "why": "The parts list now says drift spots a part that passed before and fails now, and names the promise it broke."
+  },
+  {
+   "outcome": "fixed",
+   "point": "\"Judge\" was not explained.",
+   "why": "The limits now say what a judge is: a part’s own check of its own answers."
+  },
+  {
+   "outcome": "fixed",
+   "point": "\"Escalated to kar\": who is Kar? (all four buyers)",
+   "why": "The operations card now says work a part should not take goes to a named owner, here Kar, the AI that keeps this estate. The support panel already said Kar is an AI with one human owner."
+  },
+  {
+   "outcome": "fixed",
+   "point": "\"No outside organisation has deployed it\": deployed what?",
+   "why": "It now names Estate Genome."
+  },
+  {
+   "outcome": "fixed",
+   "point": "\"Nothing else to install and no service to run\" was unclear.",
+   "why": "It now says: you add one file and one CI step to each repository, and there is no server to run."
+  },
+  {
+   "outcome": "fixed",
+   "point": "\"MIT licence (holder Simon Gant)\" was unclear.",
+   "why": "It now says: MIT licence, copyright Simon Gant."
+  },
+  {
+   "outcome": "fixed",
+   "point": "\"Checked again every morning\" did not say what.",
+   "why": "The footer now says every part is checked again each morning."
+  },
+  {
+   "outcome": "not changed",
+   "point": "Terms in the folded parts: foldcache-measure.json, act.carries, word-overlap check, declaring repository, the metabolism, sourced floors, pre-registered rules, retire and restore, the wall-time rule.",
+   "why": "These are in the old page, kept word for word one click away, which the rebuild must not change. The plain version of the idea is in view above them."
+  },
+  {
+   "outcome": "not changed",
+   "point": "\"The diagram is referenced but not shown.\"",
+   "why": "The page draws the diagram when it runs. The walk read the page as text."
+  },
+  {
+   "outcome": "not changed",
+   "point": "The four traits were not listed.",
+   "why": "The opening names all four: say what it does, check its own answers, be safe to remove, and turn away work it should not do."
+  },
+  {
+   "outcome": "not changed",
+   "point": "Measurement details: a shared laptop with eight other agents, the warm run against the cold one.",
+   "why": "These are the old page’s measurement notes, kept as recorded. Changing them would change a record."
+  },
+  {
+   "outcome": "not changed",
+   "point": "The hourly cost and the one-hour default in the cost case.",
+   "why": "The cost case names its source (ONS ASHE 2025) and lets you put in your own numbers. The default is the old page’s, kept."
+  },
+  {
+   "outcome": "not changed",
+   "point": "The Konomi credit line says nothing about Konomi.",
+   "why": "It is a fixed credit line, written as the estate’s rules require."
+  },
+  {
+   "outcome": "not changed",
+   "point": "Support and service levels from AI Native Solutions.",
+   "why": "Support is agreed per deployment, in each deployment’s agreement, as the support panel says."
+  }
+ ]
+}

@@ -60,7 +60,7 @@ const ORGANS = [
   ['src/guard.mjs', 'The guard', 'checks each output with the cell’s own judge before it is released'],
   ['src/route.mjs', 'The conductor', 'hands work only to an admitted cell whose lane fits, and sends the rest to a named owner'],
   ['src/census.mjs', 'The census', 'counts every public repository each morning: cells, declared parts, and the rest'],
-  ['src/drift.mjs', 'Drift', 'names a cell that was admitted before and is refused now, with the trait it lost'],
+  ['src/drift.mjs', 'Drift', 'spots a part that passed before and fails now, and names the promise it broke'],
   ['src/foldcache.mjs', 'The fold-cache', 'reuses a full check only for the same code, the same checker, and under 7 days old'],
   ['src/convert.mjs', 'Conversion', 'ranks the repositories still to convert, and keeps a ledger of each attempt'],
   ['src/cost.mjs', 'The cost case', 'works out the hours saved from your own numbers'],
@@ -86,7 +86,7 @@ const receiptsHtml = receipts.map((r) => `<div class="stat reveal"><div class="n
 const ROLES = [
   ['Chief executive', 'You know what you own. Only parts that prove what they do, and what they will not do, receive work.'],
   ['Finance', 'Parts nobody can describe cost hours every year. The genome turns that hunt into reading a file.', ['business', 'Work out the saving from your own numbers']],
-  ['Operations', 'Work a part should not take goes to a named owner, not half-done. A failed check names what is missing.'],
+  ['Operations', 'Work a part should not take goes to a named owner instead (here, Kar, the AI that keeps this estate), not half-done. A failed check names what is missing.'],
   ['Technology', 'One file and one CI step per repository. The hooks are commands, so any language fits. No service to run.'],
   ['Security', 'A part must show it turns away work outside its lane, and that its judge is not a rubber stamp, before anything calls it.'],
   ['The teams', 'One command grows the files and names the three answers only the team can write. CI keeps them honest.'],
@@ -161,7 +161,7 @@ ${LOCAL_CSS.trim()}
   <div class="wrap hero-in">
     <p class="eyebrow reveal">A birth check for software parts</p>
     <h1>No part is trusted until it proves <em>what it is.</em></h1>
-    <p class="lede reveal">Estate Genome checks each piece of software before it is given work. It must say what it does, check its own answers, be safe to remove, and turn away work it should not do.</p>
+    <p class="lede reveal">Estate Genome checks each piece of software before any other program may hand it a job. It must say what it does, check its own answers, be safe to remove, and turn away work it should not do.</p>
   </div>
   <p class="facet" id="facet" aria-live="polite">Reading the morning census.</p>
 </header>
@@ -171,7 +171,7 @@ ${LOCAL_CSS.trim()}
 <section class="pad" id="result">
   <div class="wrap">
     <p class="kline reveal">Measured, not claimed</p>
-    <h2 class="claim reveal">Read from its own records. <b>Each number has its source one click away.</b></h2>
+    <h2 class="claim reveal">Read from its own records. <b>Press “receipt” under a number to open the file it comes from.</b></h2>
     <div class="stats">${receiptsHtml}</div>
   </div>
 </section>
@@ -218,15 +218,15 @@ ${LOCAL_CSS.trim()}
     <h2 class="claim reveal">What it does not claim. <b>What can go wrong.</b></h2>
     <details class="honest reveal"><summary>What it does not claim</summary><div class="in">
       <p>It makes parts check themselves. It does not make them clever, and it does not say it does.</p>
-      <p>A judge that passes can tell its own good and bad cases apart. That does not prove it catches every wrong answer.</p>
+      <p>Each part has a judge: its own check of its own answers. A judge that passes can tell its own good and bad examples apart. That does not prove it catches every wrong answer.</p>
       <p>The check on this page covers the manifest only. The other three traits need the part's own code, so they run on the command line and in CI.</p>
-      <p>No outside organisation uses it yet. Every cell is this estate's own.</p></div></details>
+      <p>No outside organisation uses Estate Genome yet. Every admitted part is this estate's own.</p></div></details>
     <details class="honest reveal"><summary>What can go wrong</summary><div class="in">
       <p>Drift is caught once a day, by the census, on public repositories only. A part can change between two censuses.</p>
       <p>A reused check can be up to seven days old. A new commit, or new checking code, always forces a fresh one.</p>
       <p>The guard is only as strong as each cell's judge. A judge that checks loosely lets loose answers through.</p></div></details>
     <details class="honest reveal"><summary>Your data, who owns it, and support</summary><div class="in">
-      <p>It runs on your own machines. It is open code under the MIT licence, with nothing else to install and no service to run.</p>
+      <p>It runs on your own machines. It is open code under the MIT licence. You add one file and one CI step to each repository. There is no server to run.</p>
       <p>This page reads only its own site's files. It sends nothing anywhere.</p>
       <p>It is supplied by ${SUPPLIER}. Support is agreed per deployment, in each deployment's agreement.</p>
       <p>It is built and kept by Kar, an AI. It has one human owner, Simon Gant.</p></div></details>
@@ -249,8 +249,8 @@ ${folds}
 
 <footer>
   <div class="wrap frow">
-    <div><div class="brand">Estate Genome</div><div class="fnote">Built by Kar · MIT licence (holder Simon Gant) · supplied by ${SUPPLIER}<br>${CREDIT}</div></div>
-    <div class="taglist"><span>›</span> No part is trusted until it proves itself.<br><span>›</span> Checked again every morning.</div>
+    <div><div class="brand">Estate Genome</div><div class="fnote">Built by Kar · MIT licence, copyright Simon Gant · supplied by ${SUPPLIER}<br>${CREDIT}</div></div>
+    <div class="taglist"><span>›</span> No part is trusted until it proves itself.<br><span>›</span> Every part is checked again each morning.</div>
   </div>
 </footer>
 </main>
