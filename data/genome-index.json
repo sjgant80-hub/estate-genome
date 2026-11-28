@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-27T05:24:59.026Z",
+ "generated": "2026-11-28T05:23:38.246Z",
  "owner": "sjgant80-hub",
  "about": "Admitted cells of the estate genome: each passed its birth check on a fresh clone when this was made. Route by lane.",
  "cells": [
@@ -524,6 +524,26 @@
    "verdict": "cell"
   },
   {
+   "name": "key-bridge",
+   "repo": "sjgant80-hub/key-bridge",
+   "kind": "repo",
+   "purpose": "A test of whether one small AI can hand another what it knows with no words and no training: a closed-form map between their inner states, checked on held-out facts. Its six claims were registered before any model was run; a failed claim stays on its page.",
+   "lane": {
+    "id": "key-bridge-claims",
+    "accepts": "a recorded run: one row of counts for each donor and recipient pair, and the integrity counts",
+    "refuses": "anything that is not such a run, or a run with a pair that is not whole"
+   },
+   "interface": {
+    "in": "{\"pairs\":[{\"donor\":\"model-a\",\"recipient\":\"model-b\",\"family\":\"independent\",\"n\":100,\"cross\":40,\"shuffled\":0,\"native\":60,\"kept\":{\"was\":60,\"still\":58}},{\"donor\":\"model-b\",\"recipient\":\"model-a\",\"family\":\"independent\",\"n\":100,\"cross\":30,\"shuffled\":0,\"native\":60,\"kept\":{\"was\":60,\"still\":58}},{\"donor\":\"model-a-tuned\",\"recipient\":\"model-a\",\"family\":\"same\",\"n\":100,\"cross\":55,\"shuffled\":0,\"native\":60,\"kept\":{\"was\":60,\"still\":58}}],\"integrity\":{\"evalSubjectsInFit\":0,\"evalSubjectsInTune\":0,\"weightFilesChanged\":0}}",
+    "out": "verified when every claim passes on the run; unverified when any fails; refused when part of the run is missing"
+   },
+   "judge": {
+    "what": "a run is verified only when every pre-registered claim passes on it"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
    "name": "konomi-ablate",
    "repo": "sjgant80-hub/konomi-ablate",
    "kind": "repo",
@@ -599,6 +619,66 @@
    },
    "judge": {
     "what": "a claimed reading of a comparison is right when konomi-regress's own compare and gate find exactly the holes it names (or refuse the comparison as inadmissible)"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "ministry-chamber",
+   "repo": "sjgant80-hub/ministry-chamber",
+   "kind": "repo",
+   "purpose": "Several AI models answer the same question apart. An answer is kept only when two houses (models built apart) both give it; the rest is flagged or let go. Five claims are registered before any model is asked, and a failed claim stays on the page.",
+   "lane": {
+    "id": "ministry-chamber-hearings",
+    "accepts": "a record of one hearing: what each witness said on its own, its house, and the verdict the record claims",
+    "refuses": "anything that is not a record of a hearing"
+   },
+   "interface": {
+    "in": "{\"witnesses\":[{\"mind\":\"mind-1\",\"house\":\"house-a\",\"output\":\"Paris\"},{\"mind\":\"mind-2\",\"house\":\"house-b\",\"output\":\"Paris, France\"},{\"mind\":\"mind-3\",\"house\":\"house-c\",\"output\":\"Lyon\"}],\"claim\":{\"verdict\":\"bonded\",\"answer\":\"paris\"}}",
+    "out": "verified when the rule, run again, gives the verdict and the answer the record claims; unverified when it does not; refused when what is given is not a record of a hearing"
+   },
+   "judge": {
+    "what": "a record of a hearing is verified only when the chamber's rule, run again on the same testimony, gives the verdict and the answer the record claims"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "ministry-constitution",
+   "repo": "sjgant80-hub/ministry-constitution",
+   "kind": "repo",
+   "purpose": "The law every AI mind must pass before it takes a seat among other AI minds: it proves the one thing it claims, says \"I can't tell\" outside it, and is seated only by a person. Its five claims were registered before any mind was examined.",
+   "lane": {
+    "id": "ministry-constitution-filings",
+    "accepts": "a filing: a card with the whole oath, and an exam of at least 50 questions inside the portfolio and 50 outside",
+    "refuses": "anything that is not such a filing"
+   },
+   "interface": {
+    "in": "{\"card\":{…the four parts of the oath…},\"exam\":{\"fingerprint\":\"…\",\"rows\":[{\"part\":\"portfolio\",\"outcome\":\"right\"},…]},\"grant\":null}",
+    "out": "verified when the law would seat the mind; unverified when the law refuses it; refused when it is not a filing the law can rule on"
+   },
+   "judge": {
+    "what": "a filing is verified only when the mind keeps its oath, recalls what its card claims, and says \"I can't tell\" outside its portfolio"
+   },
+   "escalate": "kar",
+   "verdict": "cell"
+  },
+  {
+   "name": "one-way-seam",
+   "repo": "sjgant80-hub/one-way-seam",
+   "kind": "repo",
+   "purpose": "A one-way door for private data: the outside AI is asked first, then the door shuts, and a checker looks for marked private data at every way out. Its five claims were registered before anything was built; a failed claim stays on its page.",
+   "lane": {
+    "id": "one-way-seam-claims",
+    "accepts": "a recorded run with its five parts: leak, task, quality, order and boundary",
+    "refuses": "anything that is not such a run, or a run with a part missing"
+   },
+   "interface": {
+    "in": "{\"leak\":{\"flows\":[{\"name\":\"example\",\"runs\":4,\"planted\":8,\"hits\":0}],\"controls\":[{\"sink\":\"network\",\"encoding\":\"plain\",\"planted\":1,\"caught\":1},{\"sink\":\"network\",\"encoding\":\"json\",\"planted\":1,\"caught\":1},{\"sink\":\"network\",\"encoding\":\"url\",\"planted\":1,\"caught\":1},{\"sink\":\"network\",\"encoding\":\"base64\",\"planted\":1,\"caught\":1},{\"sink\":\"network\",\"encoding\":\"hex\",\"planted\":1,\"caught\":1},{\"sink\":\"log\",\"encoding\":\"plain\",\"planted\":1,\"caught\":1},{\"sink\":\"log\",\"encoding\":\"json\",\"planted\":1,\"caught\":1},{\"sink\":\"log\",\"encoding\":\"url\",\"planted\":1,\"caught\":1},{\"sink\":\"log\",\"encoding\":\"base64\",\"planted\":1,\"caught\":1},{\"sink\":\"log\",\"encoding\":\"hex\",\"planted\":1,\"caught\":1},{\"sink\":\"disk\",\"encoding\":\"plain\",\"planted\":1,\"caught\":1},{\"sink\":\"disk\",\"encoding\":\"json\",\"planted\":1,\"caught\":1},{\"sink\":\"disk\",\"encoding\":\"url\",\"planted\":1,\"caught\":1},{\"sink\":\"disk\",\"encoding\":\"base64\",\"planted\":1,\"caught\":1},{\"sink\":\"disk\",\"encoding\":\"hex\",\"planted\":1,\"caught\":1}]},\"task\":{\"tasks\":2,\"right\":5,\"total\":10,\"control\":{\"right\":10,\"total\":10}},\"quality\":{\"n\":20,\"seam\":12,\"baseline\":13},\"order\":{\"plans\":{\"wrong\":3,\"refused\":3},\"mutants\":{\"planted\":2,\"caught\":2},\"lateCalls\":{\"made\":2,\"refused\":2}},\"boundary\":{\"builds\":[{\"name\":\"example\",\"adversary\":true,\"endpoint\":true,\"human\":true,\"metadata\":true}]}}",
+    "out": "verified when every claim passes on the run; unverified when any fails; refused when a part of the run is missing"
+   },
+   "judge": {
+    "what": "a run is verified only when every pre-registered claim passes on it; one marked private token at an outward sink is enough to fail it"
    },
    "escalate": "kar",
    "verdict": "cell"

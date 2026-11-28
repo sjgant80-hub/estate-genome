@@ -28,28 +28,28 @@
    "checkedAt": "2026-11-21T16:37:32.342Z"
   },
   "docdecdemo": {
-   "oid": "85bb7f6e5e9e94f891540b7d2f41dcdf92246002",
+   "oid": "88a494339047dad16022991214f53fc32c7edc55",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-21T16:37:35.497Z"
+   "checkedAt": "2026-11-28T05:23:19.642Z"
   },
   "estate-genome": {
-   "oid": "d6b0fd592c807fdd46a253a7405f32461727c26b",
+   "oid": "c2980b4a41ce2ba8960521d8391721cf185463a1",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-27T05:24:52.551Z"
+   "checkedAt": "2026-11-28T05:23:22.478Z"
   },
   "falljustice": {
-   "oid": "6023a3fac61940004208108bb6e2c0ed9877eee3",
+   "oid": "a39666972318a23169042fd807d7325015009716",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-21T16:37:39.513Z"
+   "checkedAt": "2026-11-28T05:23:23.452Z"
   },
   "genome-fold": {
    "oid": "19d4ac4919ea99bbba3ae69d85e69e5b42f3d4f9",
@@ -60,12 +60,12 @@
    "checkedAt": "2026-11-21T16:37:40.659Z"
   },
   "house-standard": {
-   "oid": "b310e6ffbd12a92972131fd65d317e548fba5f34",
+   "oid": "a2545955e1778496fce85e7ebe860e13e3930a73",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-27T05:24:53.549Z"
+   "checkedAt": "2026-11-28T05:23:24.352Z"
   },
   "kar-alerttriage": {
    "oid": "366a34b301980207a309534a14079dd3233bfefa",
@@ -84,20 +84,20 @@
    "checkedAt": "2026-11-21T16:37:42.970Z"
   },
   "kar-citelock": {
-   "oid": "3b0c202661cd650ebb49a7ccd08ce24e675774de",
+   "oid": "a3adc508a906bdcb6065db32b6b8ac618f08d1f4",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-21T16:37:44.267Z"
+   "checkedAt": "2026-11-28T05:23:25.334Z"
   },
   "kar-conform": {
-   "oid": "4a449040a98eb2f3a5237e2289c063749479601c",
+   "oid": "cf8b41b6f020f845c127ffbad487392c714cd006",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-21T16:37:45.865Z"
+   "checkedAt": "2026-11-28T05:23:26.244Z"
   },
   "kar-consentdecay": {
    "oid": "9f6fbe915c46f92471f70715fa9cc1f76f955cb2",
@@ -124,12 +124,12 @@
    "checkedAt": "2026-11-21T16:37:48.931Z"
   },
   "kar-glyphguard": {
-   "oid": "e053bf515eac0850eb60aea6a7f9e7b5bdc7b187",
+   "oid": "3fce1031baf76a3292208ef79ff55f5fe523ab73",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-21T16:37:50.213Z"
+   "checkedAt": "2026-11-28T05:23:27.165Z"
   },
   "kar-irhelper": {
    "oid": "ea1cb261a20791b89fbcdcd338c1fa7b725ba354",
@@ -180,12 +180,12 @@
    "checkedAt": "2026-11-21T16:37:56.616Z"
   },
   "kar-scopeguard": {
-   "oid": "1d72f2ac5263040cb02610924ac0afdc11ff4373",
+   "oid": "f526a380fb6b80060e88061a26c64023a1dffde3",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-21T16:37:57.770Z"
+   "checkedAt": "2026-11-28T05:23:28.368Z"
   },
   "kar-spendwall": {
    "oid": "5c13f9810c254c2057641925b688c233ff4c063d",
@@ -196,12 +196,12 @@
    "checkedAt": "2026-11-23T05:25:48.936Z"
   },
   "kar-tally": {
-   "oid": "579aa37992709ffc2d22331267f692b27dc49799",
+   "oid": "f14b350e060ad410d51360075af7ae34b321e0e3",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-21T16:38:00.115Z"
+   "checkedAt": "2026-11-28T05:23:29.221Z"
   },
   "kar-veil": {
    "oid": "bf6fdc084c9beed9274b545cdd1acf9246c64dc3",
@@ -210,6 +210,14 @@
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
    "checkedAt": "2026-11-21T16:38:01.188Z"
+  },
+  "key-bridge": {
+   "oid": "140935e769d2ec80820f6654722f2f0adebba4a4",
+   "checker": "80cc6eb9613df6f5",
+   "verdict": "cell",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "checkedAt": "2026-11-28T05:23:30.221Z"
   },
   "konomi-ablate": {
    "oid": "2864194be26051fe9420034ecc69f844f0557081",
@@ -243,6 +251,30 @@
    "reasons": [],
    "checkedAt": "2026-11-21T16:38:05.196Z"
   },
+  "ministry-chamber": {
+   "oid": "cee7a30320678a19c13379f4dc1471c4e797437f",
+   "checker": "80cc6eb9613df6f5",
+   "verdict": "cell",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "checkedAt": "2026-11-28T05:23:31.205Z"
+  },
+  "ministry-constitution": {
+   "oid": "5470acb5062dcf1139b7961b86edd2781d8f4f0b",
+   "checker": "80cc6eb9613df6f5",
+   "verdict": "cell",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "checkedAt": "2026-11-28T05:23:32.160Z"
+  },
+  "one-way-seam": {
+   "oid": "8281bf58a2830b280fc733ce4911355df2a4d4ab",
+   "checker": "80cc6eb9613df6f5",
+   "verdict": "cell",
+   "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
+   "reasons": [],
+   "checkedAt": "2026-11-28T05:23:33.145Z"
+  },
   "openkonomi": {
    "oid": "a220438c4b8f3d925b394000b9b9f53b0828c2b4",
    "checker": "80cc6eb9613df6f5",
@@ -268,44 +300,44 @@
    "checkedAt": "2026-11-21T16:38:09.765Z"
   },
   "the-climb": {
-   "oid": "9c14be6b0167225f3763c9f53cfe79b8aa32e336",
+   "oid": "74dece20d26f1b0c7982e99ae0c527fe46a4a12c",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-27T05:24:54.560Z"
+   "checkedAt": "2026-11-28T05:23:34.075Z"
   },
   "the-crystal": {
-   "oid": "b269efe2c07239874cd69e63d41439ba7e6b0c7a",
+   "oid": "e7ae0717702c5b15f3337795be37def9917081fc",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-27T05:24:55.556Z"
+   "checkedAt": "2026-11-28T05:23:35.084Z"
   },
   "the-distillation": {
-   "oid": "418c84b0e599581f4a4e5196388d9b02b2eb676e",
+   "oid": "a618325480a44523a5426dae69eab6fae0a2eeb1",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-27T05:24:56.952Z"
+   "checkedAt": "2026-11-28T05:23:36.151Z"
   },
   "the-seed": {
-   "oid": "b3de41914ee31b9c9c3cd121770ef040b9d45dc3",
+   "oid": "95eb9c528d90ee3e975d0af032ce2ccac9769ca8",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-27T05:24:57.909Z"
+   "checkedAt": "2026-11-28T05:23:37.230Z"
   },
   "the-verifier-set": {
-   "oid": "f1eb2712dd0ccc9fb7250210fe8bfc8126c3a650",
+   "oid": "2f5493f19b8583b79b703ba894f36c09fa9d0b73",
    "checker": "80cc6eb9613df6f5",
    "verdict": "cell",
    "line": "ADMITTED: a cell (4 of 4: describe yes, verify yes, prune yes, boundary yes)",
    "reasons": [],
-   "checkedAt": "2026-11-27T05:24:59.019Z"
+   "checkedAt": "2026-11-28T05:23:38.240Z"
   },
   "witness-kit": {
    "oid": "e4a98c775b49816f49ffd3afac85b0ea27116aa3",
